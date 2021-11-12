@@ -1,0 +1,3 @@
+displayName = Infinitum
+author = Adrian Garcia
+version = 0.1
