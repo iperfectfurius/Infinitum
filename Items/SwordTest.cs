@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace Infinitum.Items
 {
-	public class Infinitum : ModItem
+	class SwordTest : ModItem
 	{
 		public override void SetStaticDefaults() 
 		{
@@ -22,7 +22,7 @@ namespace Infinitum.Items
 			Item.useAnimation = 20;
 			Item.useStyle = 1;
 			Item.knockBack = 6;
-			Item.value = 10000;
+			Item.value = Item.sellPrice(gold:10);
 			Item.rare = 2;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
@@ -31,7 +31,7 @@ namespace Infinitum.Items
 		public override void AddRecipes() 
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.DirtBlock, 10);
+			recipe.AddIngredient(ItemID.DirtBlock, 1);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
 		}
