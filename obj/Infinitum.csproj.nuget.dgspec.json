@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\Infinitum.csproj": {}
+    "C:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\Infinitum.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\Infinitum.csproj": {
+    "C:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\Infinitum.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\Infinitum.csproj",
+        "projectUniqueName": "C:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\Infinitum.csproj",
         "projectName": "Infinitum",
-        "projectPath": "c:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\Infinitum.csproj",
+        "projectPath": "C:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\Infinitum.csproj",
         "packagesPath": "C:\\Users\\Adrian\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\obj\\",
+        "outputPath": "C:\\Users\\Adrian\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Infinitum\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -50,7 +50,7 @@
           "dependencies": {
             "tModLoader.CodeAssist": {
               "target": "Package",
-              "version": "[0.*, )"
+              "version": "[0.1.3, )"
             }
           },
           "imports": [

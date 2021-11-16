@@ -21,13 +21,10 @@ namespace Infinitum
 			Player player = Main.player[Main.myPlayer];
 			Exp +=  (float)(xp * ExpMultiplier);
 			Main.NewText("Gained: "+ xp +" total: " +  Exp);
-			// CombatText expText = new CombatText();
-			// expText.text = $"+ {xp} xp";
-			// expText.lifeTime = 2;
 			
-			CombatText.NewText(new Rectangle((int)player.position.X,(int)player.position.Y,50,50),CombatText.HealMana,$"+ {xp} xp",false,false);
+			CombatText.NewText(new Rectangle((int)player.position.X,((int)player.position.Y + 135),50,50),CombatText.HealMana,$"+ {xp} xp",false,false);
 			
-			CombatText.UpdateCombatText();
+			//CombatText.UpdateCombatText();
 			
         }
 
