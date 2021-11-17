@@ -4,13 +4,13 @@ using Terraria.ModLoader;
 
 namespace Infinitum.Items
 {
-	internal class ExpStar : ModItem
+	internal class MultiplierStar : ModItem
 	{
 		//public override string Texture => "Terraria/Item_12";
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Star Exp");
-			Tooltip.SetDefault("What you expect?");
+			DisplayName.SetDefault("Star Multiplier EXP");
+			Tooltip.SetDefault("LOL");
 		}
 
 		public override void SetDefaults()
@@ -37,7 +37,7 @@ namespace Infinitum.Items
 		public override bool? UseItem(Player player)
 		{
 			
-			Character_Data.AddXp(Main.rand.Next(300000));
+			Character_Data.AddXpMultiplier(0.025f);
 			return true;
 		}
 	}

@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ModLoader;
 using Infinitum.Items;
+using Infinitum;
 using Terraria.GameContent.ItemDropRules;
 namespace Infinitum
 {
@@ -8,32 +9,24 @@ namespace Infinitum
 	{
 		public override bool CheckDead(NPC npc)
 		{
-			//Main.NewText("yes papu",155,145,132);
-			
-			
-			 if(base.CheckDead(npc))
-            {
-			
-				float calcExp = (float)npc.defense + 0.5f * (float)(npc.lifeMax/5);
+			if (base.CheckDead(npc))
+			{
+
+				float calcExp = (float)npc.defense + 0.5f * (float)(npc.lifeMax / 5);
 				Character_Data.AddXp(calcExp);
-				
 				return true;
-            }
-			 return false;
+			}
+			return false;
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
-			// if(Main.rand.Next(2)==1){
- 			// 	Item.NewItem(npc.getRect(), 22);
-				 
-			// }
-			//npcLoot.Add();
-			IItemDropRule expStar =  new CommonDrop(ModContent.ItemType<ExpStar>(),1);			
-			npcLoot.Add(expStar);
+			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
+			items.Add(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500));
+			items.Add(new CommonDrop(ModContent.ItemType<MultiplierStar>(), 250));
 
+			items.ForEach(e => npcLoot.Add(e));
 			base.ModifyNPCLoot(npc, npcLoot);
-			
-			
+
 		}
 	}
 }
