@@ -7,6 +7,7 @@ namespace Infinitum.Items
 	internal class ExpStar : ModItem
 	{
 		//public override string Texture => "Terraria/Item_12";
+		//private Infinitum infinitumMod = (Infinitum)ModLoader.GetMod("Infinitum");
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star Exp");
@@ -36,8 +37,8 @@ namespace Infinitum.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			
-			Character_Data.AddXp(Main.rand.Next(300000));
+			//Infinitum.PlayerModded.AddXp(Main.rand.Next(300000));
+			//Character_Data.AddXp(Main.rand.Next(300000));
 			return true;
 		}
 	}
