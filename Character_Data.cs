@@ -9,6 +9,7 @@ namespace Infinitum
 	public class Character_Data : ModPlayer
 	{
 		private Player player = null;
+		
 		private float exp = 0.0f;
 		private int level = 0;
 		private float expMultiplier = 1.0f;
