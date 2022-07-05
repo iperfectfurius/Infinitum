@@ -21,7 +21,7 @@ namespace Infinitum
 				//Character_Data.ModPlayer(Main.player[Main.myPlayer]).AddXp(calcExp);
 				//mp.AddXp(calcExp);
 				
-				//Character_Data.AddXp(calcExp);
+				Character_Data.AddXp(calcExp);
 				return true;
 			}
 			return false;

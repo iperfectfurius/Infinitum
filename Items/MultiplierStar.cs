@@ -38,11 +38,11 @@ namespace Infinitum.Items
 		public override bool? UseItem(Player player)
 		{
 			//Infinitum.PlayerModded.AddXpMultiplier(0.025f);
-			//Character_Data.AddXpMultiplier(0.025f);
+			Character_Data.AddXpMultiplier(0.025f);
 			//Character_Data.ModPlayer(player);
-			Character_Data modPlayer = Character_Data.Get(player);
+			//Character_Data modPlayer = Character_Data.Get(player);
 			
-			modPlayer.AddXpMultiplier(0.025f);
+			//modPlayer.AddXpMultiplier(0.025f);
 			
 			
 
