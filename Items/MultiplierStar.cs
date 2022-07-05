@@ -6,7 +6,6 @@ namespace Infinitum.Items
 {
 	internal class MultiplierStar : ModItem
 	{
-		//private Infinitum infinitumMod = (Infinitum)ModLoader.GetMod("Infinitum");
 		//public override string Texture => "Terraria/Item_12";
 		public override void SetStaticDefaults()
 		{
@@ -37,15 +36,7 @@ namespace Infinitum.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			//Infinitum.PlayerModded.AddXpMultiplier(0.025f);
-			Character_Data.AddXpMultiplier(0.025f);
-			//Character_Data.ModPlayer(player);
-			//Character_Data modPlayer = Character_Data.Get(player);
-			
-			//modPlayer.AddXpMultiplier(0.025f);
-			
-			
-
+			player.GetModPlayer<Character_Data>().AddXpMultiplier(0.025f);
 			return true;
 		}
 	}

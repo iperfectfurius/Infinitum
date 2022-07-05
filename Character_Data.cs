@@ -8,15 +8,13 @@ namespace Infinitum
 {
 	public class Character_Data : ModPlayer
 	{
-		private static Player player = Main.player[Main.myPlayer];
+		private Player player;
 
-		private static float exp = 0.0f;
-		private static int level = 0;
-		private static float expMultiplier = 1.0f;
+		private float exp = 0.0f;
+		private int level = 0;
+		private float expMultiplier = 1.0f;
 		private const int exp_TO_LEVEL = 15000;
-		// public static Character_Data Get() => Get(Main.LocalPlayer);
-		// public static Character_Data Get(Player player) => player.GetModPlayer<Character_Data>();
-		public static void AddXp(float xp)
+		public void AddXp(float xp)
 		{
 
 			exp += (float)(xp * expMultiplier);
@@ -25,7 +23,7 @@ namespace Infinitum
 			Main.NewText("Gained: " + ((float)(xp * expMultiplier)).ToString("n1") + " total: " + exp);
 
 		}
-		private static void UpdateLevel()
+		private void UpdateLevel()
 		{
 			if (exp > exp_TO_LEVEL)
 			{
@@ -35,15 +33,15 @@ namespace Infinitum
 				CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 195), 25, 25), CombatText.DamagedFriendlyCrit, $"+ {LevelsUp} Levels!", false, false);
 			}
 		}
-		public static void AddXpMultiplier(float xp)
+		public void AddXpMultiplier(float xp)
 		{
 			expMultiplier += xp;
 
 			CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.DamagedFriendlyCrit, $"{(expMultiplier * 100f).ToString("n2")}% Multiplier!", false, false);
 		}
-		public override void OnEnterWorld(Player player)
+		public override void OnEnterWorld(Player currentPLayer)
 		{
-			player = Main.player[Main.myPlayer];
+			player = currentPLayer;
 
 			CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.DamagedFriendlyCrit, $"Level {level}", false, false);
 		}
