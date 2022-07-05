@@ -12,15 +12,26 @@ namespace Infinitum
 
 		private float exp = 0.0f;
 		private int level = 0;
+		private int totalLevel = 0;
 		private float expMultiplier = 1.0f;
 		private const int exp_TO_LEVEL = 15000;
+		
+
+		// public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
+		// {
+		// 	base.OnHitNPC(item, target, damage, knockback, crit);
+		// 	if(!target.activWe){
+		// 		float calcExp = (float)target.defense + 0.5f * (float)(target.lifeMax / 5);
+		// 		AddXp(calcExp);
+		// 	}
+		// }
 		public void AddXp(float xp)
 		{
 
 			exp += (float)(xp * expMultiplier);
 			CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.HealMana, $"+ {((float)(xp * expMultiplier)).ToString("n1")} xp", false, false);
 			UpdateLevel();
-			Main.NewText("Gained: " + ((float)(xp * expMultiplier)).ToString("n1") + " total: " + exp);
+			Main.NewText("Gained: " + ((float)(xp * expMultiplier)).ToString("n1") + " total: " + exp.ToString("n1"));
 
 		}
 		private void UpdateLevel()

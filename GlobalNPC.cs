@@ -1,24 +1,25 @@
 using Terraria;
 using Terraria.ModLoader;
 using Infinitum.Items;
-using Infinitum;
 using Terraria.GameContent.ItemDropRules;
 
 namespace Infinitum
 {
 	public class InfinitumNPCs : GlobalNPC
 	{
-		public override bool CheckDead(NPC npc)
+		// public override void OnKill(NPC npc)
+		// {
+		// 	base.OnKill(npc);
+		// 	if (!CheckKill(Main.myPlayer)) return;
+
+		// 	float calcExp = (float)npc.defense + 0.5f * (float)(npc.lifeMax / 5);
+
+		// 	Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(calcExp);
+		// }W
+		public override void OnKill(NPC npc)
 		{
-			if (base.CheckDead(npc))
-			{
-				float calcExp = (float)npc.defense + 0.5f * (float)(npc.lifeMax / 5);
-
-				Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(calcExp);
-
-				return true;
-			}
-			return false;
+			base.OnKill(npc);
+			addXpToAllPlayerInRange((float)npc.defense + 0.5f * (float)(npc.lifeMax / 5));
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
@@ -29,6 +30,17 @@ namespace Infinitum
 			items.ForEach(e => npcLoot.Add(e));
 			base.ModifyNPCLoot(npc, npcLoot);
 
+		}
+		private void addXpToAllPlayerInRange(float xp)
+		{
+			foreach (Player p in Main.player)
+			{
+				if (!p.active) return;
+
+				Main.NewText(Main.PlayerList.ToString());			
+				p.GetModPlayer<Character_Data>().AddXp(xp);
+
+			}
 		}
 
 	}
