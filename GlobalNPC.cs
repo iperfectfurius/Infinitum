@@ -1,24 +1,49 @@
 using Terraria;
+using Terraria.Chat;
 using Terraria.ModLoader;
 using Infinitum.Items;
-using Infinitum;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Localization;
+using Microsoft.Xna.Framework;
+using Terraria.ID;
+using Infinitum;
 
 namespace Infinitum
 {
 	public class InfinitumNPCs : GlobalNPC
 	{
-		public override bool CheckDead(NPC npc)
+		private static Mod myMod = ModLoader.GetMod("Infinitum");
+
+		public override void OnKill(NPC npc)
 		{
-			if (base.CheckDead(npc))
+			//determine if server or singleplayer
+			base.OnKill(npc);
+			float xp = (float)npc.defense + 0.5f * (float)(npc.lifeMax / 5);
+
+			if (Main.netMode == NetmodeID.Server)
 			{
-				float calcExp = (float)npc.defense + 0.5f * (float)(npc.lifeMax / 5);
-
-				Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(calcExp);
-
-				return true;
+				ModPacket myPacket = myMod.GetPacket();
+				myPacket.Write(xp);
+				myPacket.Send();
 			}
-			return false;
+			else if (Main.netMode == NetmodeID.SinglePlayer)
+			{
+				addXpToPlayer(xp);
+			}
+			
+			ChatMessage("NPC Killed");//only works in server
+		}
+		public static void ChatMessage(string text)
+		{
+			
+			if (Main.netMode == NetmodeID.Server)
+			{
+				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
+			}
+			else if (Main.netMode == NetmodeID.SinglePlayer)
+			{
+				//Main.NewText(text);
+			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
@@ -29,6 +54,10 @@ namespace Infinitum
 			items.ForEach(e => npcLoot.Add(e));
 			base.ModifyNPCLoot(npc, npcLoot);
 
+		}
+		private void addXpToPlayer(float xp)
+		{
+			Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
 		}
 
 	}
