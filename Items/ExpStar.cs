@@ -6,8 +6,7 @@ namespace Infinitum.Items
 {
 	internal class ExpStar : ModItem
 	{
-		//public override string Texture => "Terraria/Item_12";
-		//private Infinitum infinitumMod = (Infinitum)ModLoader.GetMod("Infinitum");
+
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star Exp");
@@ -19,7 +18,7 @@ namespace Infinitum.Items
 			Item.maxStack = 999;
 			Item.width = 25;
 			Item.height = 25;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.consumable = true;
 			Item.UseSound = SoundID.DD2_BallistaTowerShot;
 			Item.useStyle = ItemUseStyleID.HoldUp;
