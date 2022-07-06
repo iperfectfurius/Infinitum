@@ -5,37 +5,44 @@ using Infinitum.Items;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
+using Terraria.ID;
+using Infinitum;
 
 namespace Infinitum
 {
 	public class InfinitumNPCs : GlobalNPC
 	{
-		// public override void OnKill(NPC npc)
-		// {
-		// 	base.OnKill(npc);
-		// 	if (!CheckKill(Main.myPlayer)) return;
+		private static Mod myMod = ModLoader.GetMod("Infinitum");
 
-		// 	float calcExp = (float)npc.defense + 0.5f * (float)(npc.lifeMax / 5);
-
-		// 	Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(calcExp);
-		// }
 		public override void OnKill(NPC npc)
 		{
+			//determine if server or singleplayer
 			base.OnKill(npc);
-			addXpToAllPlayerInRange((float)npc.defense + 0.5f * (float)(npc.lifeMax / 5));
-			ChatMessage("xd");
+			float xp = (float)npc.defense + 0.5f * (float)(npc.lifeMax / 5);
+
+			if (Main.netMode == NetmodeID.Server)
+			{
+				ModPacket myPacket = myMod.GetPacket();
+				myPacket.Write(xp);
+				myPacket.Send();
+			}
+			else if (Main.netMode == NetmodeID.SinglePlayer)
+			{
+				addXpToPlayer(xp);
+			}
+			
+			ChatMessage("NPC Killed");//only works in server
 		}
 		public static void ChatMessage(string text)
 		{
 			
-			if (Main.netMode == 2)
+			if (Main.netMode == NetmodeID.Server)
 			{
 				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
-				
 			}
-			else if (Main.netMode == 0)
+			else if (Main.netMode == NetmodeID.SinglePlayer)
 			{
-				Main.NewText(text);
+				//Main.NewText(text);
 			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
@@ -48,22 +55,9 @@ namespace Infinitum
 			base.ModifyNPCLoot(npc, npcLoot);
 
 		}
-		private void addXpToAllPlayerInRange(float xp)
+		private void addXpToPlayer(float xp)
 		{
-
-			foreach (Player p in Main.player)
-			{
-				if (!p.active) return;
-				//if(Main.netMode == NetmodeID.Server)
-				//Main.NewText(Main.PlayerList.ToString());		
-
-				//NetMessage.SendData(1, -1, -1, NetworkText.FromLiteral("testing"));
-
-				p.GetModPlayer<Character_Data>().AddXp(xp);
-
-
-			}
-
+			Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
 		}
 
 	}

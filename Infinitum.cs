@@ -1,12 +1,13 @@
 using Terraria.ModLoader;
 using Terraria;
 using System.Threading.Tasks;
-using System.Drawing;
+using System.IO;
 
 namespace Infinitum
 {
 	public class Infinitum : Mod
 	{
+
 		public Infinitum()
 		{
 
@@ -16,17 +17,15 @@ namespace Infinitum
 			base.Load();
 			
 		}
-		public static void ChatMessage(string text, Color color)
-		{
-			
-			// if (Main.netMode == NetmodeID.Server)
-			// {
-			// 	ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), color);
-			// }
-			// else if (Main.netMode == NetmodeID.SinglePlayer)
-			// {
-			// 	Main.NewText(text, color);
-			// }
+        public override void HandlePacket(BinaryReader reader, int whoAmI)
+        {
+            base.HandlePacket(reader, whoAmI);
+			AddXPToPlayer(reader.ReadSingle());
+			//Main.NewText(reader.ReadString() + whoAmI + "desde main");
 		}
-	}
+		private void AddXPToPlayer(float xp)
+        {
+			Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
+        }
+    }
 }
