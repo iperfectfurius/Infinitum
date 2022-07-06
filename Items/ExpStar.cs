@@ -37,9 +37,6 @@ namespace Infinitum.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			//Infinitum.PlayerModded.AddXp(Main.rand.Next(300000));
-			//Infinitum.CD.AddXp(Main.rand.Next(300000));
-			//Character_Data modPlayer = player.GetModPlayer<Character_Data>();
 			player.GetModPlayer<Character_Data>().AddXp(Main.rand.Next(300000));
 			return true;
 		}

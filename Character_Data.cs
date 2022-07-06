@@ -8,7 +8,7 @@ namespace Infinitum
 {
 	public class Character_Data : ModPlayer
 	{
-		private Player player;
+		private Player player = Main.CurrentPlayer;
 
 		private float exp = 0.0f;
 		private int level = 0;
@@ -29,9 +29,10 @@ namespace Infinitum
 		{
 
 			exp += (float)(xp * expMultiplier);
-			CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.HealMana, $"+ {((float)(xp * expMultiplier)).ToString("n1")} xp", false, false);
 			UpdateLevel();
-			Main.NewText("Gained: " + ((float)(xp * expMultiplier)).ToString("n1") + " total: " + exp.ToString("n1"));
+			CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.HealMana, $"+ {((float)(xp * expMultiplier)).ToString("n1")} xp", false, false);		
+
+			//Main.NewText("Gained: " + ((float)(xp * expMultiplier)).ToString("n1") + " total: " + exp.ToString("n1"));
 
 		}
 		private void UpdateLevel()
@@ -41,6 +42,7 @@ namespace Infinitum
 				int LevelsUp = (int)exp / exp_TO_LEVEL;
 				exp -= exp_TO_LEVEL * LevelsUp;
 				level += LevelsUp;
+				
 				CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 195), 25, 25), CombatText.DamagedFriendlyCrit, $"+ {LevelsUp} Levels!", false, false);
 			}
 		}

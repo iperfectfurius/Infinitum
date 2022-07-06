@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Infinitum.Items;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.Localization;
 
 namespace Infinitum
 {
@@ -20,7 +21,9 @@ namespace Infinitum
 		{
 			base.OnKill(npc);
 			addXpToAllPlayerInRange((float)npc.defense + 0.5f * (float)(npc.lifeMax / 5));
+
 		}
+		
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
 			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
@@ -33,14 +36,20 @@ namespace Infinitum
 		}
 		private void addXpToAllPlayerInRange(float xp)
 		{
+
 			foreach (Player p in Main.player)
 			{
 				if (!p.active) return;
+				//if(Main.netMode == NetmodeID.Server)
+				//Main.NewText(Main.PlayerList.ToString());		
 
-				Main.NewText(Main.PlayerList.ToString());			
+				NetMessage.SendData(1, -1, -1, NetworkText.FromLiteral("testing"));
+
 				p.GetModPlayer<Character_Data>().AddXp(xp);
 
+
 			}
+
 		}
 
 	}
