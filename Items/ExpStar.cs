@@ -1,7 +1,8 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Infinitum;
+
+
 namespace Infinitum.Items
 {
 	internal class ExpStar : ModItem

@@ -13,8 +13,8 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = ModLoader.GetMod("Infinitum");
-		private float GetXpFromNPC(NPC target) => (float)target.defense + 0.5f * (float)(target.lifeMax / 5);
-
+		private float xp;
+		private float GetXpFromNPC(NPC target) => (float)target.defense + 0.5f * (float)(target.lifeMax / 4.5);
 		public override void OnKill(NPC npc)
 		{
 

@@ -6,7 +6,6 @@ namespace Infinitum.Items
 {
 	internal class MultiplierStar : ModItem
 	{
-		//public override string Texture => "Terraria/Item_12";
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star Multiplier EXP");
