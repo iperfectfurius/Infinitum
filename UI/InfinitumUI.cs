@@ -16,7 +16,7 @@ namespace Infinitum.UI
     internal class InfinitumUI : UIState
     {
         
-        public UIPanel InfinitumPanel;
+        public DragableUIPanel InfinitumPanel;
         public bool Visible;
         private Dictionary <string,float> map = new Dictionary<string,float>();
 
@@ -29,7 +29,7 @@ namespace Infinitum.UI
            
             Visible = true;
 
-            InfinitumPanel = new UIPanel();
+            InfinitumPanel = new DragableUIPanel();
             InfinitumPanel.Height.Set(100f, 0f);
             InfinitumPanel.Width.Set(300, 0f);
             InfinitumPanel.Left.Set(Main.screenWidth - InfinitumPanel.Width.Pixels, 0f);
