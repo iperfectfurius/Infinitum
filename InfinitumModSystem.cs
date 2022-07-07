@@ -43,7 +43,21 @@ namespace Infinitum
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            layers.Add(new LegacyGameInterfaceLayer("Cool Mod: Something UI", DrawSomethingUI, InterfaceScaleType.UI));
+            //layers.Add(new LegacyGameInterfaceLayer("Cool Mod: Something UI", DrawSomethingUI, InterfaceScaleType.UI));
+
+            int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            if (mouseTextIndex != -1)
+            {
+                layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                    "YourMod: A Description",
+                    delegate
+                    {
+                        customUI.Draw(Main.spriteBatch, new GameTime());
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+            }
         }
         private bool DrawSomethingUI()
         {
@@ -64,5 +78,6 @@ namespace Infinitum
         {
             customUI?.SetState(null);
         }
+        
     }
 }

@@ -22,7 +22,7 @@ namespace Infinitum.UI
 
         public InfinitumUI()
         {
-            map["Level"] = 1;
+            map["Level"] = 0;
         }
         public override void OnInitialize()
         {
@@ -34,7 +34,6 @@ namespace Infinitum.UI
             InfinitumPanel.Width.Set(300, 0f);
             InfinitumPanel.Left.Set(Main.screenWidth - InfinitumPanel.Width.Pixels, 0f);
             InfinitumPanel.Top.Set(Main.screenHeight- InfinitumPanel.Height.Pixels, 0f);
-            InfinitumPanel.OnClick += new MouseEvent(test2);
             //InfinitumPanel.BackgroundColor = new Color(250, 0, 0,100);
             Append(InfinitumPanel);
 
@@ -45,7 +44,7 @@ namespace Infinitum.UI
             button.Height.Set(50, 0);
             button.HAlign = 0.5f;
             button.Top.Set(25, 0);
-            button.OnClick += new MouseEvent(test2);
+            button.OnClick += new (test2);
             
             button.Append(text);
             InfinitumPanel.Append(button);
@@ -53,12 +52,17 @@ namespace Infinitum.UI
         
         public override void Draw(SpriteBatch spriteBatch)
         {
+            
             base.Draw(spriteBatch);
         }
-
+        public override void Update(GameTime gameTime)
+        {
+            Character_Data myMod = Main.player[Main.myPlayer].GetModPlayer<Character_Data>();
+            map["Level"] = myMod.Level;
+            base.Update(gameTime);
+        }
         private void test2(UIMouseEvent evt, UIElement listeningElement)
         {
-            map["Level"]+=1;
             Main.NewText(map["Level"]);
         }
 
