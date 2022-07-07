@@ -15,7 +15,14 @@ namespace Infinitum
         private int totalLevel = 0;
         private float expMultiplier = 1.0f;
         private const int EXPTOLEVEL = 15000;
-        
+
+        public float Exp { get => exp; }
+        public int Level { get => level;}
+        public int TotalLevel { get => totalLevel; }
+        public float ExpMultiplier { get => expMultiplier; }
+
+        public static int EXPTOLEVEL1 => EXPTOLEVEL;
+
         public void AddXp(float xp)
         {
 
@@ -64,7 +71,6 @@ namespace Infinitum
             tag.Add("ExpMultiplier", expMultiplier);
             tag.Add("Exp", exp);
             tag.Add("TotalLevel", totalLevel);
-
         }
 
     }

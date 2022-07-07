@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infinitum.UI;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +8,25 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static Terraria.ModLoader.ModContent;
 
-namespace Infinitum.UI
+namespace Infinitum
 {
     internal class InfinitumModSystem : ModSystem
     {
         private UserInterface customUI;
         internal InfinitumUI infinitumUI;
+        private GameTime _lastUpdateUiGameTime;
 
         public override void Load()
         {
-            base.Load();
+           // base.Load();
 
             if (!Main.dedServ)
             {
                 customUI = new UserInterface();
                 infinitumUI = new InfinitumUI();
-                infinitumUI.Activate();
+                infinitumUI.Initialize();
                 //infinitumUI.Visible = true;//static??
                 customUI.SetState(infinitumUI);
 
@@ -32,13 +35,12 @@ namespace Infinitum.UI
         }
         public override void UpdateUI(GameTime gameTime)
         {
- 
+            _lastUpdateUiGameTime = gameTime;
             if (!Main.gameMenu && infinitumUI.Visible)
             {
-                infinitumUI?.Update(gameTime);
+                customUI?.Update(gameTime);
             }
         }
-
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
             layers.Add(new LegacyGameInterfaceLayer("Cool Mod: Something UI", DrawSomethingUI, InterfaceScaleType.UI));
@@ -52,6 +54,15 @@ namespace Infinitum.UI
                 customUI.Draw(Main.spriteBatch, new GameTime());
             }
             return true;
+        }
+        internal void ShowMyUI()
+        {
+            customUI?.SetState(infinitumUI);
+        }
+
+        internal void HideMyUI()
+        {
+            customUI?.SetState(null);
         }
     }
 }

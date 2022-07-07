@@ -12,10 +12,12 @@ namespace Infinitum
 {
     public class Infinitum : Mod
     {
+        public static Infinitum instance;
         public Infinitum() { }
         public override void Load()
         {
             base.Load();
+            instance = this;
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {

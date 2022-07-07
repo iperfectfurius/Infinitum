@@ -65,5 +65,6 @@ namespace Infinitum.UI
 				Recalculate();
 			}
 		}
+
 	}
 }
