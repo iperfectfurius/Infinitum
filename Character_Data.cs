@@ -66,8 +66,6 @@ namespace Infinitum
 
             CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.DamagedFriendlyCrit, $"Level {level}", false, false);
             InfinitumUI.Instance.stats = this;
-
-
         }
 
         public override void LoadData(TagCompound tag)
@@ -99,7 +97,7 @@ namespace Infinitum
             if (InfinitumModSystem.UIKey.JustPressed)
             {
                 InfinitumUI.Instance.Visible = !InfinitumUI.Instance.Visible;
-                showDamageText("hotKey", Color.Red);
+                showDamageText("hotKey" + InfinitumUI.Instance.Visible, Color.Red);
             }
                 
            

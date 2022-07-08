@@ -54,7 +54,8 @@ namespace Infinitum
                     "YourMod: A Description",
                     delegate
                     {
-                        customUI.Draw(Main.spriteBatch, new GameTime());
+                        if(InfinitumUI.Instance.Visible)
+                            customUI.Draw(Main.spriteBatch, new GameTime());
                         return true;
                     },
                     InterfaceScaleType.UI)

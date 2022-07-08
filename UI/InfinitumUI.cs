@@ -89,13 +89,12 @@ namespace Infinitum.UI
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-
-            base.Draw(spriteBatch);
+                base.Draw(spriteBatch);
         }
         public override void Update(GameTime gameTime)
         {
             //this goes on show??
-            if (stats.GetHashCode() == oldHashCode)
+            if (stats.GetHashCode() == oldHashCode && Visible)
             {
                 base.Update(gameTime);
                 return;
