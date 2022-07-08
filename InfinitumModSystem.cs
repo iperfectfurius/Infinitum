@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
 using static Terraria.ModLoader.ModContent;
@@ -42,9 +43,8 @@ namespace Infinitum
             }
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-        {
-            //layers.Add(new LegacyGameInterfaceLayer("Cool Mod: Something UI", DrawSomethingUI, InterfaceScaleType.UI));
-
+        {         
+            
             int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             if (mouseTextIndex != -1)
             {
@@ -69,12 +69,12 @@ namespace Infinitum
             }
             return true;
         }
-        internal void ShowMyUI()
+        public void ShowMyUI()
         {
             customUI?.SetState(infinitumUI);
         }
 
-        internal void HideMyUI()
+        public void HideMyUI()
         {
             customUI?.SetState(null);
         }

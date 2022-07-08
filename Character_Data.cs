@@ -1,6 +1,6 @@
+using Infinitum.UI;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -55,6 +55,8 @@ namespace Infinitum
             player = currentPLayer;
 
             CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.DamagedFriendlyCrit, $"Level {level}", false, false);
+            InfinitumUI.Instance.map["Level"] = level;
+
         }
 
         public override void LoadData(TagCompound tag)

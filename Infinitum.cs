@@ -29,6 +29,6 @@ namespace Infinitum
         {//test myplayer
             Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
         }
-
+        
     }
 }

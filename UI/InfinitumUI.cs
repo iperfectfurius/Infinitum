@@ -15,10 +15,11 @@ namespace Infinitum.UI
 {
     internal class InfinitumUI : UIState
     {
-        
+        public static InfinitumUI Instance;
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
-        private Dictionary <string,float> map = new Dictionary<string,float>();
+        public Dictionary <string,float> map = new Dictionary<string,float>();
+        UIText text;
 
         public InfinitumUI()
         {
@@ -26,9 +27,8 @@ namespace Infinitum.UI
         }
         public override void OnInitialize()
         {
-           
             Visible = true;
-
+            Instance = this;
             InfinitumPanel = new DragableUIPanel();
             InfinitumPanel.Height.Set(100f, 0f);
             InfinitumPanel.Width.Set(300, 0f);
@@ -37,7 +37,7 @@ namespace Infinitum.UI
             //InfinitumPanel.BackgroundColor = new Color(250, 0, 0,100);
             Append(InfinitumPanel);
 
-            UIText text = new($"Total Level: {map["Level"]}");
+            text = new($"Total Level: {map["Level"]}");
 
             UIPanel button = new UIPanel();
             button.Width.Set(100, 0);
@@ -57,8 +57,9 @@ namespace Infinitum.UI
         }
         public override void Update(GameTime gameTime)
         {
-            Character_Data myMod = Main.player[Main.myPlayer].GetModPlayer<Character_Data>();
-            map["Level"] = myMod.Level;
+            //this goes on show??
+
+            text.SetText(map["Level"].ToString());
             base.Update(gameTime);
         }
         private void test2(UIMouseEvent evt, UIElement listeningElement)
