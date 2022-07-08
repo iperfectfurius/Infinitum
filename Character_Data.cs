@@ -24,7 +24,6 @@ namespace Infinitum
 
         public void AddXp(float xp)
         {
-
             exp += (float)(xp * expMultiplier);
             UpdateLevel();
             CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.HealMana, $"+ {((float)(xp * expMultiplier)).ToString("n1")} xp", false, false);

@@ -23,7 +23,7 @@ namespace Infinitum.UI
         private int oldHashCode;
         private const float maxWidth = 300f;
         private const float maxHeigth = 180f;
-        //UIText level;
+
         UIText[] statsTexts = new UIText[5];
 
         UIPanel[] StatsButtons =
@@ -76,25 +76,12 @@ namespace Infinitum.UI
             InfinitumPanel.Width.Set(maxWidth, 0f);
             InfinitumPanel.Left.Set(Main.screenWidth - InfinitumPanel.Width.Pixels, 0f);
             InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels, 0f);
-            //InfinitumPanel.BackgroundColor = new Color(250, 0, 0,100);
+
             Append(InfinitumPanel);
 
-            //level = new("Total Level:0");
 
-            //UIPanel button = new UIPanel();
-            //button.Width.Set(100, 0);
-            //button.Height.Set(50, 0);
-            //button.HAlign = 0.5f;
-            //button.Top.Set(0, 0);
-            //button.OnClick += new(test2);
-
-            //level = new UIText("Level: 0");
             foreach (UIText text in statsTexts)
                 InfinitumPanel.Append(text);
-            //button.Append(level);
-
-
-            //InfinitumPanel.Append(button);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
