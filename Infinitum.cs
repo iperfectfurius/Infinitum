@@ -1,12 +1,7 @@
 using Terraria.ModLoader;
 using Terraria;
-using System.Threading.Tasks;
 using System.IO;
 using Infinitum.UI;
-using Terraria.UI;
-using Terraria.DataStructures;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 
 namespace Infinitum
 {
@@ -20,7 +15,7 @@ namespace Infinitum
             instance = this;
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
-        {
+        {//revisar
             base.HandlePacket(reader, whoAmI);
             AddXPToPlayer(reader.ReadSingle());
 
