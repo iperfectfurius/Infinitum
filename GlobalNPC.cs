@@ -13,12 +13,12 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = ModLoader.GetMod("Infinitum");
-
+		private float GetXpFromNPC(NPC target) => (float)target.defense + 0.5f * (float)(target.lifeMax / 4.5);
 		public override void OnKill(NPC npc)
 		{
-			//determine if server or singleplayer
+
 			base.OnKill(npc);
-			float xp = (float)npc.defense + 0.5f * (float)(npc.lifeMax / 5);
+			float xp = GetXpFromNPC(npc);
 
 			if (Main.netMode == NetmodeID.Server)
 			{
@@ -57,7 +57,7 @@ namespace Infinitum
 		}
 		private void addXpToPlayer(float xp)
 		{
-			Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
+			Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
 		}
 
 	}

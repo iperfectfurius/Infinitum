@@ -1,6 +1,6 @@
+using Infinitum.UI;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -14,17 +14,14 @@ namespace Infinitum
         private int level = 0;
         private int totalLevel = 0;
         private float expMultiplier = 1.0f;
-        private const int exp_TO_LEVEL = 15000;
+        private const int EXPTOLEVEL = 15000;
 
+        public float Exp { get => exp; }
+        public int Level { get => level; }
+        public int TotalLevel { get => totalLevel; }
+        public float ExpMultiplier { get => expMultiplier; }
+        public int _EXPTOLEVEL => EXPTOLEVEL;
 
-        // public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
-        // {
-        // 	base.OnHitNPC(item, target, damage, knockback, crit);
-        // 	if(!target.activWe){
-        // 		float calcExp = (float)target.defense + 0.5f * (float)(target.lifeMax / 5);
-        // 		AddXp(calcExp);
-        // 	}
-        // }
         public void AddXp(float xp)
         {
 
@@ -37,10 +34,10 @@ namespace Infinitum
         }
         private void UpdateLevel()
         {
-            if (exp < exp_TO_LEVEL) return;
+            if (exp < EXPTOLEVEL) return;
 
-            int LevelsUp = (int)exp / exp_TO_LEVEL;
-            exp -= exp_TO_LEVEL * LevelsUp;
+            int LevelsUp = (int)exp / EXPTOLEVEL;
+            exp -= EXPTOLEVEL * LevelsUp;
             level += LevelsUp;
 
             CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 195), 25, 25), CombatText.DamagedFriendlyCrit, $"+ {LevelsUp} Levels!", false, false);
@@ -57,14 +54,17 @@ namespace Infinitum
             player = currentPLayer;
 
             CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.DamagedFriendlyCrit, $"Level {level}", false, false);
+            InfinitumUI.Instance.stats = this;
+
+
         }
 
         public override void LoadData(TagCompound tag)
         {
-            //base.LoadData();
             level = tag.GetInt("Level");
             expMultiplier = tag.GetFloat("ExpMultiplier");
             exp = tag.GetFloat("Exp");
+            totalLevel = tag.GetInt("TotalLevel");
         }
 
         public override void SaveData(TagCompound tag)
@@ -72,7 +72,11 @@ namespace Infinitum
             tag.Add("Level", level);
             tag.Add("ExpMultiplier", expMultiplier);
             tag.Add("Exp", exp);
-
+            tag.Add("TotalLevel", totalLevel);
+        }
+        public Character_Data  GetStats()
+        {
+            return this;
         }
 
     }
