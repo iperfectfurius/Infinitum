@@ -1,5 +1,0 @@
-C:\Users\Adrian\Documents\My Games\Terraria\tModLoader\ModSources\Infinitum\obj\Debug\net5.0\Infinitum.csproj.AssemblyReference.cache
-C:\Users\Adrian\Documents\My Games\Terraria\tModLoader\ModSources\Infinitum\obj\Debug\net5.0\Infinitum.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Adrian\Documents\My Games\Terraria\tModLoader\ModSources\Infinitum\obj\Debug\net5.0\Infinitum.AssemblyInfoInputs.cache
-C:\Users\Adrian\Documents\My Games\Terraria\tModLoader\ModSources\Infinitum\obj\Debug\net5.0\Infinitum.AssemblyInfo.cs
-C:\Users\Adrian\Documents\My Games\Terraria\tModLoader\ModSources\Infinitum\obj\Debug\net5.0\Infinitum.csproj.CoreCompileInputs.cache

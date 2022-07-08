@@ -17,12 +17,9 @@ namespace Infinitum.UI
         public static InfinitumUI Instance;
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
-        public Character_Data stats;
-        private int oldHashCode;
+        public Character_Data stats = null;
         private const float maxWidth = 300f;
         private const float maxHeigth = 180f;
-
-        private const string keyBind = "l";
 
         UIText[] statsTexts = new UIText[5];
 
@@ -70,7 +67,7 @@ namespace Infinitum.UI
         public override void OnInitialize()
         {
 
-            Visible = true;
+            Visible = false;
             Instance = this;
             InfinitumPanel = new DragableUIPanel();
             InfinitumPanel.Height.Set(maxHeigth, 0f);
@@ -78,46 +75,44 @@ namespace Infinitum.UI
             InfinitumPanel.Left.Set(Main.screenWidth - InfinitumPanel.Width.Pixels, 0f);
             InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels, 0f);
 
-            Append(InfinitumPanel);
-
-
             foreach (UIText text in statsTexts)
                 InfinitumPanel.Append(text);
 
-            
+            Append(InfinitumPanel);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
-        {
-
+        {         
             base.Draw(spriteBatch);
         }
         public override void Update(GameTime gameTime)
         {
             //this goes on show??
-            if (stats.GetHashCode() == oldHashCode)
+            if (!Visible)
             {
                 base.Update(gameTime);
                 return;
             }
 
-            UpdateAllStats();
-            oldHashCode = stats.GetHashCode();
+             if(stats.RecentChanged) UpdateAllStats();
+
             base.Update(gameTime);
         }
         private void test2(UIMouseEvent evt, UIElement listeningElement)
         {
-            Main.NewText(stats.Level);
-            Main.NewText(stats.GetHashCode());
+            
         }
+        
         private void UpdateAllStats()
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
             statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/15000 ({((float)stats.Exp / stats._EXPTOLEVEL) * 100:n1}%)");
             statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {stats.ExpMultiplier * 100:n1}%");
-            statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}"); 
+            statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             //statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
-
+            RecalculateChildren();
+            stats.RecentChanged = false;
+            //recalculate here
         }
 
     }

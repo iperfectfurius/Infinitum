@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "8EW3CK3L0xBbpPBufyH4lV2+HYAPl4pei0huP7R+5f9X5FLrQhALd9S+2+THK/ivbc+OZj9KPVWvRMEE/yJSpQ==",
+  "dgSpecHash": "k5JzE0uk7+yd90dPo7ZXr4lXTFD89bk1upjnE1doOqorvGuC7f9npKx2/1h2ESBcojQBsl5CngW9v1L0NtbKZg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Adrian\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\Infinitum\\Infinitum.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Adrian\\.nuget\\packages\\tmodloader.codeassist\\0.1.3\\tmodloader.codeassist.0.1.3.nupkg.sha512"
+    "C:\\Users\\Adrian\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
   ],
   "logs": []
 }

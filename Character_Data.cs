@@ -1,5 +1,6 @@
 using Infinitum.UI;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameInput;
@@ -11,6 +12,13 @@ namespace Infinitum
     public class Character_Data : ModPlayer
     {
         private Player player = Main.CurrentPlayer;
+        private bool recentChanged = false;
+        private Dictionary<string, int> CombatTextPos = new()
+        {
+            { "xp", 145},
+            { "addedLevels", 180},
+            { "currentLevels", 65}
+        };
         private float exp = 0.0f;
         private int level = 0;
         private int totalLevel = 0;
@@ -30,14 +38,26 @@ namespace Infinitum
         public int TotalLevel { get => totalLevel; }
         public float ExpMultiplier { get => expMultiplier; }
         public int _EXPTOLEVEL => EXPTOLEVEL;
+        public bool RecentChanged { get => recentChanged; set => recentChanged = value; }
 
+
+        public override void OnEnterWorld(Player currentPLayer)
+        {
+            player = currentPLayer;
+            showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit);
+            InfinitumUI.Instance.stats = this;
+        }
+        private void showDamageText(int yPos, string text, Color c,bool dramatic = false,bool dot = false)
+        {
+            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
+        }
         public void AddXp(float xp)
         {
             exp += (float)(xp * expMultiplier);
             UpdateLevel();
-            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.HealMana, $"+ {((float)(xp * expMultiplier)).ToString("n1")} xp", false, false);
 
-
+            showDamageText(CombatTextPos["xp"], $"+ {((float)(xp * expMultiplier)):n1} XP", CombatText.HealMana);
+            recentChanged = true;
 
         }
         private void UpdateLevel()
@@ -49,25 +69,15 @@ namespace Infinitum
             level += LevelsUp;
             totalLevel += LevelsUp;
 
-            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 195), 25, 25), CombatText.DamagedFriendlyCrit, $"+ {LevelsUp} Levels!", false, false);
-            Task.Delay(2000).ContinueWith(_ => { showDamageText($"Level {level}", Color.Red); });
-
+            showDamageText(CombatTextPos["addedLevels"], $"+Level {LevelsUp}!", CombatText.DamagedFriendlyCrit);
+            showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit);
 
         }
-        public void AddXpMultiplier(float xp)
+        public void AddXpMultiplier(float multiplier)
         {
-            expMultiplier += xp;
-
-            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.DamagedFriendlyCrit, $"{(expMultiplier * 100f).ToString("n2")}% Multiplier!", false, false);
-        }
-        public override void OnEnterWorld(Player currentPLayer)
-        {
-            player = currentPLayer;
-
-            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.DamagedFriendlyCrit, $"Level {level}", false, false);
-            InfinitumUI.Instance.stats = this;
-
-
+            expMultiplier += multiplier;
+            showDamageText(CombatTextPos["xp"], $"{(expMultiplier * 100f):n2}% Multiplier!", CombatText.DamagedFriendlyCrit);
+            recentChanged = true;
         }
 
         public override void LoadData(TagCompound tag)
@@ -76,6 +86,7 @@ namespace Infinitum
             expMultiplier = tag.GetFloat("ExpMultiplier");
             exp = tag.GetFloat("Exp");
             totalLevel = tag.GetInt("TotalLevel");
+            recentChanged = true;
         }
 
         public override void SaveData(TagCompound tag)
@@ -89,22 +100,22 @@ namespace Infinitum
         {
             return this;
         }
-
-        private void showDamageText(string text, Color c)
-        {
-            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 195), 25, 25), CombatText.LifeRegen, text, false, false);
-        }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             if (InfinitumModSystem.UIKey.JustPressed)
             {
                 InfinitumUI.Instance.Visible = !InfinitumUI.Instance.Visible;
-                showDamageText("hotKey", Color.Red);
             }
-                
-           
-
             base.ProcessTriggers(triggersSet);
+
+        }
+        public override void Unload()
+        {
+            CombatTextPos = new();
+            base.Unload();
+        }
+        private void ApplyStats()
+        {
 
         }
     }
