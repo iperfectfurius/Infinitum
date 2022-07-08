@@ -17,11 +17,10 @@ namespace Infinitum
         private const int EXPTOLEVEL = 15000;
 
         public float Exp { get => exp; }
-        public int Level { get => level;}
+        public int Level { get => level; }
         public int TotalLevel { get => totalLevel; }
         public float ExpMultiplier { get => expMultiplier; }
-
-        public static int EXPTOLEVEL1 => EXPTOLEVEL;
+        public int _EXPTOLEVEL => EXPTOLEVEL;
 
         public void AddXp(float xp)
         {
@@ -55,7 +54,8 @@ namespace Infinitum
             player = currentPLayer;
 
             CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 135), 25, 25), CombatText.DamagedFriendlyCrit, $"Level {level}", false, false);
-            InfinitumUI.Instance.map["Level"] = level;
+            InfinitumUI.Instance.stats = this;
+
 
         }
 
@@ -73,6 +73,10 @@ namespace Infinitum
             tag.Add("ExpMultiplier", expMultiplier);
             tag.Add("Exp", exp);
             tag.Add("TotalLevel", totalLevel);
+        }
+        public Character_Data  GetStats()
+        {
+            return this;
         }
 
     }

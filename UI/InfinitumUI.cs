@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -18,55 +19,115 @@ namespace Infinitum.UI
         public static InfinitumUI Instance;
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
-        public Dictionary <string,float> map = new Dictionary<string,float>();
-        UIText text;
+        public Character_Data stats;
+        private int oldHashCode;
+        private const float maxWidth = 300f;
+        private const float maxHeigth = 180f;
+        //UIText level;
+        UIText[] statsTexts = new UIText[5];
 
-        public InfinitumUI()
+        UIPanel[] StatsButtons =
         {
-            map["Level"] = 0;
+
+        };
+
+        private enum statsOrder : ushort
+        {
+            Level = 0,
+            Exp=1,
+            TotalLevel = 2,
+            ExpMultiplier= 3
         }
+        public InfinitumUI()
+        {         
+            inicializeUIElements();
+        }
+
+        private void inicializeUIElements()
+        {
+            //need improve...
+            float marginTop = 0;
+            float marginLeft = 0;
+            for (int i = 0; i < statsTexts.Length; i++)
+            {
+                UIText text = new UIText("Test", .9f);
+                if (i * 25 > maxHeigth)
+                {
+                    marginLeft += 120;
+                    marginTop = 0;
+                }
+
+                text.Top.Set(marginTop, 0f);
+                text.Left.Set(marginLeft, 0f);
+                statsTexts[i] = text;
+
+                marginTop += 20f;
+            }
+            
+        }
+
         public override void OnInitialize()
         {
+
             Visible = true;
             Instance = this;
             InfinitumPanel = new DragableUIPanel();
-            InfinitumPanel.Height.Set(100f, 0f);
-            InfinitumPanel.Width.Set(300, 0f);
+            InfinitumPanel.Height.Set(maxHeigth, 0f);
+            InfinitumPanel.Width.Set(maxWidth, 0f);
             InfinitumPanel.Left.Set(Main.screenWidth - InfinitumPanel.Width.Pixels, 0f);
-            InfinitumPanel.Top.Set(Main.screenHeight- InfinitumPanel.Height.Pixels, 0f);
+            InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels, 0f);
             //InfinitumPanel.BackgroundColor = new Color(250, 0, 0,100);
             Append(InfinitumPanel);
 
-            text = new($"Total Level: {map["Level"]}");
+            //level = new("Total Level:0");
 
-            UIPanel button = new UIPanel();
-            button.Width.Set(100, 0);
-            button.Height.Set(50, 0);
-            button.HAlign = 0.5f;
-            button.Top.Set(25, 0);
-            button.OnClick += new (test2);
-            
-            button.Append(text);
-            InfinitumPanel.Append(button);
+            //UIPanel button = new UIPanel();
+            //button.Width.Set(100, 0);
+            //button.Height.Set(50, 0);
+            //button.HAlign = 0.5f;
+            //button.Top.Set(0, 0);
+            //button.OnClick += new(test2);
+
+            //level = new UIText("Level: 0");
+            foreach (UIText text in statsTexts)
+                InfinitumPanel.Append(text);
+            //button.Append(level);
+
+
+            //InfinitumPanel.Append(button);
         }
-        
+
         public override void Draw(SpriteBatch spriteBatch)
         {
-            
+
             base.Draw(spriteBatch);
         }
         public override void Update(GameTime gameTime)
         {
             //this goes on show??
+            if (stats.GetHashCode() == oldHashCode)
+            {
+                base.Update(gameTime);
+                return;
+            }
 
-            text.SetText(map["Level"].ToString());
+            UpdateAllStats();
+            oldHashCode = stats.GetHashCode();
             base.Update(gameTime);
         }
         private void test2(UIMouseEvent evt, UIElement listeningElement)
         {
-            Main.NewText(map["Level"]);
+            Main.NewText(stats.Level);
+            Main.NewText(stats.GetHashCode());
         }
+        private void UpdateAllStats()
+        {
+            statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
+            statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/15000 ({((float)stats.Exp / stats._EXPTOLEVEL) * 100:n1}%)");          
+            statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
+            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {stats.ExpMultiplier * 100:n1}%");
+            statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
 
-
+        }
     }
 }
