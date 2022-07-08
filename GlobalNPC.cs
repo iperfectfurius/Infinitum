@@ -30,8 +30,6 @@ namespace Infinitum
 			{
 				addXpToPlayer(xp);
 			}
-			
-			ChatMessage("NPC Killed");//only works in server
 		}
 		public static void ChatMessage(string text)
 		{
@@ -42,7 +40,7 @@ namespace Infinitum
 			}
 			else if (Main.netMode == NetmodeID.SinglePlayer)
 			{
-				//Main.NewText(text);
+				Main.NewText(text);
 			}
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)

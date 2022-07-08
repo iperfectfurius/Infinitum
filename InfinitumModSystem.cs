@@ -40,7 +40,7 @@ namespace Infinitum
         {
             _lastUpdateUiGameTime = gameTime;
             if (!Main.gameMenu && infinitumUI.Visible)
-            {
+            {              
                 customUI?.Update(gameTime);
             }
         }
@@ -54,23 +54,16 @@ namespace Infinitum
                     "YourMod: A Description",
                     delegate
                     {
-                        if(InfinitumUI.Instance.Visible)
+                        if (InfinitumUI.Instance.Visible)
+                        {
                             customUI.Draw(Main.spriteBatch, new GameTime());
+                        }
+                            
                         return true;
                     },
                     InterfaceScaleType.UI)
                 );
             }
-        }
-        private bool DrawSomethingUI()
-        {
-            // it will only draw if the player is not on the main menu
-            if (!Main.gameMenu
-                && infinitumUI.Visible)
-            {
-                customUI.Draw(Main.spriteBatch, new GameTime());
-            }
-            return true;
         }
         public void ShowMyUI()
         {
