@@ -1,5 +1,6 @@
 ﻿using Infinitum.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +19,14 @@ namespace Infinitum
         private UserInterface customUI;
         internal InfinitumUI infinitumUI;
         private GameTime _lastUpdateUiGameTime;
-
+        public static ModKeybind UIKey;
         public override void Load()
         {
            // base.Load();
 
             if (!Main.dedServ)
             {
+                UIKey = KeybindLoader.RegisterKeybind(Mod, "Show UI", Keys.L);
                 customUI = new UserInterface();
                 infinitumUI = new InfinitumUI();
                 infinitumUI.Initialize();
