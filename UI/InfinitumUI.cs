@@ -96,15 +96,14 @@ namespace Infinitum.UI
             InfinitumPanel.Left.Set(Main.screenWidth - InfinitumPanel.Width.Pixels, 0f);
             InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels, 0f);
 
-           
-
-            addTextsToPanel();
+            addUIElementsToPanel();
+            
             
 
             Append(InfinitumPanel);
         }
 
-        private void addTextsToPanel()
+        private void addUIElementsToPanel()
         {
             foreach (UIText text in statsTexts)
                 InfinitumPanel.Append(text);
@@ -118,6 +117,14 @@ namespace Infinitum.UI
 
             foreach (UIText text in skillsTexts)
                 skillsPanel.Append(text);
+
+            UIButton defenseButtonAdd = new UIButton("+", addStat,"defense");
+            defenseButtonAdd.Width.Set(20, 0);
+            defenseButtonAdd.Height.Set(20, 0);
+            defenseButtonAdd.HAlign = 0.5f;
+            defenseButtonAdd.Top.Set(0, 0);
+            skillsPanel.Append(defenseButtonAdd);
+
 
             InfinitumPanel.Append(skillsPanel);
         }
@@ -143,7 +150,12 @@ namespace Infinitum.UI
         {
             
         }
-        
+        private void addStat (UIMouseEvent evt, UIElement listeningElement)
+        {
+            //verfifyLevels();
+            stats.ApplyStats("");
+        }
+
         private void UpdateAllStats()
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
@@ -151,6 +163,7 @@ namespace Infinitum.UI
             statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {stats.ExpMultiplier * 100:n1}%");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             //statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
+            //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense} { (dynamic)stats.SkillCost["defense"].GetType().GetProperty("baseCost").ToString()}");
             skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense}");
             RecalculateChildren();
             stats.RecentChanged = false;

@@ -1,5 +1,6 @@
 using Infinitum.UI;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -132,12 +133,21 @@ namespace Infinitum
             CombatTextPos = new();
             base.Unload();
         }
-        private void ApplyStats()
+        public void ApplyStats(string stat)
         {
-
+            additionalDefense += 1;
+            updateVanillaCharacter();
         }
 
-        
+        private void updateVanillaCharacter()
+        {
+            Main.NewText($"Mod Defense: {additionalDefense} Vanilla Defense : {player.statDefense}");
+        }
+        public override void PostUpdateEquips()
+        {
+            player.statDefense = player.statDefense + (int)additionalDefense;
+            base.PostUpdateEquips();
+        }
     }
 
 }
