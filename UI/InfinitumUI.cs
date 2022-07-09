@@ -18,7 +18,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 300f;
+        private const float maxWidth = 465f;
         private const float maxHeigth = 180f;
 
         UIText[] statsTexts = new UIText[5];
@@ -28,6 +28,7 @@ namespace Infinitum.UI
 
         };
 
+        UIText[] skillsTexts = new UIText[5];
         private enum statsOrder : ushort
         {
             Level = 0,
@@ -35,6 +36,7 @@ namespace Infinitum.UI
             ExpMultiplier = 2,
             TotalLevel = 3           
         }
+
         public InfinitumUI()
         {         
             inicializeUIElements();
@@ -49,6 +51,26 @@ namespace Infinitum.UI
             for (int i = 0; i < statsTexts.Length; i++)
             {
                 UIText text = new UIText("Test", .9f);
+
+                text.Top.Set(marginTop, 0f);
+                text.Left.Set(marginLeft, 0f);
+                statsTexts[i] = text;
+
+                marginTop += 20f;
+            }
+            //0.26
+
+            
+                
+            marginTop = 0;
+            marginLeft = 0;
+
+
+            //This goes in other panel
+            for (int i = 0; i < skillsTexts.Length; i++)
+            {
+                UIText text = new($"Skill: ", .9f);
+
                 if (i * 25 > maxHeigth)
                 {
                     marginLeft += 120;
@@ -57,11 +79,10 @@ namespace Infinitum.UI
 
                 text.Top.Set(marginTop, 0f);
                 text.Left.Set(marginLeft, 0f);
-                statsTexts[i] = text;
+                skillsTexts[i] = text;
 
                 marginTop += 20f;
             }
-            
         }
 
         public override void OnInitialize()
@@ -75,10 +96,30 @@ namespace Infinitum.UI
             InfinitumPanel.Left.Set(Main.screenWidth - InfinitumPanel.Width.Pixels, 0f);
             InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels, 0f);
 
+           
+
+            addTextsToPanel();
+            
+
+            Append(InfinitumPanel);
+        }
+
+        private void addTextsToPanel()
+        {
             foreach (UIText text in statsTexts)
                 InfinitumPanel.Append(text);
 
-            Append(InfinitumPanel);
+            UIPanel skillsPanel = new();
+            skillsPanel.Top.Set(10, 0f);
+            skillsPanel.Left.Set(190, 0f);
+            skillsPanel.Height.Set(maxHeigth - 20, 0f);
+            skillsPanel.Width.Set(maxWidth - 203, 0f);
+            
+
+            foreach (UIText text in skillsTexts)
+                skillsPanel.Append(text);
+
+            InfinitumPanel.Append(skillsPanel);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -110,6 +151,7 @@ namespace Infinitum.UI
             statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {stats.ExpMultiplier * 100:n1}%");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             //statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
+            skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense}");
             RecalculateChildren();
             stats.RecentChanged = false;
             //recalculate here
