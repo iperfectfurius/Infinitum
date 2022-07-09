@@ -46,8 +46,9 @@ namespace Infinitum
 		{
 
 			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
-			items.Add(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500));
+			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500, 1), new CommonDrop(ModContent.ItemType<ExpStar>(), 1250, 1)));
 			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<MultiplierStar>(), 125, 1, 3), new CommonDrop(ModContent.ItemType<MultiplierStar>(), 100, 1, 3)));
+			
 			items.ForEach(e => npcLoot.Add(e));
 			base.ModifyNPCLoot(npc, npcLoot);
 

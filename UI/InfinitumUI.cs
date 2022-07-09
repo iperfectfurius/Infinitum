@@ -18,7 +18,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 465f;
+        private const float maxWidth = 550f;
         private const float maxHeigth = 180f;
 
         UIText[] statsTexts = new UIText[5];
@@ -28,7 +28,7 @@ namespace Infinitum.UI
 
         };
 
-        UIText[] skillsTexts = new UIText[5];
+        UIText[] skillsTexts = new UIText[12];
         private enum statsOrder : ushort
         {
             Level = 0,
@@ -62,7 +62,7 @@ namespace Infinitum.UI
 
             
                 
-            marginTop = 0;
+            marginTop = 3;
             marginLeft = 0;
 
 
@@ -71,14 +71,9 @@ namespace Infinitum.UI
             {
                 UIText text = new($"Skill: ", .9f);
 
-                if (i * 25 > maxHeigth)
-                {
-                    marginLeft += 120;
-                    marginTop = 0;
-                }
-
                 text.Top.Set(marginTop, 0f);
                 text.Left.Set(marginLeft, 0f);
+                text.Height.Set(20f, 0);
                 skillsTexts[i] = text;
 
                 marginTop += 20f;
@@ -109,11 +104,19 @@ namespace Infinitum.UI
                 InfinitumPanel.Append(text);
 
             UIPanel skillsPanel = new();
-            skillsPanel.Top.Set(10, 0f);
+            skillsPanel.Top.Set(0, 0f);
             skillsPanel.Left.Set(190, 0f);
             skillsPanel.Height.Set(maxHeigth - 20, 0f);
             skillsPanel.Width.Set(maxWidth - 203, 0f);
-            
+            skillsPanel.OverflowHidden = true;
+
+            UIScrollbar skillScrollbar = new();
+            skillScrollbar.Top.Set(5, 0f);
+            skillScrollbar.Height.Set(skillsPanel.Height.Pixels -30, 0f);
+            skillScrollbar.Width.Set(22f, 0f);
+            skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 45f, 0f);
+
+            skillsPanel.Append(skillScrollbar);
 
             foreach (UIText text in skillsTexts)
                 skillsPanel.Append(text);
@@ -122,7 +125,8 @@ namespace Infinitum.UI
             defenseButtonAdd.Width.Set(22, 0);
             defenseButtonAdd.Height.Set(22, 0);
             defenseButtonAdd.Left.Set(160 + 5,0);
-            defenseButtonAdd.Top.Set(-3, 0);
+            defenseButtonAdd.Top.Set(-1, 0);
+            defenseButtonAdd.OverflowHidden = false;
             skillsPanel.Append(defenseButtonAdd);
 
 
