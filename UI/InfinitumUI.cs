@@ -119,10 +119,10 @@ namespace Infinitum.UI
                 skillsPanel.Append(text);
 
             UIButton defenseButtonAdd = new UIButton("+", addStat,"defense");
-            defenseButtonAdd.Width.Set(20, 0);
-            defenseButtonAdd.Height.Set(20, 0);
-            defenseButtonAdd.HAlign = 0.5f;
-            defenseButtonAdd.Top.Set(0, 0);
+            defenseButtonAdd.Width.Set(22, 0);
+            defenseButtonAdd.Height.Set(22, 0);
+            defenseButtonAdd.Left.Set(160 + 5,0);
+            defenseButtonAdd.Top.Set(-3, 0);
             skillsPanel.Append(defenseButtonAdd);
 
 
