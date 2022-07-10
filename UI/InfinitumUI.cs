@@ -18,17 +18,12 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 550f;
+        private const float maxWidth = 500f;
         private const float maxHeigth = 180f;
 
         UIText[] statsTexts = new UIText[5];
 
-        UIPanel[] StatsButtons =
-        {
-
-        };
-
-        UIList skillsTexts = new();
+        UIList skillsElementsPanel = new();
         private enum statsOrder : ushort
         {
             Level = 0,
@@ -36,6 +31,7 @@ namespace Infinitum.UI
             ExpMultiplier = 2,
             TotalLevel = 3
         }
+        
 
         public InfinitumUI()
         {
@@ -69,17 +65,35 @@ namespace Infinitum.UI
             //This goes in other panel
             for (int i = 0; i < 12; i++)
             {
-                UIText text = new($"Skill: {i}", .9f);
+                UIText text = new(Character_Data.SkillOrder[i] + ": 0", .9f);
 
                 text.Top.Set(marginTop, 0f);
                 text.Left.Set(marginLeft, 0f);
                 text.Height.Set(20f, 0);
 
-                skillsTexts.Add(text);
+                skillsElementsPanel.Add(text);
 
                 marginTop += 20f;
             }
 
+            marginTop = 0;
+            marginLeft = 210;
+
+            for (int i = 0; i < 12; i++)
+            {
+                UIButton button = new("+", addStat, Character_Data.SkillOrder[i]);
+
+                button.Top.Set(marginTop, 0f);
+                button.Left.Set(marginLeft, 0f);
+                button.Height.Set(20f, 0);
+                button.Width.Set(20,0);
+                button.OverflowHidden = false;
+                skillsElementsPanel.Add(button);
+
+                marginTop += 20f;
+            }
+
+            skillsElementsPanel.SetPadding(0);
         }
 
         public override void OnInitialize()
@@ -113,8 +127,6 @@ namespace Infinitum.UI
             skillsPanel.OverflowHidden = true;
             skillsPanel.OnScrollWheel += ScrollWheelSkill;
 
-            //skillsPanel.vi
-
 
             UIScrollbar skillScrollbar = new();
             skillScrollbar.Top.Set(5, 0f);
@@ -123,21 +135,11 @@ namespace Infinitum.UI
             skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 45f, 0f);
             //skillScrollbar.OnMouseDown += test2;
 
-            skillsTexts.SetScrollbar(skillScrollbar);
+            skillsElementsPanel.SetScrollbar(skillScrollbar);
 
-            foreach (UIText text in skillsTexts)
+            foreach (UIElement text in skillsElementsPanel)
                 skillsPanel.Append(text);
 
-
-
-            UIButton defenseButtonAdd = new UIButton("+", addStat, "defense");
-            defenseButtonAdd.Width.Set(22, 0);
-            defenseButtonAdd.Height.Set(22, 0);
-            defenseButtonAdd.Left.Set(160 + 5, 0);
-            defenseButtonAdd.Top.Set(-1, 0);
-            defenseButtonAdd.OverflowHidden = false;
-
-            skillsPanel.Append(defenseButtonAdd);
             skillsPanel.Append(skillScrollbar);
             //skillsTexts.SetScrollbar(skillScrollbar);
 
@@ -146,22 +148,12 @@ namespace Infinitum.UI
 
         private void ScrollWheelSkill(UIScrollWheelEvent evt, UIElement listeningElement)
         {
-            Main.NewText("scrolled");
-            //skillsTexts.Top.Set(100f,0);
 
-
-            foreach (UIElement uiel in skillsTexts)
+            //provisional
+            foreach (UIElement uiel in skillsElementsPanel)
                 uiel.Top.Set(uiel.Top.Pixels + (evt.ScrollWheelValue <0? -40:40), 0);
 
-            //foreach (UIElement uiel in skillsTexts)
-            //{
-            //    Main.NewText(uiel.Top.Pixels);
-            //    break;
-            //}
-                
-            //skillsTexts.Recalculate();
             Recalculate();
-            Main.NewText(evt.ScrollWheelValue);
 
         }
 
@@ -181,10 +173,6 @@ namespace Infinitum.UI
             if (stats.RecentChanged) UpdateAllStats();
 
             base.Update(gameTime);
-        }
-        private void test2(UIMouseEvent evt, UIElement listeningElement)
-        {
-            Main.NewText("clcked yes");
         }
         private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
