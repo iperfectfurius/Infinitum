@@ -24,13 +24,16 @@ namespace Infinitum.UI
         }
         public string OwnStat { get => ownStat; set => ownStat = value; }
 
-        public UIButton(object text, UIElement.MouseEvent clickAction,string ownStat) : base()
+        public UIButton(object text, UIElement.MouseEvent clickAction) : base()
 		{ 
 			_text = text?.ToString() ?? string.Empty;
 			_clickAction = clickAction;
 			this.ownStat = ownStat;
+			
+			
 		}
-
+		
+		
 		public override void OnInitialize()
 		{
 			_uiPanel = new UIPanel(); 
@@ -56,5 +59,6 @@ namespace Infinitum.UI
 				base.MinHeight = _uiText.MinHeight; 
 			}
 		}
-	}
+       
+    }
 }

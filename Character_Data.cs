@@ -152,7 +152,7 @@ namespace Infinitum
         }
         public void ApplyStats(string stat)
         {//sw probablemente
-            additionalDefense += 1;
+            Main.NewText(stat);
             recentChanged = true;
         }
         public override void PostUpdateEquips()

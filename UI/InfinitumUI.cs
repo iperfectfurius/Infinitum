@@ -81,13 +81,15 @@ namespace Infinitum.UI
 
             for (int i = 0; i < 12; i++)
             {
-                UIButton button = new("+", addStat, Character_Data.SkillOrder[i]);
+                UIButton button = new UIButton("+", addStat);
 
                 button.Top.Set(marginTop, 0f);
                 button.Left.Set(marginLeft, 0f);
                 button.Height.Set(20f, 0);
                 button.Width.Set(20,0);
+                button.OwnStat = Character_Data.SkillOrder[i];
                 button.OverflowHidden = false;
+                
                 skillsElementsPanel.Add(button);
 
                 marginTop += 20f;
@@ -137,8 +139,8 @@ namespace Infinitum.UI
 
             skillsElementsPanel.SetScrollbar(skillScrollbar);
 
-            foreach (UIElement text in skillsElementsPanel)
-                skillsPanel.Append(text);
+            foreach (UIElement el in skillsElementsPanel)
+                skillsPanel.Append(el);
 
             skillsPanel.Append(skillScrollbar);
             //skillsTexts.SetScrollbar(skillScrollbar);
@@ -176,8 +178,7 @@ namespace Infinitum.UI
         }
         private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
-            //verfifyLevels();
-            stats.ApplyStats("");
+            stats.ApplyStats(((UIButton)listeningElement.Parent).OwnStat);
         }
 
         private void UpdateAllStats()
