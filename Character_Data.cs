@@ -22,21 +22,20 @@ namespace Infinitum
             { "currentLevels", 65}
         };
         private Dictionary<string, dynamic> skillCost = new();
-        private static Dictionary<int, string> skillOrder = new() {
-            { 0,"Defense" },
-            { 1,"Melee Damage" },
-            { 2,"Melee Attack Speed" },
-            { 3,"Life Regen" },
-            { 4,"Life Steal" },
-            { 5,"Magic Damage" },
-            { 6,"Ranged Damage" },
-            { 7,"Ranged Attack Speed" },
-            { 8,"Ranged Attack Speed" },
-            { 9,"Ranged Attack Speed" },
-            { 10,"Ranged Attack Speed" },
-            { 11,"Ranged Attack Speed" },
-            { 12,"Ranged Attack Speed" },
-
+        private static string[] skillOrder = {
+            "Defense",
+            "Melee Damage",
+            "Melee Attack Speed",
+            "Life Regen",
+            "Life Steal",
+            "Magic Damage",
+            "Ranged Damage",
+            "Ranged Attack Speed",
+            "Ranged Attack Speed",
+            "Ranged Attack Speed",
+            "Ranged Attack Speed",
+            "Ranged Attack Speed",
+            "Ranged Attack Speed", 
         };
         private float exp = 0.0f;
         private int level = 0;
@@ -69,7 +68,7 @@ namespace Infinitum
         public float AdditionalMagicDamage { get => additionalMagicDamage; set => additionalMagicDamage = value; }
         public float AdditionalRangedDamage { get => additionalRangedDamage; set => additionalRangedDamage = value; }
         public float AdditionalRangeAttackSpeed { get => additionalRangeAttackSpeed; set => additionalRangeAttackSpeed = value; }
-        public static Dictionary<int, string> SkillOrder { get => skillOrder; set => skillOrder = value; }
+        public static string[] SkillOrder { get => skillOrder; set => skillOrder = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
@@ -152,12 +151,27 @@ namespace Infinitum
         }
         public void ApplyStats(string stat)
         {//sw probablemente
+            //implement cost
+            switch (stat)
+            {
+                case "Defense":
+                    additionalDefense++;
+                    break;
+                case "Melee Damage":
+                    additionalMeleeDamage += 10.1f;
+                    break;
+                default:
+                    break;
+            }
             Main.NewText(stat);
             recentChanged = true;
         }
         public override void PostUpdateEquips()
         {
+
             player.statDefense = player.statDefense + (int)additionalDefense;
+            player.GetDamage(DamageClass.Melee) = player.GetDamage(DamageClass.Melee) + additionalMeleeDamage;
+            
             base.PostUpdateEquips();
         }
     }

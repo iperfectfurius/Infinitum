@@ -179,6 +179,7 @@ namespace Infinitum.UI
         private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.ApplyStats(((UIButton)listeningElement.Parent).OwnStat);
+
         }
 
         private void UpdateAllStats()
@@ -191,6 +192,7 @@ namespace Infinitum.UI
             //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense} { (dynamic)stats.SkillCost["defense"].GetType().GetProperty("baseCost").ToString()}");
             //(UIText)skillsTexts.GetEnumerator().Current.
             //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense}");
+            
             RecalculateChildren();
             stats.RecentChanged = false;
 
