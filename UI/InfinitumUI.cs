@@ -28,19 +28,19 @@ namespace Infinitum.UI
 
         };
 
-        UIText[] skillsTexts = new UIText[12];
+        UIList skillsTexts = new();
         private enum statsOrder : ushort
         {
             Level = 0,
-            Exp=1,
+            Exp = 1,
             ExpMultiplier = 2,
-            TotalLevel = 3           
+            TotalLevel = 3
         }
 
         public InfinitumUI()
-        {         
+        {
             inicializeUIElements();
-            
+
         }
 
         private void inicializeUIElements()
@@ -60,24 +60,26 @@ namespace Infinitum.UI
             }
             //0.26
 
-            
-                
+
+
             marginTop = 3;
             marginLeft = 0;
 
 
             //This goes in other panel
-            for (int i = 0; i < skillsTexts.Length; i++)
+            for (int i = 0; i < 12; i++)
             {
-                UIText text = new($"Skill: ", .9f);
+                UIText text = new($"Skill: {i}", .9f);
 
                 text.Top.Set(marginTop, 0f);
                 text.Left.Set(marginLeft, 0f);
                 text.Height.Set(20f, 0);
-                skillsTexts[i] = text;
+
+                skillsTexts.Add(text);
 
                 marginTop += 20f;
             }
+
         }
 
         public override void OnInitialize()
@@ -92,8 +94,8 @@ namespace Infinitum.UI
             InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels, 0f);
 
             addUIElementsToPanel();
-            
-            
+
+
 
             Append(InfinitumPanel);
         }
@@ -109,32 +111,62 @@ namespace Infinitum.UI
             skillsPanel.Height.Set(maxHeigth - 20, 0f);
             skillsPanel.Width.Set(maxWidth - 203, 0f);
             skillsPanel.OverflowHidden = true;
+            skillsPanel.OnScrollWheel += ScrollWheelSkill;
+
+            //skillsPanel.vi
+
 
             UIScrollbar skillScrollbar = new();
             skillScrollbar.Top.Set(5, 0f);
-            skillScrollbar.Height.Set(skillsPanel.Height.Pixels -40, 0f);
+            skillScrollbar.Height.Set(skillsPanel.Height.Pixels - 40, 0f);
             skillScrollbar.Width.Set(22f, 0f);
             skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 45f, 0f);
+            //skillScrollbar.OnMouseDown += test2;
 
-            skillsPanel.Append(skillScrollbar);
+            skillsTexts.SetScrollbar(skillScrollbar);
 
             foreach (UIText text in skillsTexts)
                 skillsPanel.Append(text);
 
-            UIButton defenseButtonAdd = new UIButton("+", addStat,"defense");
+
+
+            UIButton defenseButtonAdd = new UIButton("+", addStat, "defense");
             defenseButtonAdd.Width.Set(22, 0);
             defenseButtonAdd.Height.Set(22, 0);
-            defenseButtonAdd.Left.Set(160 + 5,0);
+            defenseButtonAdd.Left.Set(160 + 5, 0);
             defenseButtonAdd.Top.Set(-1, 0);
             defenseButtonAdd.OverflowHidden = false;
-            skillsPanel.Append(defenseButtonAdd);
 
+            skillsPanel.Append(defenseButtonAdd);
+            skillsPanel.Append(skillScrollbar);
+            //skillsTexts.SetScrollbar(skillScrollbar);
 
             InfinitumPanel.Append(skillsPanel);
         }
 
+        private void ScrollWheelSkill(UIScrollWheelEvent evt, UIElement listeningElement)
+        {
+            Main.NewText("scrolled");
+            //skillsTexts.Top.Set(100f,0);
+
+
+            foreach (UIElement uiel in skillsTexts)
+                uiel.Top.Set(uiel.Top.Pixels + (evt.ScrollWheelValue <0? -40:40), 0);
+
+            //foreach (UIElement uiel in skillsTexts)
+            //{
+            //    Main.NewText(uiel.Top.Pixels);
+            //    break;
+            //}
+                
+            //skillsTexts.Recalculate();
+            Recalculate();
+            Main.NewText(evt.ScrollWheelValue);
+
+        }
+
         public override void Draw(SpriteBatch spriteBatch)
-        {         
+        {
             base.Draw(spriteBatch);
         }
         public override void Update(GameTime gameTime)
@@ -146,15 +178,15 @@ namespace Infinitum.UI
                 return;
             }
 
-             if(stats.RecentChanged) UpdateAllStats();
+            if (stats.RecentChanged) UpdateAllStats();
 
             base.Update(gameTime);
         }
         private void test2(UIMouseEvent evt, UIElement listeningElement)
         {
-            
+            Main.NewText("clcked yes");
         }
-        private void addStat (UIMouseEvent evt, UIElement listeningElement)
+        private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
             //verfifyLevels();
             stats.ApplyStats("");
@@ -168,9 +200,11 @@ namespace Infinitum.UI
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             //statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
             //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense} { (dynamic)stats.SkillCost["defense"].GetType().GetProperty("baseCost").ToString()}");
-            skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense}");
+            //(UIText)skillsTexts.GetEnumerator().Current.
+            //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense}");
             RecalculateChildren();
             stats.RecentChanged = false;
+
             //recalculate here
         }
 

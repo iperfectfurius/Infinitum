@@ -134,14 +134,9 @@ namespace Infinitum
             base.Unload();
         }
         public void ApplyStats(string stat)
-        {
+        {//sw probablemente
             additionalDefense += 1;
-            updateVanillaCharacter();
-        }
-
-        private void updateVanillaCharacter()
-        {
-            Main.NewText($"Mod Defense: {additionalDefense} Vanilla Defense : {player.statDefense}");
+            recentChanged = true;
         }
         public override void PostUpdateEquips()
         {
