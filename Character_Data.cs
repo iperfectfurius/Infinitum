@@ -50,6 +50,7 @@ namespace Infinitum
         private const int EXPTOLEVEL = 15000;
         private long totalNpcsKilled = 0;
         private bool activate = true;
+        private bool displayNumbers = true;
         private float additionalDefense = 0;
         private float additionalMeleeDamage = 0;
         private float additionalMeleeAttackSpeed = 0;
@@ -91,6 +92,7 @@ namespace Infinitum
         public float AdditionalsummonAttackSpeed { get => additionalSummonDamage; set => additionalSummonDamage = value; }
         public float AdditionalPickingPower { get => additionalPickingPower; set => additionalPickingPower = value; }
         public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
+        public bool Activate { get => activate; set => activate = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
@@ -100,7 +102,8 @@ namespace Infinitum
         }
         private void showDamageText(int yPos, string text, Color c, bool dramatic = false, bool dot = false)
         {
-            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
+            if (displayNumbers)
+                CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
         }
         public override void Load()
         {
@@ -138,11 +141,34 @@ namespace Infinitum
 
         public override void LoadData(TagCompound tag)
         {
-            level = tag.GetInt("Level");
-            expMultiplier = tag.GetFloat("ExpMultiplier");
-            exp = tag.GetFloat("Exp");
-            totalLevel = tag.GetInt("TotalLevel");
-            recentChanged = true;
+            try
+            {
+                level = tag.GetInt("Level");
+                expMultiplier = tag.GetFloat("ExpMultiplier");
+                exp = tag.GetFloat("Exp");
+                totalLevel = tag.GetInt("TotalLevel");
+                totalNpcsKilled = tag.GetAsLong("TotalNpcsKilled");
+                activate = tag.GetBool("Activate");
+                additionalDefense = tag.GetFloat("Defense");
+                additionalMeleeDamage = tag.GetFloat("MeleeDamage");
+                AdditionalMeleeAttackSpeed = tag.GetFloat("MeleeAttackSpeed");
+                additionalLifeRegen = tag.GetFloat("LifeRegen");
+                lifeSteal = tag.GetFloat("LifeSteal");
+                additionalMagicDamage = tag.GetFloat("MagicDamage");
+                additionalRangedDamage = tag.GetFloat("RangedDamage");
+
+
+                additionalSummonDamage = tag.GetFloat("SummonDamage");
+                additionalPickingPower = tag.GetFloat("PickaxePower");
+
+                recentChanged = true;
+            }
+            catch
+            {
+
+            }
+
+
         }
 
         public override void SaveData(TagCompound tag)
@@ -151,6 +177,23 @@ namespace Infinitum
             tag.Add("ExpMultiplier", expMultiplier);
             tag.Add("Exp", exp);
             tag.Add("TotalLevel", totalLevel);
+            tag.Add("TotalNpcsKilled", totalNpcsKilled);
+            tag.Add("Activate", activate);
+            tag.Add("Defense", additionalDefense);
+            tag.Add("MeleeDamage", additionalMeleeDamage);
+            tag.Add("MeleeAttackSpeed", additionalMeleeAttackSpeed);
+            tag.Add("LifeRegen", additionalLifeRegen);
+            tag.Add("LifeSteal", LifeSteal);
+            tag.Add("MagicDamage", additionalMagicDamage);
+            tag.Add("RangedDamage", additionalRangedDamage);
+            //tag.Add("RangedAmmo", totalLevel);
+            //tag.Add("ThrowingDamage", additionalthrowingDamage);
+            //tag.Add("ThrowingAttackSpeed", additionalthrowingAttackSpeed);
+            tag.Add("SummonDamage", additionalSummonDamage);
+            //tag.Add("SummonAttackSpeed", additionalSummonAttackSpeed);
+            tag.Add("PickaxePower", additionalPickingPower);
+
+
         }
         public Character_Data GetStats()
         {
@@ -163,6 +206,12 @@ namespace Infinitum
                 recentChanged = true;
                 InfinitumUI.Instance.Visible = !InfinitumUI.Instance.Visible;
             }
+            else if (InfinitumModSystem.NumbersDisplay.JustPressed)
+            {
+                displayNumbers = !displayNumbers;
+                CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red, displayNumbers ? "Numbers Activated!" : "Numbers Disabled!", true, false);
+            }
+
             base.ProcessTriggers(triggersSet);
 
         }
@@ -198,12 +247,12 @@ namespace Infinitum
                     additionalMagicAttackSpeed += 1f;//dont work
                     break;
                 case "Ranged Damage":
-                    additionalRangedDamage += 1f;//dont Work
+                    additionalRangedDamage += 0.01f;
                     break;
                 case "Ranged Consume Ammo":
                     break;
                 case "Throwing  Damage":
-                    additionalthrowingDamage += 1f;//dont Work
+                    //additionalthrowingDamage += 1f;//dont Work
                     break;
                 case "Throwing algo?":
                     break;
@@ -272,23 +321,26 @@ namespace Infinitum
         }
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
+            if (activate)
                 getLifeSteal(damage);
-                base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+            base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            getLifeSteal(damage);
-
-            ChatMessage("");
+            if (activate)
+                getLifeSteal(damage);
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 
         }
         public override void OnConsumeAmmo(Item weapon, Item ammo)
         {
+            //if (activate)
+
             base.OnConsumeAmmo(weapon, ammo);
 
         }
+
         public static void ChatMessage(string text = "")
         {
 
@@ -302,8 +354,33 @@ namespace Infinitum
             }
         }
 
+        public void resetCurrentSkills()
+        {
+            returnLevels();
+            level = totalLevel;
+            additionalDefense = 0;
+            additionalMeleeDamage = 0;
+            additionalMeleeAttackSpeed = 0;
+            additionalLifeRegen = 0;
+            lifeSteal = 0;
+            stackedLifeSteal = 0;
+            additionalMagicDamage = 0;
+            additionalMagicAttackSpeed = 0;
+            additionalRangedDamage = 0;
+            additionalRangeAttackSpeed = 0;
+            additionalthrowingDamage = 0;
+            additionalthrowingAttackSpeed = 0;
+            additionalSummonDamage = 0;
+            additionalSummonAttackSpeed = 0;
+            additionalPickingPower = 0;
 
+            recentChanged = true;
+        }
 
+        private void returnLevels()
+        {
+
+        }
     }
 
 }

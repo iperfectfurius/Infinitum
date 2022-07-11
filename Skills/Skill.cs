@@ -35,6 +35,7 @@ namespace Infinitum.Skills
         }
         public abstract void OnInitialize();
 
+        public abstract void LevelUp(ref int Levels);
         
     }
 }
