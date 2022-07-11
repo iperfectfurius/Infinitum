@@ -302,8 +302,33 @@ namespace Infinitum
             }
         }
 
+        public void resetCurrentSkills()
+        {
+            returnLevels();
+            level = totalLevel;
+            additionalDefense = 0;
+            additionalMeleeDamage = 0;
+            additionalMeleeAttackSpeed = 0;
+            additionalLifeRegen = 0;
+            lifeSteal = 0;
+            stackedLifeSteal = 0;
+            additionalMagicDamage = 0;
+            additionalMagicAttackSpeed = 0;
+            additionalRangedDamage = 0;
+            additionalRangeAttackSpeed = 0;
+            additionalthrowingDamage = 0;
+            additionalthrowingAttackSpeed = 0;
+            additionalSummonDamage = 0;
+            additionalSummonAttackSpeed = 0;
+            additionalPickingPower = 0;
 
+            recentChanged = true;
+        }
 
+        private void returnLevels()
+        {
+           
+        }
     }
 
 }

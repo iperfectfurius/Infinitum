@@ -20,7 +20,7 @@ namespace Infinitum.UI
         public Character_Data stats = null;
         private const float maxWidth = 500f;
         private const float maxHeigth = 200f;
-
+        private UIButton reset;
         UIText[] statsTexts = new UIText[5];
 
         UIList skillsElementsPanel = new();
@@ -56,7 +56,14 @@ namespace Infinitum.UI
 
                 marginTop += 20f;
             }
-            //0.26
+            //0.30
+
+            reset = new UIButton("Reset", restartProgress);
+            reset.Top.Set(marginTop, 0f);
+            reset.Left.Set(marginLeft, 0f);
+            reset.Height.Set(20f, 0);
+            reset.Width.Set(75, 0);
+            reset.ChangeColor(new Color(205, 61, 61));
 
 
 
@@ -100,6 +107,8 @@ namespace Infinitum.UI
             skillsElementsPanel.SetPadding(0);
         }
 
+        
+
         public override void OnInitialize()
         {
 
@@ -108,12 +117,15 @@ namespace Infinitum.UI
             InfinitumPanel = new DragableUIPanel();
             InfinitumPanel.Height.Set(maxHeigth, 0f);
             InfinitumPanel.Width.Set(maxWidth, 0f);
+            InfinitumPanel.PaddingBottom = 0f;
+            
+
             InfinitumPanel.Left.Set((Main.screenWidth - InfinitumPanel.Width.Pixels) - (Main.screenWidth/2) + maxWidth/2, 0f);
             InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels - (Main.screenHeight / 2) + maxHeigth/2, 0f);
 
             addUIElementsToPanel();
 
-
+            
 
             Append(InfinitumPanel);
         }
@@ -123,11 +135,14 @@ namespace Infinitum.UI
             foreach (UIText text in statsTexts)
                 InfinitumPanel.Append(text);
 
+            InfinitumPanel.Append(reset);
+
             UIPanel skillsPanel = new();
             skillsPanel.Top.Set(-12f, 0f);
             skillsPanel.Left.Set(190, 0f);
             skillsPanel.Height.Set(200, 0f);
             skillsPanel.Width.Set(maxWidth - 203, 0f);
+            skillsPanel.PaddingBottom = 0f;
             skillsPanel.OverflowHidden = true;
             skillsPanel.OnScrollWheel += ScrollWheelSkill;
 
@@ -137,7 +152,6 @@ namespace Infinitum.UI
             skillScrollbar.Height.Set(skillsPanel.Height.Pixels - 40, 0f);
             skillScrollbar.Width.Set(22f, 0f);
             skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 45f, 0f);
-            //skillScrollbar.OnMouseDown += test2;
 
             skillsElementsPanel.SetScrollbar(skillScrollbar);
 
@@ -145,7 +159,7 @@ namespace Infinitum.UI
                 skillsPanel.Append(el);
 
             skillsPanel.Append(skillScrollbar);
-            //skillsTexts.SetScrollbar(skillScrollbar);
+            
 
             InfinitumPanel.Append(skillsPanel);
         }
@@ -182,6 +196,10 @@ namespace Infinitum.UI
         {
             stats.ApplyStats(((UIButton)listeningElement.Parent).OwnStat);
 
+        }
+        private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
+        {
+            stats.resetCurrentSkills();
         }
 
         private void UpdateAllStats()

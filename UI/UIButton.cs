@@ -16,7 +16,7 @@ namespace Infinitum.UI
         private UIPanel _uiPanel;
         private UIText _uiText;
 		private string ownStat;
-
+		private Color color;
         public string Text
         {
             get => _uiText?.Text ?? string.Empty;
@@ -36,7 +36,8 @@ namespace Infinitum.UI
 		{
 			_uiPanel = new UIPanel(); 
 			_uiPanel.Width = StyleDimension.Fill; 
-			_uiPanel.Height = StyleDimension.Fill; 
+			_uiPanel.Height = StyleDimension.Fill;
+			_uiPanel.BackgroundColor = color;
 			Append(_uiPanel);
 
 			_uiText = new UIText("");
@@ -57,6 +58,10 @@ namespace Infinitum.UI
 				base.MinHeight = _uiText.MinHeight; 
 			}
 		}
+		public void ChangeColor(Color c)
+        {
+			this.color = c;
+        }
        
     }
 }
