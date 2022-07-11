@@ -29,7 +29,8 @@ namespace Infinitum.UI
             Level = 0,
             Exp = 1,
             ExpMultiplier = 2,
-            TotalLevel = 3
+            TotalLevel = 3,
+            TotalKills = 4
         }
 
 
@@ -189,7 +190,7 @@ namespace Infinitum.UI
             statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/15000 ({((float)stats.Exp / stats._EXPTOLEVEL) * 100:n1}%)");
             statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {stats.ExpMultiplier * 100:n1}%");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
-            statsTexts[(int)statsOrder.Level].SetText("Total Kills: " + stats.TotalNpcsKilled);
+            statsTexts[(int)statsOrder.TotalKills].SetText("Total Kills: " + stats.TotalNpcsKilled);
             //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense} { (dynamic)stats.SkillCost["defense"].GetType().GetProperty("baseCost").ToString()}");
             //(UIText)skillsTexts.GetEnumerator().Current.
             //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense}");

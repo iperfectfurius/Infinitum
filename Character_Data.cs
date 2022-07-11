@@ -186,35 +186,35 @@ namespace Infinitum
                     additionalMeleeAttackSpeed += 0.01f;
                     break;
                 case "Life Regen":
-                    AdditionalLifeRegen += 1;
+                    AdditionalLifeRegen += 0.25f;
                     break;
                 case "Life Steal":
                     LifeSteal += 0.00025f;
                     break;
                 case "Magic Damage":
-                    additionalMagicDamage += 1f;
+                    additionalMagicDamage += .01f;
                     break;
                 case "Maigc Attack Speed":
-                    additionalMagicAttackSpeed += 1f;
+                    additionalMagicAttackSpeed += 1f;//dont work
                     break;
                 case "Ranged Damage":
-                    additionalRangedDamage += 1f;
+                    additionalRangedDamage += 1f;//dont Work
                     break;
                 case "Ranged Consume Ammo":
                     break;
                 case "Throwing  Damage":
-                    additionalthrowingDamage += 1f;
+                    additionalthrowingDamage += 1f;//dont Work
                     break;
                 case "Throwing algo?":
                     break;
                 case "Summon Damage":
-                    additionalSummonDamage += 1f;
+                    additionalSummonDamage += 0.01f;
                     break;
                 case "Summon Attack Speed":
-                    additionalSummonAttackSpeed += 1f;
+                    additionalSummonAttackSpeed += 1f;//dont Work
                     break;
                 case "Pickaxe Power":
-                    additionalPickingPower += .05f;
+                    additionalPickingPower += .025f;
                     break;
 
                 default:
@@ -250,9 +250,8 @@ namespace Infinitum
         }
         private void getLifeSteal(int damage)
         {
-            int toHeal = (int)(damage * lifeSteal);//0
-            stackedLifeSteal += (damage * lifeSteal) - (float)Math.Truncate(damage * lifeSteal);//1.03
-
+            int toHeal = (int)(damage * lifeSteal);
+            stackedLifeSteal += (damage * lifeSteal) - (float)Math.Truncate(damage * lifeSteal);
 
             if (stackedLifeSteal > 1)
             {
@@ -266,8 +265,6 @@ namespace Infinitum
                 player.HealEffect(toHeal);
                 player.statLife += toHeal;
             }
-            ChatMessage($"Cura int {toHeal}, stacked {stackedLifeSteal}");
-
         }
         public override void PreUpdate()
         {
