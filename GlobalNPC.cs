@@ -30,6 +30,7 @@ namespace Infinitum
 				addXpToPlayer(xp);
 			}
 		}
+		
 		public static void ChatMessage(string text)
 		{
 			

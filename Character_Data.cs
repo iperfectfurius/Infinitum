@@ -1,3 +1,4 @@
+using Infinitum.Skills;
 using Infinitum.UI;
 using Microsoft.Xna.Framework;
 using System;
@@ -5,7 +6,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Chat;
 using Terraria.GameInput;
+using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -29,28 +33,39 @@ namespace Infinitum
             "Life Regen",
             "Life Steal",
             "Magic Damage",
+            "Maigc Attack Speed",
             "Ranged Damage",
+            "Ranged Consume Ammo",
+            "Throwing  Damage",
+            "Throwing algo?",
+            "Summon Damage",
+            "Summon Attack Speed",
+            "Pickaxe Power",
             "Ranged Attack Speed",
-            "Ranged Attack Speed",
-            "Ranged Attack Speed",
-            "Ranged Attack Speed",
-            "Ranged Attack Speed",
-            "Ranged Attack Speed", 
         };
         private float exp = 0.0f;
         private int level = 0;
         private int totalLevel = 0;
         private float expMultiplier = 1.0f;
         private const int EXPTOLEVEL = 15000;
+        private long totalNpcsKilled = 0;
+        private bool activate = true;
         private float additionalDefense = 0;
         private float additionalMeleeDamage = 0;
         private float additionalMeleeAttackSpeed = 0;
         private float additionalLifeRegen = 0;
         private float lifeSteal = 0;
+        private float stackedLifeSteal = 0;
         private float additionalMagicDamage = 0;
+        private float additionalMagicAttackSpeed = 0;
         private float additionalRangedDamage = 0;
         private float additionalRangeAttackSpeed = 0;
-
+        private float additionalthrowingDamage = 0;
+        private float additionalthrowingAttackSpeed = 0;
+        private float additionalSummonDamage = 0;
+        private float additionalSummonAttackSpeed = 0;
+        private float additionalPickingPower = 0;
+        private List<Skill> skills = new List<Skill>();
 
 
         public float Exp { get => exp; }
@@ -60,6 +75,7 @@ namespace Infinitum
         public int _EXPTOLEVEL => EXPTOLEVEL;
         public bool RecentChanged { get => recentChanged; set => recentChanged = value; }
         public Dictionary<string, object> SkillCost { get => skillCost; set => skillCost = value; }
+        //dont need?
         public float AdditionalDefense { get => additionalDefense; set => additionalDefense = value; }
         public float AdditionalMeleeDamage { get => additionalMeleeDamage; set => additionalMeleeDamage = value; }
         public float AdditionalMeleeAttackSpeed { get => additionalMeleeAttackSpeed; set => additionalMeleeAttackSpeed = value; }
@@ -69,6 +85,12 @@ namespace Infinitum
         public float AdditionalRangedDamage { get => additionalRangedDamage; set => additionalRangedDamage = value; }
         public float AdditionalRangeAttackSpeed { get => additionalRangeAttackSpeed; set => additionalRangeAttackSpeed = value; }
         public static string[] SkillOrder { get => skillOrder; set => skillOrder = value; }
+        public float AdditionalMagicAttackSpeed { get => additionalMagicAttackSpeed; set => additionalMagicAttackSpeed = value; }
+        public float AdditionalthrowingDamage { get => additionalthrowingDamage; set => additionalthrowingDamage = value; }
+        public float AdditionalsummonDamage { get => additionalSummonDamage; set => additionalSummonDamage = value; }
+        public float AdditionalsummonAttackSpeed { get => additionalSummonDamage; set => additionalSummonDamage = value; }
+        public float AdditionalPickingPower { get => additionalPickingPower; set => additionalPickingPower = value; }
+        public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
@@ -89,8 +111,8 @@ namespace Infinitum
         {
             exp += (float)(xp * expMultiplier);
             UpdateLevel();
-
             showDamageText(CombatTextPos["xp"], $"+ {((float)(xp * expMultiplier)):n1} XP", CombatText.HealMana);
+            totalNpcsKilled++;
             recentChanged = true;
 
         }
@@ -151,15 +173,50 @@ namespace Infinitum
         }
         public void ApplyStats(string stat)
         {//sw probablemente
-            //implement cost
+            //implement skill class
             switch (stat)
             {
                 case "Defense":
                     additionalDefense++;
                     break;
                 case "Melee Damage":
-                    additionalMeleeDamage += 10.1f;
+                    additionalMeleeDamage += .01f;
                     break;
+                case "Melee Attack Speed":
+                    additionalMeleeAttackSpeed += 0.01f;
+                    break;
+                case "Life Regen":
+                    AdditionalLifeRegen += 1;
+                    break;
+                case "Life Steal":
+                    LifeSteal += 0.00025f;
+                    break;
+                case "Magic Damage":
+                    additionalMagicDamage += 1f;
+                    break;
+                case "Maigc Attack Speed":
+                    additionalMagicAttackSpeed += 1f;
+                    break;
+                case "Ranged Damage":
+                    additionalRangedDamage += 1f;
+                    break;
+                case "Ranged Consume Ammo":
+                    break;
+                case "Throwing  Damage":
+                    additionalthrowingDamage += 1f;
+                    break;
+                case "Throwing algo?":
+                    break;
+                case "Summon Damage":
+                    additionalSummonDamage += 1f;
+                    break;
+                case "Summon Attack Speed":
+                    additionalSummonAttackSpeed += 1f;
+                    break;
+                case "Pickaxe Power":
+                    additionalPickingPower += .05f;
+                    break;
+
                 default:
                     break;
             }
@@ -168,12 +225,88 @@ namespace Infinitum
         }
         public override void PostUpdateEquips()
         {
-
+            //consistency...
+            if (!activate)
+            {
+                base.PostUpdateEquips();
+                return;
+            }
             player.statDefense = player.statDefense + (int)additionalDefense;
             player.GetDamage(DamageClass.Melee) = player.GetDamage(DamageClass.Melee) + additionalMeleeDamage;
-            
-            base.PostUpdateEquips();
+            player.GetAttackSpeed(DamageClass.Melee) = player.GetAttackSpeed(DamageClass.Melee) + additionalMeleeAttackSpeed;
+            player.lifeRegen = player.lifeRegen + (int)AdditionalLifeRegen;
+            player.GetDamage(DamageClass.Magic) = player.GetDamage(DamageClass.Magic) + additionalMagicDamage;
+            player.GetAttackSpeed(DamageClass.Magic) = player.GetAttackSpeed(DamageClass.Magic) + additionalMagicAttackSpeed;
+            player.GetDamage(DamageClass.Ranged) = player.GetDamage(DamageClass.Ranged) + additionalRangedDamage;
+
+            //player.GetAttackSpeed(DamageClass.Ranged) = player.GetAttackSpeed(DamageClass.Ranged) + additionalRangeAttackSpeed;
+            player.GetDamage(DamageClass.Throwing) = player.GetDamage(DamageClass.Throwing) + additionalthrowingDamage;
+            //player.GetAttackSpeed(DamageClass.Throwing) = player.GetAttackSpeed(DamageClass.Throwing) + additionalthrowingAttackSpeed;
+            player.GetDamage(DamageClass.Summon) = player.GetDamage(DamageClass.Summon) + additionalSummonDamage;
+            player.GetAttackSpeed(DamageClass.Summon) = player.GetAttackSpeed(DamageClass.Summon) + additionalSummonAttackSpeed;
+            player.pickSpeed = player.pickSpeed - additionalPickingPower;
+
+
         }
+        private void getLifeSteal(int damage)
+        {
+            int toHeal = (int)(damage * lifeSteal);//0
+            stackedLifeSteal += (damage * lifeSteal) - (float)Math.Truncate(damage * lifeSteal);//1.03
+
+
+            if (stackedLifeSteal > 1)
+            {
+                stackedLifeSteal -= 1f;
+
+                player.HealEffect(toHeal + 1);
+                player.statLife += toHeal + 1;
+            }
+            else if (toHeal >= 1)
+            {
+                player.HealEffect(toHeal);
+                player.statLife += toHeal;
+            }
+            ChatMessage($"Cura int {toHeal}, stacked {stackedLifeSteal}");
+
+        }
+        public override void PreUpdate()
+        {
+            base.PreUpdate();
+        }
+        public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+        {
+                getLifeSteal(damage);
+                base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+        }
+
+        public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        {
+            getLifeSteal(damage);
+
+            ChatMessage("");
+            base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
+
+        }
+        public override void OnConsumeAmmo(Item weapon, Item ammo)
+        {
+            base.OnConsumeAmmo(weapon, ammo);
+
+        }
+        public static void ChatMessage(string text = "")
+        {
+
+            if (Main.netMode == NetmodeID.Server)
+            {
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text + " Desde Server"), Color.Red);
+            }
+            else if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                Main.NewText(text + " Desde single");
+            }
+        }
+
+
+
     }
 
 }

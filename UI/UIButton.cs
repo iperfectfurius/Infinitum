@@ -28,9 +28,7 @@ namespace Infinitum.UI
 		{ 
 			_text = text?.ToString() ?? string.Empty;
 			_clickAction = clickAction;
-			this.ownStat = ownStat;
-			
-			
+		
 		}
 		
 		
