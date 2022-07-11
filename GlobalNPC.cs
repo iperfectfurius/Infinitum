@@ -6,7 +6,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
-using Infinitum;
 
 namespace Infinitum
 {
@@ -31,6 +30,7 @@ namespace Infinitum
 				addXpToPlayer(xp);
 			}
 		}
+		
 		public static void ChatMessage(string text)
 		{
 			
@@ -45,13 +45,25 @@ namespace Infinitum
 		}
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
-			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
-			items.Add(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500));
-			items.Add(new CommonDrop(ModContent.ItemType<MultiplierStar>(), 250, 1, 3));
 
+			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
+			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500, 1), new CommonDrop(ModContent.ItemType<ExpStar>(), 1250, 1)));
+			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<MultiplierStar>(), 125, 1, 3), new CommonDrop(ModContent.ItemType<MultiplierStar>(), 100, 1, 3)));
+			
 			items.ForEach(e => npcLoot.Add(e));
 			base.ModifyNPCLoot(npc, npcLoot);
 
+		}
+		public override void ModifyGlobalLoot(GlobalLoot globalLoot)
+		{
+			// This is where we add global rules for all NPC. Here is a simple example:
+
+
+			
+			
+		
+
+			
 		}
 		private void addXpToPlayer(float xp)
 		{

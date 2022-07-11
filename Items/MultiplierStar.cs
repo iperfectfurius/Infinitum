@@ -14,7 +14,7 @@ namespace Infinitum.Items
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 99999;
 			Item.width = 25;
 			Item.height = 25;
 			Item.rare = ItemRarityID.Orange;
@@ -22,10 +22,11 @@ namespace Infinitum.Items
 			Item.UseSound = SoundID.DD2_BallistaTowerShot;
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.autoReuse = true;
-			Item.useTime = 15;
-			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useAnimation = 10;
 			Item.reuseDelay = 0;
 			Item.useTurn = true;
+			
 
 		}
 
