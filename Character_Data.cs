@@ -102,7 +102,7 @@ namespace Infinitum
         }
         private void showDamageText(int yPos, string text, Color c, bool dramatic = false, bool dot = false)
         {
-            if(displayNumbers)
+            if (displayNumbers)
                 CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
         }
         public override void Load()
@@ -168,7 +168,7 @@ namespace Infinitum
 
             }
 
-            
+
         }
 
         public override void SaveData(TagCompound tag)
@@ -209,9 +209,9 @@ namespace Infinitum
             else if (InfinitumModSystem.NumbersDisplay.JustPressed)
             {
                 displayNumbers = !displayNumbers;
-                CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red,displayNumbers ? "Numbers Activated!" : "Numbers Disabled!" , true, false);
+                CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red, displayNumbers ? "Numbers Activated!" : "Numbers Disabled!", true, false);
             }
-                
+
             base.ProcessTriggers(triggersSet);
 
         }
@@ -321,24 +321,26 @@ namespace Infinitum
         }
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
+            if (activate)
                 getLifeSteal(damage);
-                base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+            base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            getLifeSteal(damage);
-
-            ChatMessage("");
+            if (activate)
+                getLifeSteal(damage);
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 
         }
         public override void OnConsumeAmmo(Item weapon, Item ammo)
         {
+            //if (activate)
+
             base.OnConsumeAmmo(weapon, ammo);
 
         }
-       
+
         public static void ChatMessage(string text = "")
         {
 
@@ -377,7 +379,7 @@ namespace Infinitum
 
         private void returnLevels()
         {
-           
+
         }
     }
 

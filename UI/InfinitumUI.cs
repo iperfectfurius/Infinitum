@@ -214,6 +214,7 @@ namespace Infinitum.UI
         {
             stats.Activate = !stats.Activate;
             stats.RecentChanged = true;
+            SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
         }
         private void UpdateAllStats()
         {
@@ -284,7 +285,7 @@ namespace Infinitum.UI
 
             }
 
-        RecalculateChildren();
+            RecalculateChildren();
             stats.RecentChanged = false;
 
             //recalculate here
