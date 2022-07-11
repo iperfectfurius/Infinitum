@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.UI;
 
 
@@ -21,6 +22,7 @@ namespace Infinitum.UI
         private const float maxWidth = 500f;
         private const float maxHeigth = 200f;
         private UIButton reset;
+        private UIButton activate;
         UIText[] statsTexts = new UIText[5];
 
         UIList skillsElementsPanel = new();
@@ -65,6 +67,13 @@ namespace Infinitum.UI
             reset.Width.Set(75, 0);
             reset.ChangeColor(new Color(205, 61, 61));
 
+            activate = new UIButton("Disable", activateStats);
+            activate.Top.Set(marginTop + 22, 0f);
+            activate.Left.Set(marginLeft, 0f);
+            activate.Height.Set(20f, 0);
+            activate.Width.Set(75, 0);
+            activate.ChangeColor(Color.Pink);
+
 
 
             marginTop = 3;
@@ -107,8 +116,6 @@ namespace Infinitum.UI
             skillsElementsPanel.SetPadding(0);
         }
 
-        
-
         public override void OnInitialize()
         {
 
@@ -136,6 +143,7 @@ namespace Infinitum.UI
                 InfinitumPanel.Append(text);
 
             InfinitumPanel.Append(reset);
+            InfinitumPanel.Append(activate);
 
             UIPanel skillsPanel = new();
             skillsPanel.Top.Set(-12f, 0f);
@@ -200,8 +208,13 @@ namespace Infinitum.UI
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.resetCurrentSkills();
+            SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
         }
-
+        private void activateStats(UIMouseEvent evt, UIElement listeningElement)
+        {
+            stats.Activate = !stats.Activate;
+            stats.RecentChanged = true;
+        }
         private void UpdateAllStats()
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
@@ -212,7 +225,7 @@ namespace Infinitum.UI
             //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense} { (dynamic)stats.SkillCost["defense"].GetType().GetProperty("baseCost").ToString()}");
             //(UIText)skillsTexts.GetEnumerator().Current.
             //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense}");
-
+            activate.Text = stats.Activate ? "Disable" : "Enable";
             UIElement[] test = skillsElementsPanel._items.ToArray();
             for (int i = 0; i < test.Length; i++)
             {

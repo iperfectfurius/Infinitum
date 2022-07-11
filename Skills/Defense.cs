@@ -11,7 +11,12 @@ namespace Infinitum.Skills
 
         public Defense(string name, string statName) : base(name, statName)
         {
+            
+        }
 
+        public override void LevelUp(ref int Levels)
+        {
+            throw new NotImplementedException();
         }
 
         public override void OnInitialize()
