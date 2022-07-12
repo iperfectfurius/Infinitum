@@ -93,6 +93,7 @@ namespace Infinitum
         public float AdditionalPickingPower { get => additionalPickingPower; set => additionalPickingPower = value; }
         public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
         public bool Activate { get => activate; set => activate = value; }
+        public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
@@ -160,6 +161,7 @@ namespace Infinitum
 
                 additionalSummonDamage = tag.GetFloat("SummonDamage");
                 additionalPickingPower = tag.GetFloat("PickaxePower");
+                tag.TryGet("DisplayNumbers",out displayNumbers);//better this...
 
                 recentChanged = true;
             }
@@ -192,6 +194,7 @@ namespace Infinitum
             tag.Add("SummonDamage", additionalSummonDamage);
             //tag.Add("SummonAttackSpeed", additionalSummonAttackSpeed);
             tag.Add("PickaxePower", additionalPickingPower);
+            tag.Add("DisplayNumbers",displayNumbers);
 
 
         }
@@ -294,6 +297,7 @@ namespace Infinitum
             player.GetDamage(DamageClass.Summon) = player.GetDamage(DamageClass.Summon) + additionalSummonDamage;
             player.GetAttackSpeed(DamageClass.Summon) = player.GetAttackSpeed(DamageClass.Summon) + additionalSummonAttackSpeed;
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
+            
 
 
         }
