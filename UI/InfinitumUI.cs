@@ -22,7 +22,8 @@ namespace Infinitum.UI
         private const float maxWidth = 500f;
         private const float maxHeigth = 200f;
         private UIButton reset;
-        private UIButton activate;
+        private UIButton activateStatsButton;
+        private UIButton numbers;
         UIText[] statsTexts = new UIText[5];
 
         UIList skillsElementsPanel = new();
@@ -60,19 +61,28 @@ namespace Infinitum.UI
             }
             //0.30
 
-            reset = new UIButton("Reset", restartProgress);
+            reset = new UIButton("Reset Skills", restartProgress);
             reset.Top.Set(marginTop, 0f);
             reset.Left.Set(marginLeft, 0f);
             reset.Height.Set(20f, 0);
-            reset.Width.Set(75, 0);
+            reset.Width.Set(180, 0);
             reset.ChangeColor(new Color(205, 61, 61));
 
-            activate = new UIButton("Disable", activateStats);
-            activate.Top.Set(marginTop + 22, 0f);
-            activate.Left.Set(marginLeft, 0f);
-            activate.Height.Set(20f, 0);
-            activate.Width.Set(75, 0);
-            activate.ChangeColor(Color.Pink);
+            numbers = new UIButton("Disable Numbers", activateNumbers);
+            numbers.Top.Set(marginTop + 22, 0f);
+            numbers.Left.Set(marginLeft, 0f);
+            numbers.Height.Set(20f, 0);
+            numbers.Width.Set(180, 0);
+            numbers.ChangeColor(Color.Purple);
+
+            activateStatsButton = new UIButton("Disable Stats", activateStats);
+            activateStatsButton.Top.Set(marginTop + 44, 0f);
+            activateStatsButton.Left.Set(marginLeft, 0f);
+            activateStatsButton.Height.Set(20f, 0);
+            activateStatsButton.Width.Set(180, 0);
+            activateStatsButton.ChangeColor(Color.Pink);
+
+            
 
 
 
@@ -143,7 +153,8 @@ namespace Infinitum.UI
                 InfinitumPanel.Append(text);
 
             InfinitumPanel.Append(reset);
-            InfinitumPanel.Append(activate);
+            InfinitumPanel.Append(activateStatsButton);
+            InfinitumPanel.Append(numbers);
 
             UIPanel skillsPanel = new();
             skillsPanel.Top.Set(-12f, 0f);
@@ -203,7 +214,7 @@ namespace Infinitum.UI
         private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.ApplyStats(((UIButton)listeningElement.Parent).OwnStat);
-
+            SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
         }
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -216,6 +227,13 @@ namespace Infinitum.UI
             stats.RecentChanged = true;
             SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
         }
+        private void activateNumbers(UIMouseEvent evt, UIElement listeningElement)
+        {
+            stats.DisplayNumbers = !stats.DisplayNumbers;
+            stats.RecentChanged = true;
+            SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+
+        }
         private void UpdateAllStats()
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
@@ -223,11 +241,12 @@ namespace Infinitum.UI
             statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {stats.ExpMultiplier * 100:n1}%");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             statsTexts[(int)statsOrder.TotalKills].SetText("Total Kills: " + stats.TotalNpcsKilled);
-            //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense} { (dynamic)stats.SkillCost["defense"].GetType().GetProperty("baseCost").ToString()}");
-            //(UIText)skillsTexts.GetEnumerator().Current.
-            //skillsTexts[0].SetText($"Additional defense: {stats.AdditionalDefense}");
-            activate.Text = stats.Activate ? "Disable" : "Enable";
+
+            activateStatsButton.Text = stats.Activate ? "Disable Stats" : "Enable Stats";
+            numbers.Text = stats.DisplayNumbers ? "Disable Numbers" : "Enable Numbers";
+
             UIElement[] test = skillsElementsPanel._items.ToArray();
+
             for (int i = 0; i < test.Length; i++)
             {
                 if (test[i].GetType() != typeof(UIText)) continue;

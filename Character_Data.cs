@@ -93,6 +93,7 @@ namespace Infinitum
         public float AdditionalPickingPower { get => additionalPickingPower; set => additionalPickingPower = value; }
         public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
         public bool Activate { get => activate; set => activate = value; }
+        public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
@@ -143,24 +144,24 @@ namespace Infinitum
         {
             try
             {
-                level = tag.GetInt("Level");
-                expMultiplier = tag.GetFloat("ExpMultiplier");
-                exp = tag.GetFloat("Exp");
-                totalLevel = tag.GetInt("TotalLevel");
-                totalNpcsKilled = tag.GetAsLong("TotalNpcsKilled");
-                activate = tag.GetBool("Activate");
-                additionalDefense = tag.GetFloat("Defense");
-                additionalMeleeDamage = tag.GetFloat("MeleeDamage");
-                AdditionalMeleeAttackSpeed = tag.GetFloat("MeleeAttackSpeed");
-                additionalLifeRegen = tag.GetFloat("LifeRegen");
-                lifeSteal = tag.GetFloat("LifeSteal");
-                additionalMagicDamage = tag.GetFloat("MagicDamage");
-                additionalRangedDamage = tag.GetFloat("RangedDamage");
+                tag.TryGet("Level", out level);
+                tag.TryGet("ExpMultiplier", out expMultiplier);
+                tag.TryGet("Exp", out exp);
+                tag.TryGet("TotalLevel", out totalLevel);
+                tag.TryGet("TotalNpcsKilled", out totalNpcsKilled);
+                tag.TryGet("Activate", out activate);
+                tag.TryGet("Defense", out additionalDefense);
+                tag.TryGet("MeleeDamage", out additionalMeleeDamage);
+                tag.TryGet("MeleeAttackSpeed", out additionalMeleeAttackSpeed);
+                tag.TryGet("LifeRegen", out additionalLifeRegen);
+                tag.TryGet("LifeSteal", out lifeSteal);
+                tag.TryGet("MagicDamage", out additionalMagicDamage);
+                tag.TryGet("RangedDamage", out additionalRangedDamage);
+                tag.TryGet("SummonDamage", out additionalSummonDamage);
+                tag.TryGet("PickaxePower", out additionalPickingPower);
+                tag.TryGet("DisplayNumbers",out displayNumbers);//better this...
 
-
-                additionalSummonDamage = tag.GetFloat("SummonDamage");
-                additionalPickingPower = tag.GetFloat("PickaxePower");
-
+                
                 recentChanged = true;
             }
             catch
@@ -192,6 +193,7 @@ namespace Infinitum
             tag.Add("SummonDamage", additionalSummonDamage);
             //tag.Add("SummonAttackSpeed", additionalSummonAttackSpeed);
             tag.Add("PickaxePower", additionalPickingPower);
+            tag.Add("DisplayNumbers",displayNumbers);
 
 
         }
@@ -269,7 +271,6 @@ namespace Infinitum
                 default:
                     break;
             }
-            Main.NewText(stat);
             recentChanged = true;
         }
         public override void PostUpdateEquips()
@@ -294,6 +295,7 @@ namespace Infinitum
             player.GetDamage(DamageClass.Summon) = player.GetDamage(DamageClass.Summon) + additionalSummonDamage;
             player.GetAttackSpeed(DamageClass.Summon) = player.GetAttackSpeed(DamageClass.Summon) + additionalSummonAttackSpeed;
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
+            
 
 
         }
@@ -321,14 +323,14 @@ namespace Infinitum
         }
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
-            if (activate)
+            if (activate && target.netID != 488)
                 getLifeSteal(damage);
             base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            if (activate)
+            if (activate && target.netID != 488)
                 getLifeSteal(damage);
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 
