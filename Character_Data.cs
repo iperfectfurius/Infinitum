@@ -101,7 +101,7 @@ namespace Infinitum
             showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit);
             InfinitumUI.Instance.stats = this;
         }
-        private void showDamageText(int yPos, string text, Color c, bool dramatic = false, bool dot = false)
+        private void showDamageText(int yPos, string text, Color c,int duration = 1 ,bool dramatic = false, bool dot = false)
         {
             if (displayNumbers)
                 CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
@@ -159,9 +159,9 @@ namespace Infinitum
                 tag.TryGet("RangedDamage", out additionalRangedDamage);
                 tag.TryGet("SummonDamage", out additionalSummonDamage);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
-                tag.TryGet("DisplayNumbers",out displayNumbers);//better this...
+                tag.TryGet("DisplayNumbers", out displayNumbers);//better this...
 
-                
+
                 recentChanged = true;
             }
             catch
@@ -193,7 +193,7 @@ namespace Infinitum
             tag.Add("SummonDamage", additionalSummonDamage);
             //tag.Add("SummonAttackSpeed", additionalSummonAttackSpeed);
             tag.Add("PickaxePower", additionalPickingPower);
-            tag.Add("DisplayNumbers",displayNumbers);
+            tag.Add("DisplayNumbers", displayNumbers);
 
 
         }
@@ -295,7 +295,7 @@ namespace Infinitum
             player.GetDamage(DamageClass.Summon) = player.GetDamage(DamageClass.Summon) + additionalSummonDamage;
             player.GetAttackSpeed(DamageClass.Summon) = player.GetAttackSpeed(DamageClass.Summon) + additionalSummonAttackSpeed;
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
-            
+
 
 
         }
@@ -341,6 +341,11 @@ namespace Infinitum
 
             base.OnConsumeAmmo(weapon, ammo);
 
+        }
+        public override bool CanConsumeAmmo(Item weapon, Item ammo)
+        {
+            Main.NewText("testing");
+            return base.CanConsumeAmmo(weapon, ammo);
         }
 
         public static void ChatMessage(string text = "")
