@@ -35,7 +35,7 @@ namespace Infinitum
             "Magic Damage",
             "Maigc Attack Speed",
             "Ranged Damage",
-            "Ranged Consume Ammo",
+            "Ammo Consumption",
             "Throwing  Damage",
             "Throwing algo?",
             "Summon Damage",
@@ -60,7 +60,7 @@ namespace Infinitum
         private float additionalMagicDamage = 0;
         private float additionalMagicAttackSpeed = 0;
         private float additionalRangedDamage = 0;
-        private float additionalRangeAttackSpeed = 0;
+        private int ammoConsumedReduction = 101;
         private float additionalthrowingDamage = 0;
         private float additionalthrowingAttackSpeed = 0;
         private float additionalSummonDamage = 0;
@@ -84,7 +84,7 @@ namespace Infinitum
         public float LifeSteal { get => lifeSteal; set => lifeSteal = value; }
         public float AdditionalMagicDamage { get => additionalMagicDamage; set => additionalMagicDamage = value; }
         public float AdditionalRangedDamage { get => additionalRangedDamage; set => additionalRangedDamage = value; }
-        public float AdditionalRangeAttackSpeed { get => additionalRangeAttackSpeed; set => additionalRangeAttackSpeed = value; }
+        public int AmmoConsumedReduction { get => ammoConsumedReduction; set => ammoConsumedReduction = value; }
         public static string[] SkillOrder { get => skillOrder; set => skillOrder = value; }
         public float AdditionalMagicAttackSpeed { get => additionalMagicAttackSpeed; set => additionalMagicAttackSpeed = value; }
         public float AdditionalthrowingDamage { get => additionalthrowingDamage; set => additionalthrowingDamage = value; }
@@ -95,13 +95,14 @@ namespace Infinitum
         public bool Activate { get => activate; set => activate = value; }
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
 
+
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
             showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit);
             InfinitumUI.Instance.stats = this;
         }
-        private void showDamageText(int yPos, string text, Color c,int duration = 1 ,bool dramatic = false, bool dot = false)
+        private void showDamageText(int yPos, string text, Color c, int duration = 1, bool dramatic = false, bool dot = false)
         {
             if (displayNumbers)
                 CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
@@ -157,6 +158,7 @@ namespace Infinitum
                 tag.TryGet("LifeSteal", out lifeSteal);
                 tag.TryGet("MagicDamage", out additionalMagicDamage);
                 tag.TryGet("RangedDamage", out additionalRangedDamage);
+                tag.TryGet("RangedAmmoConsumption", out ammoConsumedReduction);
                 tag.TryGet("SummonDamage", out additionalSummonDamage);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
                 tag.TryGet("DisplayNumbers", out displayNumbers);//better this...
@@ -187,7 +189,7 @@ namespace Infinitum
             tag.Add("LifeSteal", LifeSteal);
             tag.Add("MagicDamage", additionalMagicDamage);
             tag.Add("RangedDamage", additionalRangedDamage);
-            //tag.Add("RangedAmmo", totalLevel);
+            tag.Add("RangedAmmoConsumption", ammoConsumedReduction);
             //tag.Add("ThrowingDamage", additionalthrowingDamage);
             //tag.Add("ThrowingAttackSpeed", additionalthrowingAttackSpeed);
             tag.Add("SummonDamage", additionalSummonDamage);
@@ -251,7 +253,8 @@ namespace Infinitum
                 case "Ranged Damage":
                     additionalRangedDamage += 0.01f;
                     break;
-                case "Ranged Consume Ammo":
+                case "Ammo Consumption":
+                    ammoConsumedReduction -= 1;
                     break;
                 case "Throwing  Damage":
                     //additionalthrowingDamage += 1f;//dont Work
@@ -339,12 +342,19 @@ namespace Infinitum
         {
             //if (activate)
 
+
             base.OnConsumeAmmo(weapon, ammo);
 
         }
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
-            Main.NewText("testing");
+
+            if (ammoConsumedReduction < 101 && ammoConsumedReduction > 1)
+            {
+                return !(Main.rand.Next(ammoConsumedReduction) <= Math.Abs(ammoConsumedReduction - 100));
+            }
+
+
             return base.CanConsumeAmmo(weapon, ammo);
         }
 
@@ -374,7 +384,7 @@ namespace Infinitum
             additionalMagicDamage = 0;
             additionalMagicAttackSpeed = 0;
             additionalRangedDamage = 0;
-            additionalRangeAttackSpeed = 0;
+            ammoConsumedReduction = 101;
             additionalthrowingDamage = 0;
             additionalthrowingAttackSpeed = 0;
             additionalSummonDamage = 0;
