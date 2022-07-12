@@ -271,7 +271,6 @@ namespace Infinitum
                 default:
                     break;
             }
-            Main.NewText(stat);
             recentChanged = true;
         }
         public override void PostUpdateEquips()
@@ -324,14 +323,14 @@ namespace Infinitum
         }
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
-            if (activate)
+            if (activate && target.netID != 488)
                 getLifeSteal(damage);
             base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            if (activate)
+            if (activate && target.netID != 488)
                 getLifeSteal(damage);
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 
