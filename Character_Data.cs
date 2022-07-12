@@ -144,25 +144,22 @@ namespace Infinitum
         {
             try
             {
-                level = tag.GetInt("Level");
-                expMultiplier = tag.GetFloat("ExpMultiplier");
-                exp = tag.GetFloat("Exp");
-                totalLevel = tag.GetInt("TotalLevel");
-                totalNpcsKilled = tag.GetAsLong("TotalNpcsKilled");
-                activate = tag.GetBool("Activate");
-                additionalDefense = tag.GetFloat("Defense");
-                additionalMeleeDamage = tag.GetFloat("MeleeDamage");
-                AdditionalMeleeAttackSpeed = tag.GetFloat("MeleeAttackSpeed");
-                additionalLifeRegen = tag.GetFloat("LifeRegen");
-                lifeSteal = tag.GetFloat("LifeSteal");
-                additionalMagicDamage = tag.GetFloat("MagicDamage");
-                additionalRangedDamage = tag.GetFloat("RangedDamage");
-
-
-                additionalSummonDamage = tag.GetFloat("SummonDamage");
-                additionalPickingPower = tag.GetFloat("PickaxePower");
+                tag.TryGet("Level", out level);
+                tag.TryGet("ExpMultiplier", out expMultiplier);
+                tag.TryGet("Exp", out exp);
+                tag.TryGet("TotalLevel", out totalLevel);
+                tag.TryGet("TotalNpcsKilled", out totalNpcsKilled);
+                tag.TryGet("Activate", out activate);
+                tag.TryGet("Defense", out additionalDefense);
+                tag.TryGet("MeleeDamage", out additionalMeleeDamage);
+                tag.TryGet("MeleeAttackSpeed", out additionalMeleeAttackSpeed);
+                tag.TryGet("LifeRegen", out additionalLifeRegen);
+                tag.TryGet("lifeSteal", out lifeSteal);
+                tag.TryGet("MagicDamage", out additionalMagicDamage);
+                tag.TryGet("RangedDamage", out additionalRangedDamage);
+                tag.TryGet("SummonDamage", out additionalSummonDamage);
+                tag.TryGet("PickaxePower", out additionalPickingPower);
                 tag.TryGet("DisplayNumbers",out displayNumbers);//better this...
-
                 recentChanged = true;
             }
             catch
