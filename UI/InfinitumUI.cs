@@ -280,7 +280,7 @@ namespace Infinitum.UI
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[7]}: {stats.AdditionalRangedDamage*100:n2}%");
                         break;
                     case "Ammo Consumption":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[8]}: {stats.AmmoConsumedReduction}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[8]}: {stats.AmmoConsumedReduction - 101}%");
                         break;
                     case "Throwing  Damage":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[9]}: {stats.AdditionalthrowingDamage*100:n2}%");

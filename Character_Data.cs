@@ -353,8 +353,6 @@ namespace Infinitum
             {
                 return !(Main.rand.Next(ammoConsumedReduction) <= Math.Abs(ammoConsumedReduction - 100));
             }
-
-
             return base.CanConsumeAmmo(weapon, ammo);
         }
 
