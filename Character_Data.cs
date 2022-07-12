@@ -154,12 +154,14 @@ namespace Infinitum
                 tag.TryGet("MeleeDamage", out additionalMeleeDamage);
                 tag.TryGet("MeleeAttackSpeed", out additionalMeleeAttackSpeed);
                 tag.TryGet("LifeRegen", out additionalLifeRegen);
-                tag.TryGet("lifeSteal", out lifeSteal);
+                tag.TryGet("LifeSteal", out lifeSteal);
                 tag.TryGet("MagicDamage", out additionalMagicDamage);
                 tag.TryGet("RangedDamage", out additionalRangedDamage);
                 tag.TryGet("SummonDamage", out additionalSummonDamage);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
                 tag.TryGet("DisplayNumbers",out displayNumbers);//better this...
+
+                
                 recentChanged = true;
             }
             catch
