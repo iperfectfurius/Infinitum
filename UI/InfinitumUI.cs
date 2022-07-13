@@ -273,8 +273,8 @@ namespace Infinitum.UI
                     case "Magic Damage":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[5]}: {stats.AdditionalMagicDamage*100:n2}%");
                         break;
-                    case "Magic Attack Speed":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[6]}: {stats.AdditionalMagicAttackSpeed*100:n2}%");
+                    case "Mana Consumption":
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[6]}: -{stats.ReducedManaConsumption*100:n2}%");
                         break;
                     case "Ranged Damage":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[7]}: {stats.AdditionalRangedDamage*100:n2}%");
