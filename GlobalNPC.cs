@@ -74,6 +74,7 @@ namespace Infinitum
 			npc.life += (int)(npc.life * 0.25f);
 			npc.lifeMax += (int)(npc.lifeMax * 0.25f);
 			npc.damage += (int)(npc.damage * 0.10f);
+			npc.defense += (int)(npc.defense * 0.10f);
 
 			base.OnSpawn(npc, source);
         }

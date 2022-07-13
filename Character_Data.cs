@@ -33,9 +33,9 @@ namespace Infinitum
             "Life Regen",
             "Life Steal",
             "Magic Damage",
-            "Maigc Attack Speed",
+            "Mana Consumption",
             "Ranged Damage",
-            "Ranged Consume Ammo",
+            "Ammo Consumption",
             "Throwing  Damage",
             "Throwing algo?",
             "Summon Damage",
@@ -58,9 +58,9 @@ namespace Infinitum
         private float lifeSteal = 0;
         private float stackedLifeSteal = 0;
         private float additionalMagicDamage = 0;
-        private float additionalMagicAttackSpeed = 0;
+        private float reducedManaConsumption = 0;
         private float additionalRangedDamage = 0;
-        private float additionalRangeAttackSpeed = 0;
+        private int ammoConsumedReduction = 101;
         private float additionalthrowingDamage = 0;
         private float additionalthrowingAttackSpeed = 0;
         private float additionalSummonDamage = 0;
@@ -84,9 +84,9 @@ namespace Infinitum
         public float LifeSteal { get => lifeSteal; set => lifeSteal = value; }
         public float AdditionalMagicDamage { get => additionalMagicDamage; set => additionalMagicDamage = value; }
         public float AdditionalRangedDamage { get => additionalRangedDamage; set => additionalRangedDamage = value; }
-        public float AdditionalRangeAttackSpeed { get => additionalRangeAttackSpeed; set => additionalRangeAttackSpeed = value; }
+        public int AmmoConsumedReduction { get => ammoConsumedReduction; set => ammoConsumedReduction = value; }
         public static string[] SkillOrder { get => skillOrder; set => skillOrder = value; }
-        public float AdditionalMagicAttackSpeed { get => additionalMagicAttackSpeed; set => additionalMagicAttackSpeed = value; }
+        public float ReducedManaConsumption { get => reducedManaConsumption; set => reducedManaConsumption = value; }
         public float AdditionalthrowingDamage { get => additionalthrowingDamage; set => additionalthrowingDamage = value; }
         public float AdditionalsummonDamage { get => additionalSummonDamage; set => additionalSummonDamage = value; }
         public float AdditionalsummonAttackSpeed { get => additionalSummonDamage; set => additionalSummonDamage = value; }
@@ -95,13 +95,14 @@ namespace Infinitum
         public bool Activate { get => activate; set => activate = value; }
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
 
+
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
             showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit);
             InfinitumUI.Instance.stats = this;
         }
-        private void showDamageText(int yPos, string text, Color c, bool dramatic = false, bool dot = false)
+        private void showDamageText(int yPos, string text, Color c, int duration = 1, bool dramatic = false, bool dot = false)
         {
             if (displayNumbers)
                 CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
@@ -156,12 +157,14 @@ namespace Infinitum
                 tag.TryGet("LifeRegen", out additionalLifeRegen);
                 tag.TryGet("LifeSteal", out lifeSteal);
                 tag.TryGet("MagicDamage", out additionalMagicDamage);
+                tag.TryGet("ManaConsumption", out reducedManaConsumption);
                 tag.TryGet("RangedDamage", out additionalRangedDamage);
+                tag.TryGet("RangedAmmoConsumption", out ammoConsumedReduction);
                 tag.TryGet("SummonDamage", out additionalSummonDamage);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
-                tag.TryGet("DisplayNumbers",out displayNumbers);//better this...
+                tag.TryGet("DisplayNumbers", out displayNumbers);//better this...
 
-                
+
                 recentChanged = true;
             }
             catch
@@ -186,14 +189,15 @@ namespace Infinitum
             tag.Add("LifeRegen", additionalLifeRegen);
             tag.Add("LifeSteal", LifeSteal);
             tag.Add("MagicDamage", additionalMagicDamage);
+            tag.Add("ManaConsumption", reducedManaConsumption);
             tag.Add("RangedDamage", additionalRangedDamage);
-            //tag.Add("RangedAmmo", totalLevel);
+            tag.Add("RangedAmmoConsumption", ammoConsumedReduction);
             //tag.Add("ThrowingDamage", additionalthrowingDamage);
             //tag.Add("ThrowingAttackSpeed", additionalthrowingAttackSpeed);
             tag.Add("SummonDamage", additionalSummonDamage);
             //tag.Add("SummonAttackSpeed", additionalSummonAttackSpeed);
             tag.Add("PickaxePower", additionalPickingPower);
-            tag.Add("DisplayNumbers",displayNumbers);
+            tag.Add("DisplayNumbers", displayNumbers);
 
 
         }
@@ -245,13 +249,14 @@ namespace Infinitum
                 case "Magic Damage":
                     additionalMagicDamage += .01f;
                     break;
-                case "Maigc Attack Speed":
-                    additionalMagicAttackSpeed += 1f;//dont work
+                case "Mana Consumption":
+                    reducedManaConsumption += 0.01f;//dont work
                     break;
                 case "Ranged Damage":
                     additionalRangedDamage += 0.01f;
                     break;
-                case "Ranged Consume Ammo":
+                case "Ammo Consumption":
+                    ammoConsumedReduction -= 1;
                     break;
                 case "Throwing  Damage":
                     //additionalthrowingDamage += 1f;//dont Work
@@ -286,7 +291,7 @@ namespace Infinitum
             player.GetAttackSpeed(DamageClass.Melee) = player.GetAttackSpeed(DamageClass.Melee) + additionalMeleeAttackSpeed;
             player.lifeRegen = player.lifeRegen + (int)AdditionalLifeRegen;
             player.GetDamage(DamageClass.Magic) = player.GetDamage(DamageClass.Magic) + additionalMagicDamage;
-            player.GetAttackSpeed(DamageClass.Magic) = player.GetAttackSpeed(DamageClass.Magic) + additionalMagicAttackSpeed;
+            player.GetAttackSpeed(DamageClass.Magic) = player.GetAttackSpeed(DamageClass.Magic) + reducedManaConsumption;
             player.GetDamage(DamageClass.Ranged) = player.GetDamage(DamageClass.Ranged) + additionalRangedDamage;
 
             //player.GetAttackSpeed(DamageClass.Ranged) = player.GetAttackSpeed(DamageClass.Ranged) + additionalRangeAttackSpeed;
@@ -294,8 +299,9 @@ namespace Infinitum
             //player.GetAttackSpeed(DamageClass.Throwing) = player.GetAttackSpeed(DamageClass.Throwing) + additionalthrowingAttackSpeed;
             player.GetDamage(DamageClass.Summon) = player.GetDamage(DamageClass.Summon) + additionalSummonDamage;
             player.GetAttackSpeed(DamageClass.Summon) = player.GetAttackSpeed(DamageClass.Summon) + additionalSummonAttackSpeed;
+            player.manaCost = player.manaCost - reducedManaConsumption;
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
-            
+
 
 
         }
@@ -335,12 +341,21 @@ namespace Infinitum
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 
         }
-        public override void OnConsumeAmmo(Item weapon, Item ammo)
+
+        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
         {
-            //if (activate)
 
-            base.OnConsumeAmmo(weapon, ammo);
+            //mult -= .3f;
+            base.ModifyManaCost(item, ref reduce, ref mult);
+        }
+        public override bool CanConsumeAmmo(Item weapon, Item ammo)
+        {
 
+            if (ammoConsumedReduction < 101 && ammoConsumedReduction > 1)
+            {
+                return !(Main.rand.Next(ammoConsumedReduction) <= Math.Abs(ammoConsumedReduction - 100));
+            }
+            return base.CanConsumeAmmo(weapon, ammo);
         }
 
         public static void ChatMessage(string text = "")
@@ -367,9 +382,9 @@ namespace Infinitum
             lifeSteal = 0;
             stackedLifeSteal = 0;
             additionalMagicDamage = 0;
-            additionalMagicAttackSpeed = 0;
+            reducedManaConsumption = 0;
             additionalRangedDamage = 0;
-            additionalRangeAttackSpeed = 0;
+            ammoConsumedReduction = 101;
             additionalthrowingDamage = 0;
             additionalthrowingAttackSpeed = 0;
             additionalSummonDamage = 0;
