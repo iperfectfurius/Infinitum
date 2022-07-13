@@ -19,7 +19,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 580f;
+        private const float maxWidth = 560f;
         private const float maxHeigth = 200f;
         private UIButton reset;
         private UIButton activateStatsButton;

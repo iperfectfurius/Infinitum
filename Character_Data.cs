@@ -250,45 +250,105 @@ namespace Infinitum
             switch (stat)
             {
                 case "Defense":
-                    additionalDefense++;
+                    if (level >= skillCost[0])
+                    {
+                        level -= skillCost[0];
+                        additionalDefense++;
+                    }
+                    
                     break;
                 case "Melee Damage":
-                    additionalMeleeDamage += .01f;
+                    if (level >= skillCost[1])
+                    {
+                        level -= skillCost[1];
+                        additionalMeleeDamage += .01f;
+                    }
                     break;
                 case "Melee Attack Speed":
-                    additionalMeleeAttackSpeed += 0.01f;
+                    if (level >= skillCost[2])
+                    {
+                        level -= skillCost[2];
+                        additionalMeleeAttackSpeed += 0.01f;
+                    }
                     break;
                 case "Life Regen":
-                    AdditionalLifeRegen += 0.25f;
+                    if (level >= skillCost[3])
+                    {
+                        level -= skillCost[3];
+                        AdditionalLifeRegen += 0.25f;
+                    }
                     break;
                 case "Life Steal":
-                    LifeSteal += 0.00025f;
+                    if (level >= skillCost[4])
+                    {
+                        level -= skillCost[4];
+                        LifeSteal += 0.00025f;
+                    }                      
                     break;
                 case "Magic Damage":
-                    additionalMagicDamage += .01f;
+                    if (level >= skillCost[5])
+                    {
+                        level -= skillCost[5];
+                        additionalMagicDamage += .01f;
+                    }                       
                     break;
                 case "Mana Consumption":
-                    reducedManaConsumption += 0.01f;//dont work
+                    if (level >= skillCost[6])
+                    {
+                        level -= skillCost[6];
+                        reducedManaConsumption += 0.01f;
+                    }           
                     break;
                 case "Ranged Damage":
-                    additionalRangedDamage += 0.01f;
+                    if (level >= skillCost[7])
+                    {
+                        level -= skillCost[7];
+                        additionalRangedDamage += 0.01f;
+                    }                 
                     break;
                 case "Ammo Consumption":
-                    ammoConsumedReduction -= 1;
+                    if (level >= skillCost[8])
+                    {
+                        level -= skillCost[8];
+                        ammoConsumedReduction -= 1;
+                    }                 
                     break;
                 case "Throwing  Damage":
+                    //if (level >= skillCost[8])
+                    //{
+                    //    level -= skillCost[8];
+                    //    additionalMagicDamage += .01f;
+                    //}
                     //additionalthrowingDamage += 1f;//dont Work
                     break;
                 case "Throwing algo?":
+                    //if (level >= skillCost[9])
+                    //{
+                    //    level -= skillCost[9];
+                    //    additionalMagicDamage += .01f;
+                    //}
                     break;
                 case "Summon Damage":
-                    additionalSummonDamage += 0.01f;
+                    if (level >= skillCost[11])
+                    {
+                        level -= skillCost[11];
+                        additionalSummonDamage += 0.01f;
+                    }                  
                     break;
                 case "Summon Attack Speed":
-                    additionalSummonAttackSpeed += 1f;//dont Work
-                    break;
+                    //if (level >= skillCost[11])
+                    //{
+                    //    level -= skillCost[11];
+                    //    additionalMagicDamage += .01f;
+                    //}
+                    //additionalSummonAttackSpeed += 1f;//dont Work
+                    //break;
                 case "Pickaxe Power":
-                    additionalPickingPower += .025f;
+                    if (level >= skillCost[13])
+                    {
+                        level -= skillCost[13];
+                        additionalPickingPower += .025f;
+                    }                    
                     break;
 
                 default:
