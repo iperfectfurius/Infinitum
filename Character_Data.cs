@@ -25,7 +25,7 @@ namespace Infinitum
             { "addedLevels", 180},
             { "currentLevels", 65}
         };
-        private Dictionary<string, dynamic> skillCost = new();
+
         private static string[] skillOrder = {
             "Defense",
             "Melee Damage",
@@ -42,6 +42,24 @@ namespace Infinitum
             "Summon Attack Speed",
             "Pickaxe Power",
             "Ranged Attack Speed",
+        };
+        private static int[] skillCost =
+        {
+            1000,
+            100,
+            100,
+            100,
+            500,
+            100,
+            100,
+            100,
+            250,
+            0,
+            0,
+            100,
+            0,
+            150,
+            0
         };
         private float exp = 0.0f;
         private int level = 0;
@@ -75,7 +93,7 @@ namespace Infinitum
         public float ExpMultiplier { get => expMultiplier; }
         public int _EXPTOLEVEL => EXPTOLEVEL;
         public bool RecentChanged { get => recentChanged; set => recentChanged = value; }
-        public Dictionary<string, object> SkillCost { get => skillCost; set => skillCost = value; }
+        public static int[] SkillCost { get => skillCost; set => skillCost = value; }
         //dont need?
         public float AdditionalDefense { get => additionalDefense; set => additionalDefense = value; }
         public float AdditionalMeleeDamage { get => additionalMeleeDamage; set => additionalMeleeDamage = value; }
@@ -110,7 +128,7 @@ namespace Infinitum
         public override void Load()
         {
             base.Load();
-            skillCost.Add("defense", new { baseCost = 10, incrementalCost = .1f });
+           
         }
         public void AddXp(float xp)
         {
