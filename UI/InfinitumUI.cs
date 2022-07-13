@@ -19,7 +19,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 500f;
+        private const float maxWidth = 560f;
         private const float maxHeigth = 200f;
         private UIButton reset;
         private UIButton activateStatsButton;
@@ -89,8 +89,14 @@ namespace Infinitum.UI
             marginTop = 3;
             marginLeft = 0;
 
+            UIText costText = new UIText("Cost");
+            costText.Top.Set(marginTop -20, 0f);
+            costText.Left.Set(marginLeft + 257, 0f);
+            costText.Height.Set(20f, 0);
 
+            skillsElementsPanel.Add(costText);
             //This goes in other panel
+            //Unify!
             for (int i = 0; i < 14; i++)
             {
                 UIText text = new(Character_Data.SkillOrder[i] + ": 0", .9f);
@@ -110,6 +116,7 @@ namespace Infinitum.UI
             for (int i = 0; i < 14; i++)
             {
                 UIButton button = new UIButton("+", addStat);
+                UIText cost = new UIText(Character_Data.SkillCost[i].ToString());
 
                 button.Top.Set(marginTop, 0f);
                 button.Left.Set(marginLeft, 0f);
@@ -118,10 +125,18 @@ namespace Infinitum.UI
                 button.OwnStat = Character_Data.SkillOrder[i];
                 button.OverflowHidden = false;
 
+                cost.Top.Set(marginTop, 0f);
+                cost.Left.Set(marginLeft + 10, 0f);
+                cost.Height.Set(20f, 0);
+                cost.Width.Set(80, 0);
+                cost.OverflowHidden = false;
+
                 skillsElementsPanel.Add(button);
+                skillsElementsPanel.Add(cost);
 
                 marginTop += 20f;
             }
+
 
             skillsElementsPanel.SetPadding(0);
         }
