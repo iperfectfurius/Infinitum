@@ -39,7 +39,7 @@ namespace Infinitum
             "Throwing  Damage",
             "Throwing algo?",
             "Summon Damage",
-            "Summon Attack Speed",
+            "Minion Capacity",
             "Pickaxe Power",
             "Ranged Attack Speed",
         };
@@ -57,7 +57,7 @@ namespace Infinitum
             0,
             0,
             250,
-            0,
+            5000,
             150,
             0
         };
@@ -82,7 +82,7 @@ namespace Infinitum
         private float additionalthrowingDamage = 0;
         private float additionalthrowingAttackSpeed = 0;
         private float additionalSummonDamage = 0;
-        private float additionalSummonAttackSpeed = 0;
+        private int additionalSummonCapacity = 0;
         private float additionalPickingPower = 0;
         private List<Skill> skills = new List<Skill>();
 
@@ -107,7 +107,7 @@ namespace Infinitum
         public float ReducedManaConsumption { get => reducedManaConsumption; set => reducedManaConsumption = value; }
         public float AdditionalthrowingDamage { get => additionalthrowingDamage; set => additionalthrowingDamage = value; }
         public float AdditionalsummonDamage { get => additionalSummonDamage; set => additionalSummonDamage = value; }
-        public float AdditionalsummonAttackSpeed { get => additionalSummonAttackSpeed; set => additionalSummonAttackSpeed = value; }
+        public int AdditionalSummonCapacity { get => additionalSummonCapacity; set => additionalSummonCapacity = value; }
         public float AdditionalPickingPower { get => additionalPickingPower; set => additionalPickingPower = value; }
         public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
         public bool Activate { get => activate; set => activate = value; }
@@ -179,6 +179,7 @@ namespace Infinitum
                 tag.TryGet("RangedDamage", out additionalRangedDamage);
                 tag.TryGet("RangedAmmoConsumption", out ammoConsumedReduction);
                 tag.TryGet("SummonDamage", out additionalSummonDamage);
+                tag.TryGet("MinionCapacity", out additionalSummonCapacity);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
                 tag.TryGet("DisplayNumbers", out displayNumbers);//better this...
 
@@ -213,7 +214,7 @@ namespace Infinitum
             //tag.Add("ThrowingDamage", additionalthrowingDamage);
             //tag.Add("ThrowingAttackSpeed", additionalthrowingAttackSpeed);
             tag.Add("SummonDamage", additionalSummonDamage);
-            //tag.Add("SummonAttackSpeed", additionalSummonAttackSpeed);
+            tag.Add("MinionCapacity", additionalSummonCapacity);
             tag.Add("PickaxePower", additionalPickingPower);
             tag.Add("DisplayNumbers", displayNumbers);
 
@@ -336,14 +337,12 @@ namespace Infinitum
                         additionalSummonDamage += 0.01f;
                     }                  
                     break;
-                case "Summon Attack Speed":
-                    //if (level >= skillCost[11])
-                    //{
-                    //    level -= skillCost[11];
-                    //    additionalMagicDamage += .01f;
-                    //}
-                    //additionalSummonAttackSpeed += 1f;//dont Work
-                    Main.NewText("eing?");
+                case "Minion Capacity":
+                    if (level >= skillCost[12])
+                    {
+                        level -= skillCost[12];
+                        additionalSummonCapacity += 1;
+                    }
                     break;
                 case "Pickaxe Power":
                     if (level >= skillCost[13])
@@ -378,7 +377,7 @@ namespace Infinitum
             player.GetDamage(DamageClass.Throwing) = player.GetDamage(DamageClass.Throwing) + additionalthrowingDamage;
             //player.GetAttackSpeed(DamageClass.Throwing) = player.GetAttackSpeed(DamageClass.Throwing) + additionalthrowingAttackSpeed;
             player.GetDamage(DamageClass.Summon) = player.GetDamage(DamageClass.Summon) + additionalSummonDamage;
-            //player.GetAttackSpeed(DamageClass.Summon) = player.GetAttackSpeed(DamageClass.Summon) + additionalSummonAttackSpeed;
+            player.maxMinions = player.maxMinions + AdditionalSummonCapacity;
             player.manaCost = player.manaCost - reducedManaConsumption;
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
 
@@ -468,7 +467,7 @@ namespace Infinitum
             additionalthrowingDamage = 0;
             additionalthrowingAttackSpeed = 0;
             additionalSummonDamage = 0;
-            additionalSummonAttackSpeed = 0;
+            additionalSummonCapacity = 0;
             additionalPickingPower = 0;
 
             recentChanged = true;

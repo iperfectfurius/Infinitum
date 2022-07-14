@@ -307,8 +307,8 @@ namespace Infinitum.UI
                     case "Summon Damage":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalsummonDamage*100:n2}%");
                         break;
-                    case "Summon Attack Speed":
-                        //((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalsummonAttackSpeed*100:n2}%");
+                    case "Minion Capacity":
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalSummonCapacity}");
                         break;
                     case "Pickaxe Power":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalPickingPower * 100:n2}%");
