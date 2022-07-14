@@ -36,7 +36,7 @@ namespace Infinitum
             "Mana Consumption",
             "Ranged Damage",
             "Ammo Consumption",
-            "Throwing  Damage",
+            "Movement speed",
             "Throwing algo?",
             "Summon Damage",
             "Minion Capacity",
@@ -181,16 +181,15 @@ namespace Infinitum
                 tag.TryGet("SummonDamage", out additionalSummonDamage);
                 tag.TryGet("MinionCapacity", out additionalSummonCapacity);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
-                tag.TryGet("DisplayNumbers", out displayNumbers);//better this...
+                tag.TryGet("DisplayNumbers", out displayNumbers);
 
 
                 recentChanged = true;
             }
             catch
             {
-
+                resetCurrentSkills();
             }
-
 
         }
 

@@ -10,6 +10,11 @@ namespace Infinitum.UI
         private Vector2 offset;
         public bool dragging;
 
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+			this.SetPadding(0);
+        }
         public override void MouseDown(UIMouseEvent evt)
         {
             base.MouseDown(evt);
