@@ -320,6 +320,7 @@ namespace Infinitum
                     //    additionalMagicDamage += .01f;
                     //}
                     //additionalthrowingDamage += 1f;//dont Work
+                   
                     break;
                 case "Throwing algo?":
                     //if (level >= skillCost[9])
@@ -342,7 +343,8 @@ namespace Infinitum
                     //    additionalMagicDamage += .01f;
                     //}
                     //additionalSummonAttackSpeed += 1f;//dont Work
-                    //break;
+                    Main.NewText("eing?");
+                    break;
                 case "Pickaxe Power":
                     if (level >= skillCost[13])
                     {
@@ -376,7 +378,7 @@ namespace Infinitum
             player.GetDamage(DamageClass.Throwing) = player.GetDamage(DamageClass.Throwing) + additionalthrowingDamage;
             //player.GetAttackSpeed(DamageClass.Throwing) = player.GetAttackSpeed(DamageClass.Throwing) + additionalthrowingAttackSpeed;
             player.GetDamage(DamageClass.Summon) = player.GetDamage(DamageClass.Summon) + additionalSummonDamage;
-            player.GetAttackSpeed(DamageClass.Summon) = player.GetAttackSpeed(DamageClass.Summon) + additionalSummonAttackSpeed;
+            //player.GetAttackSpeed(DamageClass.Summon) = player.GetAttackSpeed(DamageClass.Summon) + additionalSummonAttackSpeed;
             player.manaCost = player.manaCost - reducedManaConsumption;
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
 
