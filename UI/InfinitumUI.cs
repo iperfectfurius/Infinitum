@@ -177,6 +177,7 @@ namespace Infinitum.UI
             skillsPanel.Height.Set(200, 0f);
             skillsPanel.Width.Set(maxWidth - 203, 0f);
             skillsPanel.PaddingBottom = 0f;
+            skillsPanel.PaddingRight = 0f;
             skillsPanel.OverflowHidden = true;
             skillsPanel.OnScrollWheel += ScrollWheelSkill;
 
@@ -185,7 +186,7 @@ namespace Infinitum.UI
             skillScrollbar.Top.Set(5, 0f);
             skillScrollbar.Height.Set(skillsPanel.Height.Pixels - 40, 0f);
             skillScrollbar.Width.Set(22f, 0f);
-            skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 50f, 0f);
+            skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 40f, 0f);
 
             skillsElementsPanel.SetScrollbar(skillScrollbar);
 
