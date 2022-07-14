@@ -107,7 +107,7 @@ namespace Infinitum
         public float ReducedManaConsumption { get => reducedManaConsumption; set => reducedManaConsumption = value; }
         public float AdditionalthrowingDamage { get => additionalthrowingDamage; set => additionalthrowingDamage = value; }
         public float AdditionalsummonDamage { get => additionalSummonDamage; set => additionalSummonDamage = value; }
-        public float AdditionalsummonAttackSpeed { get => additionalSummonDamage; set => additionalSummonDamage = value; }
+        public float AdditionalsummonAttackSpeed { get => additionalSummonAttackSpeed; set => additionalSummonAttackSpeed = value; }
         public float AdditionalPickingPower { get => additionalPickingPower; set => additionalPickingPower = value; }
         public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
         public bool Activate { get => activate; set => activate = value; }
@@ -373,7 +373,7 @@ namespace Infinitum
             player.GetDamage(DamageClass.Magic) = player.GetDamage(DamageClass.Magic) + additionalMagicDamage;
             player.GetAttackSpeed(DamageClass.Magic) = player.GetAttackSpeed(DamageClass.Magic) + reducedManaConsumption;
             player.GetDamage(DamageClass.Ranged) = player.GetDamage(DamageClass.Ranged) + additionalRangedDamage;
-
+            
             //player.GetAttackSpeed(DamageClass.Ranged) = player.GetAttackSpeed(DamageClass.Ranged) + additionalRangeAttackSpeed;
             player.GetDamage(DamageClass.Throwing) = player.GetDamage(DamageClass.Throwing) + additionalthrowingDamage;
             //player.GetAttackSpeed(DamageClass.Throwing) = player.GetAttackSpeed(DamageClass.Throwing) + additionalthrowingAttackSpeed;
