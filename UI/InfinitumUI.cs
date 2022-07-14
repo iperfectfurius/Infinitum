@@ -19,7 +19,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 560f;
+        private const float maxWidth = 540f;
         private const float maxHeigth = 200f;
         private UIButton reset;
         private UIButton activateStatsButton;
@@ -120,8 +120,8 @@ namespace Infinitum.UI
 
                 button.Top.Set(marginTop, 0f);
                 button.Left.Set(marginLeft, 0f);
-                button.Height.Set(20f, 0);
-                button.Width.Set(20, 0);
+                button.Height.Set(18f, 0);
+                button.Width.Set(18f, 0);
                 button.OwnStat = Character_Data.SkillOrder[i];
                 button.OverflowHidden = false;
 
@@ -185,7 +185,7 @@ namespace Infinitum.UI
             skillScrollbar.Top.Set(5, 0f);
             skillScrollbar.Height.Set(skillsPanel.Height.Pixels - 40, 0f);
             skillScrollbar.Width.Set(22f, 0f);
-            skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 45f, 0f);
+            skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 50f, 0f);
 
             skillsElementsPanel.SetScrollbar(skillScrollbar);
 
@@ -271,46 +271,46 @@ namespace Infinitum.UI
                 switch (message)
                 {
                     case "Defense":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[0]}: +{stats.AdditionalDefense}");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: +{stats.AdditionalDefense}");
                         break;
                     case "Melee Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[1]}: {stats.AdditionalMeleeDamage*100:n2}%");               
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMeleeDamage*100:n2}%");               
                         break;
                     case "Melee Attack Speed":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[2]}: {stats.AdditionalMeleeAttackSpeed*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMeleeAttackSpeed*100:n2}%");
                         break;
                     case "Life Regen":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[3]}: {stats.AdditionalLifeRegen*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalLifeRegen*100:n2}%");
                         break;
                     case "Life Steal":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[4]}: {stats.LifeSteal*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.LifeSteal*100:n2}%");
                         break;
                     case "Magic Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[5]}: {stats.AdditionalMagicDamage*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMagicDamage*100:n2}%");
                         break;
                     case "Mana Consumption":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[6]}: -{stats.ReducedManaConsumption*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: -{stats.ReducedManaConsumption*100:n2}%");
                         break;
                     case "Ranged Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[7]}: {stats.AdditionalRangedDamage*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalRangedDamage*100:n2}%");
                         break;
                     case "Ammo Consumption":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[8]}: {stats.AmmoConsumedReduction - 101}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AmmoConsumedReduction - 101}%");
                         break;
                     case "Throwing  Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[9]}: {stats.AdditionalthrowingDamage*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalthrowingDamage*100:n2}%");
                         break;
                     case "Throwing algo?":
                         //((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[i]}: {stats.AdditionalLifeRegen:n2}");
                         break;
                     case "Summon Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[11]}: {stats.AdditionalsummonDamage*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalsummonDamage*100:n2}%");
                         break;
                     case "Summon Attack Speed":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[12]}: {stats.AdditionalsummonAttackSpeed*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalsummonAttackSpeed*100:n2}%");
                         break;
                     case "Pickaxe Power":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[13]}: {stats.AdditionalPickingPower * 100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalPickingPower * 100:n2}%");
                         break;
                     default:
                         break;
