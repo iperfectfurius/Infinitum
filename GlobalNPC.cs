@@ -7,6 +7,7 @@ using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.DataStructures;
+using Terraria.GameContent.Bestiary;
 
 namespace Infinitum
 {
@@ -36,6 +37,7 @@ namespace Infinitum
 		}
 		
 		
+		
 		public static void ChatMessage(string text)
 		{
 			
@@ -51,21 +53,26 @@ namespace Infinitum
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
 		{
 
-			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
-			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500, 1), new CommonDrop(ModContent.ItemType<ExpStar>(), 1250, 1)));
-			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<MultiplierStar>(), 125, 1, 3), new CommonDrop(ModContent.ItemType<MultiplierStar>(), 100, 1, 3)));
-			//items.Add(new ItemDropWithConditionRule(ModContent.ItemType<MultiplierStar>(), 1500, 1, 1, new Conditions.IsHardmode()));
 			
-			items.ForEach(e => npcLoot.Add(e));
+			
 			base.ModifyNPCLoot(npc, npcLoot);
 
 		}
 		public override void ModifyGlobalLoot(GlobalLoot globalLoot)
 		{
-			// This is where we add global rules for all NPC. Here is a simple example
 			
+			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
+			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500, 1), new CommonDrop(ModContent.ItemType<ExpStar>(), 1250, 1)));
+			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<MultiplierStar>(), 125, 1, 3), new CommonDrop(ModContent.ItemType<MultiplierStar>(), 100, 1, 3)));
+			//items.Add(new ItemDropWithConditionRule(ModContent.ItemType<MultiplierStar>(), 1500, 1, 1, new Conditions.IsHardmode()));
+
+			items.ForEach(e => globalLoot.Add(e));
 		}
-		private void addXpToPlayer(float xp)
+        public override void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            base.SetBestiary(npc, database, bestiaryEntry);
+        }
+        private void addXpToPlayer(float xp)
 		{
 			Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
 		}
