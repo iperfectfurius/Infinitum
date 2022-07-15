@@ -65,6 +65,7 @@ namespace Infinitum
         private int level = 0;
         private int totalLevel = 0;
         private float expMultiplier = 1.0f;
+        private float moreExpMultiplier = 1.0f;
         private const int EXPTOLEVEL = 15000;
         private long totalNpcsKilled = 0;
         private bool activate = true;
@@ -87,10 +88,11 @@ namespace Infinitum
         private List<Skill> skills = new List<Skill>();
 
 
+
         public float Exp { get => exp; }
         public int Level { get => level; }
         public int TotalLevel { get => totalLevel; }
-        public float ExpMultiplier { get => expMultiplier; }
+        public float ExpMultiplier { get => expMultiplier; set => expMultiplier = value; }
         public int _EXPTOLEVEL => EXPTOLEVEL;
         public bool RecentChanged { get => recentChanged; set => recentChanged = value; }
         public static int[] SkillCost { get => skillCost; set => skillCost = value; }
@@ -112,12 +114,12 @@ namespace Infinitum
         public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
         public bool Activate { get => activate; set => activate = value; }
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
-
+        public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
-            showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit);
+            showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit);
             InfinitumUI.Instance.stats = this;
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 1, bool dramatic = false, bool dot = false)
@@ -132,9 +134,10 @@ namespace Infinitum
         }
         public void AddXp(float xp)
         {
-            exp += (float)(xp * expMultiplier);
+            float experienceObtained = (float)(xp * (expMultiplier * moreExpMultiplier));
+            exp += experienceObtained;
             UpdateLevel();
-            showDamageText(CombatTextPos["xp"], $"+ {((float)(xp * expMultiplier)):n1} XP", CombatText.HealMana);
+            showDamageText(CombatTextPos["xp"], $"+ {experienceObtained:n1} XP", CombatText.HealMana);
             totalNpcsKilled++;
             recentChanged = true;
 
@@ -379,10 +382,22 @@ namespace Infinitum
             player.maxMinions = player.maxMinions + AdditionalSummonCapacity;
             player.manaCost = player.manaCost - reducedManaConsumption;
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
+            getAdditionalsExp();
 
-
+            
+            base.PostUpdateEquips();
 
         }
+
+        private void getAdditionalsExp()
+        {
+
+            ModPrefix prefix = PrefixLoader.GetPrefix(player.HeldItem.prefix);
+            if(prefix != null && prefix.Name == "LegendaryPlus")
+                moreExpMultiplier += .25f;
+                  
+        }
+        
         private void getLifeSteal(int damage)
         {
             int toHeal = (int)(damage * lifeSteal);
@@ -403,6 +418,7 @@ namespace Infinitum
         }
         public override void PreUpdate()
         {
+            MoreExpMultiplier = 1f;           
             base.PreUpdate();
         }
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
@@ -423,7 +439,7 @@ namespace Infinitum
         public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
         {
 
-            //mult -= .3f;
+            
             base.ModifyManaCost(item, ref reduce, ref mult);
         }
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
@@ -436,6 +452,13 @@ namespace Infinitum
             return base.CanConsumeAmmo(weapon, ammo);
         }
 
+        public override void PostItemCheck()
+        {
+            
+            base.PostItemCheck();
+
+        }
+        
         public static void ChatMessage(string text = "")
         {
 

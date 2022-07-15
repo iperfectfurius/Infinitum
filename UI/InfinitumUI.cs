@@ -253,7 +253,7 @@ namespace Infinitum.UI
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
             statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/15000 ({((float)stats.Exp / stats._EXPTOLEVEL) * 100:n1}%)");
-            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {stats.ExpMultiplier * 100:n1}%");
+            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {(stats.ExpMultiplier * stats.MoreExpMultiplier) * 100:n1}%");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             statsTexts[(int)statsOrder.TotalKills].SetText("Total Kills: " + stats.TotalNpcsKilled);
 
