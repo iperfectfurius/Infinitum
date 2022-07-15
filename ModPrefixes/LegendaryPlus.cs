@@ -9,12 +9,10 @@ namespace Infinitum.ModPrefixes
         public override float RollChance(Item item)
             => 3.5f;
 
-        // determines if it can roll at all.
-        // use this to control if a prefixes can be rolled or not
+       
         public override bool CanRoll(Item item)
             => true;
 
-        // change your category this way, defaults to Custom
         public override PrefixCategory Category
             => PrefixCategory.Melee;
 
