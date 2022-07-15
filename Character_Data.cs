@@ -124,7 +124,7 @@ namespace Infinitum
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
-            if (!displayNumbers) return;
+            if (Main.netMode == NetmodeID.Server || !displayNumbers) return;
 
             int test = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
             Main.combatText[test].lifeTime = duration;
@@ -137,7 +137,7 @@ namespace Infinitum
         }
         public void AddXp(float xp)
         {
-            float experienceObtained = (float)(xp * (expMultiplier * moreExpMultiplier));
+            float experienceObtained = xp * (expMultiplier * moreExpMultiplier);
             exp += experienceObtained;
             UpdateLevel();
             showDamageText(CombatTextPos["xp"], $"+ {experienceObtained:n1} XP", CombatText.HealMana);
@@ -188,7 +188,7 @@ namespace Infinitum
                 tag.TryGet("MinionCapacity", out additionalSummonCapacity);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
-                
+
 
 
                 recentChanged = true;
@@ -196,6 +196,7 @@ namespace Infinitum
             catch
             {
                 resetCurrentSkills();
+                recentChanged = true;
             }
 
         }
@@ -419,7 +420,7 @@ namespace Infinitum
                         level += skillCost[13];
                         additionalPickingPower -= .025f;
                     }
-                        break;
+                    break;
 
                 default:
                     break;

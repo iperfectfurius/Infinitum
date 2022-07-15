@@ -42,8 +42,12 @@ namespace Infinitum.Items
 		}
         public override bool OnPickup(Player player)
         {
-			player.GetModPlayer<Character_Data>().AddXpMultiplier(0.075f);
-			SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
+			{
+				player.GetModPlayer<Character_Data>().AddXpMultiplier(0.075f);
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+			}
+				
 			return false; ;
         }
         public override void GrabRange(Player player, ref int grabRange)
