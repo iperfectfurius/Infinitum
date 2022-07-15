@@ -48,7 +48,7 @@ namespace Infinitum
             1000,
             250,
             250,
-            100,
+            250,
             500,
             250,
             250,
@@ -119,7 +119,7 @@ namespace Infinitum
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
-            showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit,120,true);
+            showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
@@ -127,13 +127,13 @@ namespace Infinitum
             if (!displayNumbers) return;
 
             int test = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
-            Main.combatText[test].lifeTime = duration;        
-            
+            Main.combatText[test].lifeTime = duration;
+
         }
         public override void Load()
         {
             base.Load();
-           
+
         }
         public void AddXp(float xp)
         {
@@ -155,7 +155,7 @@ namespace Infinitum
             totalLevel += LevelsUp;
 
             showDamageText(CombatTextPos["addedLevels"], $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
-            showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit,120,true);
+            showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
 
         }
         public void AddXpMultiplier(float multiplier)
@@ -250,83 +250,130 @@ namespace Infinitum
             CombatTextPos = new();
             base.Unload();
         }
-        public void ApplyStats(string stat)
-        {//sw probablemente
+        public void ApplyStats(string stat, bool sum)
+        {
             //implement skill class
             switch (stat)
             {
                 case "Defense":
-                    if (level >= skillCost[0])
+
+                    if (level >= skillCost[0] && sum)
                     {
                         level -= skillCost[0];
                         additionalDefense++;
                     }
-                    
+                    else if (!sum && additionalDefense > 0)
+                    {
+                        level += skillCost[0];
+                        additionalDefense--;
+                    }
                     break;
                 case "Melee Damage":
-                    if (level >= skillCost[1])
+                    if (level >= skillCost[1] && sum)
                     {
                         level -= skillCost[1];
                         additionalMeleeDamage += .01f;
                     }
+                    else if (!sum && additionalMeleeDamage > 0)
+                    {
+                        level += skillCost[1];
+                        additionalMeleeDamage -= 0.01f;
+                    }
+
                     break;
                 case "Melee Attack Speed":
-                    if (level >= skillCost[2])
+                    if (level >= skillCost[2] && sum)
                     {
                         level -= skillCost[2];
                         additionalMeleeAttackSpeed += 0.01f;
                     }
+                    else if (!sum && additionalMeleeAttackSpeed > 0)
+                    {
+                        level += skillCost[2];
+                        additionalMeleeAttackSpeed -= 0.01f;
+                    }
+
                     break;
                 case "Life Regen":
-                    if (level >= skillCost[3])
+                    if (level >= skillCost[3] && sum)
                     {
                         level -= skillCost[3];
                         AdditionalLifeRegen += 0.25f;
                     }
+                    else if (!sum && additionalLifeRegen > 0)
+                    {
+                        level += skillCost[3];
+                        AdditionalLifeRegen -= 0.25f;
+                    }
                     break;
                 case "Life Steal":
-                    if (level >= skillCost[4])
+                    if (level >= skillCost[4] && sum)
                     {
                         level -= skillCost[4];
                         LifeSteal += 0.00025f;
-                    }                      
+                    }
+                    else if (!sum && lifeSteal > 0)
+                    {
+                        level += skillCost[4];
+                        LifeSteal -= 0.00025f;
+                    }
                     break;
                 case "Magic Damage":
-                    if (level >= skillCost[5])
+                    if (level >= skillCost[5] & sum)
                     {
                         level -= skillCost[5];
                         additionalMagicDamage += .01f;
-                    }                       
+                    }
+                    else if (!sum && additionalMagicDamage > 0)
+                    {
+                        level += skillCost[5];
+                        additionalMagicDamage -= .01f;
+                    }
                     break;
                 case "Mana Consumption":
-                    if (level >= skillCost[6])
+                    if (level >= skillCost[6] && sum)
                     {
                         level -= skillCost[6];
                         reducedManaConsumption += 0.01f;
-                    }           
+                    }
+                    else if (!sum && reducedManaConsumption > 0)
+                    {
+                        level += skillCost[6];
+                        reducedManaConsumption -= 0.01f;
+                    }
                     break;
                 case "Ranged Damage":
-                    if (level >= skillCost[7])
+                    if (level >= skillCost[7] && sum)
                     {
                         level -= skillCost[7];
                         additionalRangedDamage += 0.01f;
-                    }                 
+                    }
+                    else if (!sum && additionalRangedDamage > 0)
+                    {
+                        level += skillCost[7];
+                        additionalRangedDamage -= 0.01f;
+                    }
                     break;
                 case "Ammo Consumption":
-                    if (level >= skillCost[8])
+                    if (level >= skillCost[8] && sum)
                     {
                         level -= skillCost[8];
                         ammoConsumedReduction -= 1;
-                    }                 
+                    }
+                    else if (!sum && ammoConsumedReduction < 101)
+                    {
+                        level += skillCost[8];
+                        ammoConsumedReduction += 1;
+                    }
                     break;
-                case "Throwing  Damage":
+                case "Movement Speed":
                     //if (level >= skillCost[8])
                     //{
                     //    level -= skillCost[8];
                     //    additionalMagicDamage += .01f;
                     //}
                     //additionalthrowingDamage += 1f;//dont Work
-                   
+
                     break;
                 case "Throwing algo?":
                     //if (level >= skillCost[9])
@@ -336,26 +383,41 @@ namespace Infinitum
                     //}
                     break;
                 case "Summon Damage":
-                    if (level >= skillCost[11])
+                    if (level >= skillCost[11] && sum)
                     {
                         level -= skillCost[11];
                         additionalSummonDamage += 0.01f;
-                    }                  
+                    }
+                    else if (!sum && additionalSummonDamage > 0)
+                    {
+                        level += skillCost[11];
+                        additionalSummonDamage -= 0.01f;
+                    }
                     break;
                 case "Minion Capacity":
-                    if (level >= skillCost[12])
+                    if (level >= skillCost[12] && sum)
                     {
                         level -= skillCost[12];
                         additionalSummonCapacity += 1;
                     }
+                    else if (!sum && additionalSummonCapacity > 0)
+                    {
+                        level += skillCost[12];
+                        additionalSummonCapacity -= 1;
+                    }
                     break;
                 case "Pickaxe Power":
-                    if (level >= skillCost[13])
+                    if (level >= skillCost[13] && sum)
                     {
                         level -= skillCost[13];
                         additionalPickingPower += .025f;
-                    }                    
-                    break;
+                    }
+                    else if (!sum && additionalPickingPower > 0)
+                    {
+                        level += skillCost[13];
+                        additionalPickingPower -= .025f;
+                    }
+                        break;
 
                 default:
                     break;
@@ -377,7 +439,7 @@ namespace Infinitum
             player.GetDamage(DamageClass.Magic) = player.GetDamage(DamageClass.Magic) + additionalMagicDamage;
             player.GetAttackSpeed(DamageClass.Magic) = player.GetAttackSpeed(DamageClass.Magic) + reducedManaConsumption;
             player.GetDamage(DamageClass.Ranged) = player.GetDamage(DamageClass.Ranged) + additionalRangedDamage;
-            
+
             //player.GetAttackSpeed(DamageClass.Ranged) = player.GetAttackSpeed(DamageClass.Ranged) + additionalRangeAttackSpeed;
             player.GetDamage(DamageClass.Throwing) = player.GetDamage(DamageClass.Throwing) + additionalthrowingDamage;
             //player.GetAttackSpeed(DamageClass.Throwing) = player.GetAttackSpeed(DamageClass.Throwing) + additionalthrowingAttackSpeed;
@@ -387,7 +449,7 @@ namespace Infinitum
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
             getAdditionalsExp();
 
-            
+
             base.PostUpdateEquips();
 
         }
@@ -397,21 +459,19 @@ namespace Infinitum
 
             ModPrefix prefix = PrefixLoader.GetPrefix(player.HeldItem.prefix);
             if (prefix != null)
-            switch (prefix.Name)
-            {
+                switch (prefix.Name)
+                {
                     case "UnrealPlus":
                     case "MythicalPlus":
                     case "LegendaryPlus":
                         moreExpMultiplier += .25f;
                         break;
-                default:
+                    default:
                         break;
-            }
-           
-                
-                  
+                }
+
         }
-        
+
         private void getLifeSteal(int damage)
         {
             int toHeal = (int)(damage * lifeSteal);
@@ -432,7 +492,7 @@ namespace Infinitum
         }
         public override void PreUpdate()
         {
-            MoreExpMultiplier = 1f;           
+            MoreExpMultiplier = 1f;
             base.PreUpdate();
         }
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
@@ -453,7 +513,7 @@ namespace Infinitum
         public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
         {
 
-            
+
             base.ModifyManaCost(item, ref reduce, ref mult);
         }
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
@@ -468,11 +528,11 @@ namespace Infinitum
 
         public override void PostItemCheck()
         {
-            
+
             base.PostItemCheck();
 
         }
-        
+
         public static void ChatMessage(string text = "")
         {
 

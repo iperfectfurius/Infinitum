@@ -19,7 +19,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 540f;
+        private const float maxWidth = 570f;
         private const float maxHeigth = 200f;
         private UIButton reset;
         private UIButton activateStatsButton;
@@ -91,7 +91,7 @@ namespace Infinitum.UI
 
             UIText costText = new UIText("Cost");
             costText.Top.Set(marginTop -20, 0f);
-            costText.Left.Set(marginLeft + 257, 0f);
+            costText.Left.Set(marginLeft + 283, 0f);
             costText.Height.Set(20f, 0);
 
             skillsElementsPanel.Add(costText);
@@ -115,27 +115,41 @@ namespace Infinitum.UI
 
             for (int i = 0; i < 14; i++)
             {
-                UIButton button = new UIButton("+", addStat);
+                UIButton sumStat = new UIButton("+", addStat);
+                UIButton subStat = new UIButton("-", addStat);
                 UIText cost = new UIText(Character_Data.SkillCost[i].ToString());
 
-                button.Top.Set(marginTop, 0f);
-                button.Left.Set(marginLeft, 0f);
-                button.Height.Set(18f, 0);
-                button.Width.Set(18f, 0);
-                button.OwnStat = Character_Data.SkillOrder[i];
-                button.OverflowHidden = false;
+
+                sumStat.Top.Set(marginTop, 0f);
+                sumStat.Left.Set(marginLeft, 0f);
+                sumStat.Height.Set(18f, 0);
+                sumStat.Width.Set(18f, 0);
+                sumStat.OwnStat = Character_Data.SkillOrder[i];
+                sumStat.OverflowHidden = false;
+
+
+                subStat.Top.Set(marginTop, 0f);
+                subStat.Left.Set(marginLeft + 25, 0f);
+                subStat.Height.Set(18f, 0);
+                subStat.Width.Set(18f, 0);
+                subStat.OwnStat = Character_Data.SkillOrder[i];
+                subStat.OverflowHidden = false;
 
                 cost.Top.Set(marginTop, 0f);
-                cost.Left.Set(marginLeft + 10, 0f);
+                cost.Left.Set(marginLeft + 35, 0f);
                 cost.Height.Set(20f, 0);
                 cost.Width.Set(80, 0);
                 cost.OverflowHidden = false;
 
-                skillsElementsPanel.Add(button);
+                skillsElementsPanel.Add(sumStat);
+                skillsElementsPanel.Add(subStat);
                 skillsElementsPanel.Add(cost);
 
                 marginTop += 20f;
             }
+
+
+
 
 
             skillsElementsPanel.SetPadding(0);
@@ -228,7 +242,8 @@ namespace Infinitum.UI
         }
         private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
-            stats.ApplyStats(((UIButton)listeningElement.Parent).OwnStat);
+            UIButton me = (UIButton)listeningElement.Parent;
+            stats.ApplyStats(me.OwnStat,me.Text == "+" ? true:false);
             SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
         }
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
