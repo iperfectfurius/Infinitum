@@ -393,8 +393,18 @@ namespace Infinitum
         {
 
             ModPrefix prefix = PrefixLoader.GetPrefix(player.HeldItem.prefix);
-            if(prefix != null && prefix.Name == "LegendaryPlus")
-                moreExpMultiplier += .25f;
+            if (prefix != null)
+            switch (prefix.Name)
+            {
+                    case "UnrealPlus":
+                    case "LegendaryPlus":
+                        moreExpMultiplier += .25f;
+                        break;
+                default:
+                        break;
+            }
+           
+                
                   
         }
         
