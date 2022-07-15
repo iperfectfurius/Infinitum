@@ -2,6 +2,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Infinitum;
+using Terraria.Audio;
+
 namespace Infinitum.Items
 {
 	internal class MultiplierStar : ModItem

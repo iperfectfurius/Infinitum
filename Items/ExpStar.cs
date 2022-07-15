@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -43,7 +44,6 @@ namespace Infinitum.Items
 		public override void GrabRange(Player player, ref int grabRange)
 		{
 			grabRange += 35;
-			
 			base.GrabRange(player, ref grabRange);
 		}
 	}

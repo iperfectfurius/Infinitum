@@ -188,6 +188,7 @@ namespace Infinitum
                 tag.TryGet("MinionCapacity", out additionalSummonCapacity);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
+                
 
 
                 recentChanged = true;
@@ -222,6 +223,7 @@ namespace Infinitum
             tag.Add("MinionCapacity", additionalSummonCapacity);
             tag.Add("PickaxePower", additionalPickingPower);
             tag.Add("DisplayNumbers", displayNumbers);
+            //tag.Add("Version", "0.39");
 
 
         }
