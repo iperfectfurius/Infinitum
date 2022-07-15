@@ -23,7 +23,7 @@ namespace Infinitum
         {
             { "xp", 145},
             { "addedLevels", 180},
-            { "currentLevels", 65}
+            { "currentLevels", 50}
         };
 
         private static string[] skillOrder = {
@@ -119,13 +119,16 @@ namespace Infinitum
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
-            showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit);
+            showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit,120,true);
             InfinitumUI.Instance.stats = this;
         }
-        private void showDamageText(int yPos, string text, Color c, int duration = 1, bool dramatic = false, bool dot = false)
+        private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
-            if (displayNumbers)
-                CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
+            if (!displayNumbers) return;
+
+            int test = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
+            Main.combatText[test].lifeTime = duration;        
+            
         }
         public override void Load()
         {
@@ -151,8 +154,8 @@ namespace Infinitum
             level += LevelsUp;
             totalLevel += LevelsUp;
 
-            showDamageText(CombatTextPos["addedLevels"], $"+Level {LevelsUp}!", CombatText.DamagedFriendlyCrit);
-            showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit);
+            showDamageText(CombatTextPos["addedLevels"], $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
+            showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit,120,true);
 
         }
         public void AddXpMultiplier(float multiplier)
@@ -393,8 +396,19 @@ namespace Infinitum
         {
 
             ModPrefix prefix = PrefixLoader.GetPrefix(player.HeldItem.prefix);
-            if(prefix != null && prefix.Name == "LegendaryPlus")
-                moreExpMultiplier += .25f;
+            if (prefix != null)
+            switch (prefix.Name)
+            {
+                    case "UnrealPlus":
+                    case "MythicalPlus":
+                    case "LegendaryPlus":
+                        moreExpMultiplier += .25f;
+                        break;
+                default:
+                        break;
+            }
+           
+                
                   
         }
         

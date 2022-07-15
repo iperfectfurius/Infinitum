@@ -1,27 +1,32 @@
-﻿using Terraria;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace Infinitum.ModPrefixes
 {
-    internal class LegendaryPlus : ModPrefix
+    internal class UnrealPlus : ModPrefix
     {
         private readonly byte _power;
+
         public override float RollChance(Item item)
             => 3.5f;
 
-       
         public override bool CanRoll(Item item)
             => true;
 
         public override PrefixCategory Category
-            => PrefixCategory.Melee;
+            => PrefixCategory.Ranged;
 
-        public LegendaryPlus()
+        public UnrealPlus()
         {
-            
+
         }
 
-        public LegendaryPlus(byte power)
+        public UnrealPlus(byte power)
         {
             _power = power;
         }
@@ -29,18 +34,17 @@ namespace Infinitum.ModPrefixes
 
         public override void Apply(Item item)
         {
-          
-            
+
+
         }
 
         public override void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult, ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus)
         {
             damageMult += (float)(damageMult * 0.15f);
-            useTimeMult -= (float)(useTimeMult * 0.10f);
-            critBonus += 5;        
             knockbackMult += (float)(knockbackMult * 0.15f);
-            scaleMult += (float)(scaleMult * 0.10f);
-
+            shootSpeedMult += (float)(shootSpeedMult * 0.10f);
+            useTimeMult -= (float)(useTimeMult * 0.10f);
+            critBonus += 5;
 
 
 
@@ -48,7 +52,7 @@ namespace Infinitum.ModPrefixes
         }
         public override void ModifyValue(ref float valueMult)
         {
-            
+
             float multiplier = 1f + 0.05f * _power;
             valueMult *= multiplier;
         }
