@@ -397,6 +397,7 @@ namespace Infinitum
             switch (prefix.Name)
             {
                     case "UnrealPlus":
+                    case "MythicalPlus":
                     case "LegendaryPlus":
                         moreExpMultiplier += .25f;
                         break;
