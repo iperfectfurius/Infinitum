@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -37,8 +38,14 @@ namespace Infinitum.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			player.GetModPlayer<Character_Data>().AddXp(Main.rand.Next(300000));
+			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
+				player.GetModPlayer<Character_Data>().AddXp(Main.rand.Next(300000));
 			return true;
+		}
+		public override void GrabRange(Player player, ref int grabRange)
+		{
+			grabRange += 35;
+			base.GrabRange(player, ref grabRange);
 		}
 	}
 }

@@ -2,6 +2,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Infinitum;
+using Terraria.Audio;
+
 namespace Infinitum.Items
 {
 	internal class MultiplierStar : ModItem
@@ -36,8 +38,15 @@ namespace Infinitum.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			player.GetModPlayer<Character_Data>().AddXpMultiplier(0.025f);
+			if(Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
+				player.GetModPlayer<Character_Data>().AddXpMultiplier(0.025f);
+			
 			return true;
+		}
+		public override void GrabRange(Player player, ref int grabRange)
+		{
+			grabRange += 35;
+			base.GrabRange(player, ref grabRange);
 		}
 	}
 }

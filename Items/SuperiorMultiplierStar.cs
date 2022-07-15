@@ -1,5 +1,6 @@
 ﻿
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,8 +21,6 @@ namespace Infinitum.Items
 			Item.height = 25;
 			Item.rare = ItemRarityID.LightRed;
 			Item.consumable = true;
-			Item.UseSound = SoundID.DD2_BallistaTowerShot;
-			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.autoReuse = true;
 			Item.useTime = 10;
 			Item.useAnimation = 10;
@@ -34,6 +33,7 @@ namespace Infinitum.Items
 		public override bool CanUseItem(Player player)
 		{
 			return false;
+			
 		}
 		public override bool? UseItem(Player player)
 		{
@@ -42,13 +42,18 @@ namespace Infinitum.Items
 		}
         public override bool OnPickup(Player player)
         {
-			player.GetModPlayer<Character_Data>().AddXpMultiplier(0.075f);
+			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
+			{
+				player.GetModPlayer<Character_Data>().AddXpMultiplier(0.075f);
+				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+			}
+				
 			return false; ;
         }
         public override void GrabRange(Player player, ref int grabRange)
         {
-			grabRange += 10;
-            base.GrabRange(player, ref grabRange);
+			grabRange += 25;			
+			base.GrabRange(player, ref grabRange);
         }
     }
 }
