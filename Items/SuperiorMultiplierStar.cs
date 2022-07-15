@@ -47,7 +47,7 @@ namespace Infinitum.Items
         }
         public override void GrabRange(Player player, ref int grabRange)
         {
-			grabRange += 10;
+			grabRange += 25;
             base.GrabRange(player, ref grabRange);
         }
     }

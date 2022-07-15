@@ -375,7 +375,7 @@ namespace Infinitum
                     //additionalthrowingDamage += 1f;//dont Work
 
                     break;
-                case "Throwing algo?":
+                case "Global Critical Chance":
                     //if (level >= skillCost[9])
                     //{
                     //    level -= skillCost[9];

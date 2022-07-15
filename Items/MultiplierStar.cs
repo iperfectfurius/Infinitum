@@ -39,5 +39,10 @@ namespace Infinitum.Items
 			player.GetModPlayer<Character_Data>().AddXpMultiplier(0.025f);
 			return true;
 		}
+		public override void GrabRange(Player player, ref int grabRange)
+		{
+			grabRange += 35;
+			base.GrabRange(player, ref grabRange);
+		}
 	}
 }
