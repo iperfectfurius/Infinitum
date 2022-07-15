@@ -46,8 +46,8 @@ namespace Infinitum.UI
         private void inicializeUIElements()
         {
             //need improve...
-            float marginTop = 0;
-            float marginLeft = 0;
+            float marginTop = 8;
+            float marginLeft = 8;
             for (int i = 0; i < statsTexts.Length; i++)
             {
                 UIText text = new UIText("Test", .9f);
@@ -172,11 +172,10 @@ namespace Infinitum.UI
             InfinitumPanel.Append(numbers);
 
             UIPanel skillsPanel = new();
-            skillsPanel.Top.Set(-12f, 0f);
-            skillsPanel.Left.Set(190, 0f);
-            skillsPanel.Height.Set(200, 0f);
-            skillsPanel.Width.Set(maxWidth - 203, 0f);
-            skillsPanel.PaddingBottom = 0f;
+            skillsPanel.Top.Set(0f, 0f);
+            skillsPanel.Left.Set(210f, 0f);
+            skillsPanel.Height.Set(maxHeigth, 0f);
+            skillsPanel.Width.Set(maxWidth - 209, 0f);
             skillsPanel.PaddingRight = 0f;
             skillsPanel.OverflowHidden = true;
             skillsPanel.OnScrollWheel += ScrollWheelSkill;
@@ -186,7 +185,7 @@ namespace Infinitum.UI
             skillScrollbar.Top.Set(5, 0f);
             skillScrollbar.Height.Set(skillsPanel.Height.Pixels - 40, 0f);
             skillScrollbar.Width.Set(22f, 0f);
-            skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 40f, 0f);
+            skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 35f, 0f);
 
             skillsElementsPanel.SetScrollbar(skillScrollbar);
 
@@ -254,7 +253,7 @@ namespace Infinitum.UI
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
             statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/15000 ({((float)stats.Exp / stats._EXPTOLEVEL) * 100:n1}%)");
-            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {stats.ExpMultiplier * 100:n1}%");
+            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {(stats.ExpMultiplier * stats.MoreExpMultiplier) * 100:n1}%");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             statsTexts[(int)statsOrder.TotalKills].SetText("Total Kills: " + stats.TotalNpcsKilled);
 
