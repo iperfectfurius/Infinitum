@@ -12,6 +12,7 @@ namespace Infinitum.UI
         public static ExpBarUI Instance;
         public UIPanel bar;
         public UIPanel ExpBar;
+        public UIText level;
         public Character_Data stats = null;
         private const float maxWidth = 350f;
         private const float maxHeigth = 14f;
@@ -54,7 +55,17 @@ namespace Infinitum.UI
             ExpBar.SetPadding(0);
             ExpBar.BackgroundColor = Color.Green;
             ExpBar.BorderColor = new Color(0, 0, 0, 0);
+
+            level = new UIText("0",0.8f);
+            level.Left.Set(0, 0);
+            level.VAlign = level.HAlign = 0.5f;
+
+            level.SetPadding(0);
+            level.TextColor = Color.Red;
+
+
             bar.Append(ExpBar);
+            bar.Append(level);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
@@ -71,6 +82,7 @@ namespace Infinitum.UI
         private void UpdateAllStats()
         {
             ExpBar.Width.Set(((((float)stats.Exp / stats._EXPTOLEVEL) * maxWidth) / 100) * 100,0);
+            level.SetText(stats.Level.ToString());
             RecalculateChildren();
         }
 
