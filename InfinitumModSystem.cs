@@ -17,7 +17,9 @@ namespace Infinitum
     internal class InfinitumModSystem : ModSystem
     {
         private UserInterface customUI;
+        private UserInterface customUIBar;
         internal InfinitumUI infinitumUI;
+        internal ExpBarUI expBarUI;
         private GameTime _lastUpdateUiGameTime;
         public static ModKeybind UIKey;
         public static ModKeybind NumbersDisplay;
@@ -30,10 +32,17 @@ namespace Infinitum
                 UIKey = KeybindLoader.RegisterKeybind(Mod, "Show UI", Keys.L);
                 NumbersDisplay = KeybindLoader.RegisterKeybind(Mod, "Hide Numbers", Keys.P);
                 customUI = new UserInterface();
+                customUIBar = new UserInterface();
+
                 infinitumUI = new InfinitumUI();
+                expBarUI = new ExpBarUI();
+
                 infinitumUI.Initialize();
+                expBarUI.Initialize();
+
                 //infinitumUI.Visible = true;//static??
                 customUI.SetState(infinitumUI);
+                customUIBar.SetState(expBarUI);
 
             }
 
@@ -44,6 +53,10 @@ namespace Infinitum
             if (!Main.gameMenu && infinitumUI.Visible)
             {              
                 customUI?.Update(gameTime);
+            }
+            if (!Main.gameMenu)
+            {
+                customUIBar.Update(gameTime);
             }
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -61,6 +74,7 @@ namespace Infinitum
                             customUI.Draw(Main.spriteBatch, new GameTime());
                         }
                             
+                        customUIBar?.Draw(Main.spriteBatch, new GameTime());
                         return true;
                     },
                     InterfaceScaleType.UI)
