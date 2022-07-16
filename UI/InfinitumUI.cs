@@ -82,7 +82,7 @@ namespace Infinitum.UI
             activateStatsButton.Width.Set(180, 0);
             activateStatsButton.ChangeColor(Color.Pink);
 
-            
+
 
 
 
@@ -90,7 +90,7 @@ namespace Infinitum.UI
             marginLeft = 0;
 
             UIText costText = new UIText("Cost");
-            costText.Top.Set(marginTop -20, 0f);
+            costText.Top.Set(marginTop - 20, 0f);
             costText.Left.Set(marginLeft + 283, 0f);
             costText.Height.Set(20f, 0);
 
@@ -164,14 +164,14 @@ namespace Infinitum.UI
             InfinitumPanel.Height.Set(maxHeigth, 0f);
             InfinitumPanel.Width.Set(maxWidth, 0f);
             InfinitumPanel.PaddingBottom = 0f;
-            
 
-            InfinitumPanel.Left.Set((Main.screenWidth - InfinitumPanel.Width.Pixels) - (Main.screenWidth/2) + maxWidth/2, 0f);
-            InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels - (Main.screenHeight / 2) + maxHeigth/2, 0f);
+
+            InfinitumPanel.Left.Set((Main.screenWidth - InfinitumPanel.Width.Pixels) - (Main.screenWidth / 2) + maxWidth / 2, 0f);
+            InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels - (Main.screenHeight / 2) + maxHeigth / 2, 0f);
 
             addUIElementsToPanel();
 
-            
+
 
             Append(InfinitumPanel);
         }
@@ -207,7 +207,7 @@ namespace Infinitum.UI
                 skillsPanel.Append(el);
 
             skillsPanel.Append(skillScrollbar);
-            
+
 
             InfinitumPanel.Append(skillsPanel);
         }
@@ -243,7 +243,7 @@ namespace Infinitum.UI
         private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
             UIButton me = (UIButton)listeningElement.Parent;
-            stats.ApplyStats(me.OwnStat,me.Text == "+" ? true:false);
+            stats.ApplyStats(me.OwnStat, me.Text == "+" ? true : false);
             SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
         }
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
@@ -289,37 +289,37 @@ namespace Infinitum.UI
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: +{stats.AdditionalDefense}");
                         break;
                     case "Melee Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMeleeDamage*100:n2}%");               
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMeleeDamage * 100:n2}%");
                         break;
                     case "Melee Attack Speed":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMeleeAttackSpeed*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMeleeAttackSpeed * 100:n2}%");
                         break;
                     case "Life Regen":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalLifeRegen*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalLifeRegen * 100:n2}%");
                         break;
                     case "Life Steal":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.LifeSteal*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.LifeSteal * 100:n2}%");
                         break;
                     case "Magic Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMagicDamage*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMagicDamage * 100:n2}%");
                         break;
                     case "Mana Consumption":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: -{stats.ReducedManaConsumption*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: -{stats.ReducedManaConsumption * 100:n2}%");
                         break;
                     case "Ranged Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalRangedDamage*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalRangedDamage * 100:n2}%");
                         break;
                     case "Ammo Consumption":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AmmoConsumedReduction - 101}%");
                         break;
-                    case "Throwing  Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalthrowingDamage*100:n2}%");
+                    case "Movement Speed":
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {(stats.AdditionalMovementSpeed * 100):n2}%");
                         break;
-                    case "Throwing algo?":
-                        //((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[i]}: {stats.AdditionalLifeRegen:n2}");
+                    case "Global Critical Chance":
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: +{stats.AdditionalGlobalCriticalChance}%");
                         break;
                     case "Summon Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalsummonDamage*100:n2}%");
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalsummonDamage * 100:n2}%");
                         break;
                     case "Minion Capacity":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalSummonCapacity}");
@@ -330,7 +330,7 @@ namespace Infinitum.UI
                     default:
                         break;
                 }
-               // Main.NewText(uniqueID);
+                // Main.NewText(uniqueID);
 
             }
 

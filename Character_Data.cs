@@ -36,8 +36,8 @@ namespace Infinitum
             "Mana Consumption",
             "Ranged Damage",
             "Ammo Consumption",
-            "Movement speed",
-            "Throwing algo?",
+            "Movement Speed",
+            "Global Critical Chance",
             "Summon Damage",
             "Minion Capacity",
             "Pickaxe Power",
@@ -54,13 +54,16 @@ namespace Infinitum
             250,
             250,
             250,
-            0,
-            0,
+            750,
+            1000,
             250,
             5000,
             150,
             0
         };
+        private bool notFirstTime = false;
+        private string version = "0.42";
+        private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
         private int totalLevel = 0;
@@ -80,8 +83,8 @@ namespace Infinitum
         private float reducedManaConsumption = 0;
         private float additionalRangedDamage = 0;
         private int ammoConsumedReduction = 101;
-        private float additionalthrowingDamage = 0;
-        private float additionalthrowingAttackSpeed = 0;
+        private float additionalMovementSpeed = 0;
+        private int additionalGlobalCriticalChance = 0;
         private float additionalSummonDamage = 0;
         private int additionalSummonCapacity = 0;
         private float additionalPickingPower = 0;
@@ -107,7 +110,7 @@ namespace Infinitum
         public int AmmoConsumedReduction { get => ammoConsumedReduction; set => ammoConsumedReduction = value; }
         public static string[] SkillOrder { get => skillOrder; set => skillOrder = value; }
         public float ReducedManaConsumption { get => reducedManaConsumption; set => reducedManaConsumption = value; }
-        public float AdditionalthrowingDamage { get => additionalthrowingDamage; set => additionalthrowingDamage = value; }
+        public float AdditionalMovementSpeed { get => additionalMovementSpeed; set => additionalMovementSpeed = value; }
         public float AdditionalsummonDamage { get => additionalSummonDamage; set => additionalSummonDamage = value; }
         public int AdditionalSummonCapacity { get => additionalSummonCapacity; set => additionalSummonCapacity = value; }
         public float AdditionalPickingPower { get => additionalPickingPower; set => additionalPickingPower = value; }
@@ -115,12 +118,16 @@ namespace Infinitum
         public bool Activate { get => activate; set => activate = value; }
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
+        public int AdditionalGlobalCriticalChance { get => additionalGlobalCriticalChance; set => additionalGlobalCriticalChance = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
             showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
+            Main.NewText(notFirstTime);
+            if(messageReset)
+                Main.NewText("Skills Reset!");
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
@@ -169,6 +176,7 @@ namespace Infinitum
         {
             try
             {
+                string tempVer;
                 tag.TryGet("Level", out level);
                 tag.TryGet("ExpMultiplier", out expMultiplier);
                 tag.TryGet("Exp", out exp);
@@ -187,9 +195,21 @@ namespace Infinitum
                 tag.TryGet("SummonDamage", out additionalSummonDamage);
                 tag.TryGet("MinionCapacity", out additionalSummonCapacity);
                 tag.TryGet("PickaxePower", out additionalPickingPower);
+                tag.TryGet("MovementSpeed", out additionalMovementSpeed);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
+                tag.TryGet("NotFirstTime", out notFirstTime);
+                tag.TryGet("Version", out tempVer);
+                tag.TryGet("GlobalCriticalChance", out additionalGlobalCriticalChance);
 
+                if (!notFirstTime)
+                    displayNumbers = true;
 
+                if (tempVer != version)
+                {
+                    messageReset = true;
+                    resetCurrentSkills();
+                }
+                    
 
                 recentChanged = true;
             }
@@ -218,19 +238,17 @@ namespace Infinitum
             tag.Add("ManaConsumption", reducedManaConsumption);
             tag.Add("RangedDamage", additionalRangedDamage);
             tag.Add("RangedAmmoConsumption", ammoConsumedReduction);
-            //tag.Add("ThrowingDamage", additionalthrowingDamage);
-            //tag.Add("ThrowingAttackSpeed", additionalthrowingAttackSpeed);
             tag.Add("SummonDamage", additionalSummonDamage);
             tag.Add("MinionCapacity", additionalSummonCapacity);
             tag.Add("PickaxePower", additionalPickingPower);
             tag.Add("DisplayNumbers", displayNumbers);
-            //tag.Add("Version", "0.39");
+            tag.Add("MovementSpeed", additionalMovementSpeed);
+            tag.Add("GlobalCriticalChance", additionalGlobalCriticalChance);
+            tag.Add("NotFirstTime", true);
+            //tag.Add("FirstTime", true);
+            tag.Add("Version", version);
 
 
-        }
-        public Character_Data GetStats()
-        {
-            return this;
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
@@ -370,20 +388,29 @@ namespace Infinitum
                     }
                     break;
                 case "Movement Speed":
-                    //if (level >= skillCost[8])
-                    //{
-                    //    level -= skillCost[8];
-                    //    additionalMagicDamage += .01f;
-                    //}
-                    //additionalthrowingDamage += 1f;//dont Work
+                    if (level >= skillCost[9] && sum)
+                    {
+                        level -= skillCost[9];
+                        additionalMovementSpeed += .01f;
+                    }
+                    else if (!sum && additionalMovementSpeed > 0)
+                    {
+                        level += skillCost[9];
+                        additionalMovementSpeed -= 1;
+                    }
 
                     break;
                 case "Global Critical Chance":
-                    //if (level >= skillCost[9])
-                    //{
-                    //    level -= skillCost[9];
-                    //    additionalMagicDamage += .01f;
-                    //}
+                    if (level >= skillCost[10] && sum)
+                    {
+                        level -= skillCost[10];
+                        additionalGlobalCriticalChance += 1;
+                    }
+                    else if(!sum && additionalGlobalCriticalChance > 0)
+                    {
+                        level += skillCost[10];
+                        additionalGlobalCriticalChance--;
+                    }
                     break;
                 case "Summon Damage":
                     if (level >= skillCost[11] && sum)
@@ -444,12 +471,18 @@ namespace Infinitum
             player.GetDamage(DamageClass.Ranged) = player.GetDamage(DamageClass.Ranged) + additionalRangedDamage;
 
             //player.GetAttackSpeed(DamageClass.Ranged) = player.GetAttackSpeed(DamageClass.Ranged) + additionalRangeAttackSpeed;
-            player.GetDamage(DamageClass.Throwing) = player.GetDamage(DamageClass.Throwing) + additionalthrowingDamage;
+            player.GetDamage(DamageClass.Throwing) = player.GetDamage(DamageClass.Throwing) + additionalMovementSpeed;
             //player.GetAttackSpeed(DamageClass.Throwing) = player.GetAttackSpeed(DamageClass.Throwing) + additionalthrowingAttackSpeed;
             player.GetDamage(DamageClass.Summon) = player.GetDamage(DamageClass.Summon) + additionalSummonDamage;
             player.maxMinions = player.maxMinions + AdditionalSummonCapacity;
             player.manaCost = player.manaCost - reducedManaConsumption;
             player.pickSpeed = player.pickSpeed - additionalPickingPower;
+            player.accRunSpeed = player.accRunSpeed + additionalMovementSpeed;
+            player.moveSpeed = player.moveSpeed + additionalMovementSpeed;
+            player.maxRunSpeed = player.maxRunSpeed + additionalMovementSpeed;
+            player.GetCritChance(DamageClass.Melee) = player.GetCritChance(DamageClass.Melee) + additionalGlobalCriticalChance;
+            player.GetCritChance(DamageClass.Magic) = player.GetCritChance(DamageClass.Magic) + additionalGlobalCriticalChance;
+            player.GetCritChance(DamageClass.Ranged) = player.GetCritChance(DamageClass.Ranged) + additionalGlobalCriticalChance;
             getAdditionalsExp();
 
 
@@ -472,7 +505,6 @@ namespace Infinitum
                     default:
                         break;
                 }
-
         }
 
         private void getLifeSteal(int damage)
@@ -563,8 +595,8 @@ namespace Infinitum
             reducedManaConsumption = 0;
             additionalRangedDamage = 0;
             ammoConsumedReduction = 101;
-            additionalthrowingDamage = 0;
-            additionalthrowingAttackSpeed = 0;
+            additionalMovementSpeed = 0;
+            additionalGlobalCriticalChance = 0;
             additionalSummonDamage = 0;
             additionalSummonCapacity = 0;
             additionalPickingPower = 0;
