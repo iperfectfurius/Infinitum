@@ -28,16 +28,16 @@ namespace Infinitum
 
         private static string[] skillOrder = {
             "Defense",
-            "Melee Damage",
-            "Melee Attack Speed",
+            "Movement Speed",
             "Life Regen",
-            "Life Steal",
+            "Life Steal",           
+            "Global Critical Chance",
+            "Melee Damage",
+            "Melee Attack Speed",          
             "Magic Damage",
             "Mana Consumption",
             "Ranged Damage",
-            "Ammo Consumption",
-            "Movement Speed",
-            "Global Critical Chance",
+            "Ammo Consumption",           
             "Summon Damage",
             "Minion Capacity",
             "Pickaxe Power"
@@ -60,7 +60,7 @@ namespace Infinitum
             150,
         };
         private bool notFirstTime = false;
-        private string version = "0.42";
+        private string version = "0.43";
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
