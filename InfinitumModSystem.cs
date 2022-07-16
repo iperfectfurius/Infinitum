@@ -25,7 +25,7 @@ namespace Infinitum
         public static ModKeybind NumbersDisplay;
         public override void Load()
         {
-           // base.Load();
+            // base.Load();
 
             if (!Main.dedServ)
             {
@@ -50,18 +50,19 @@ namespace Infinitum
         public override void UpdateUI(GameTime gameTime)
         {
             _lastUpdateUiGameTime = gameTime;
-            if (!Main.gameMenu && infinitumUI.Visible)
-            {              
-                customUI?.Update(gameTime);
-            }
             if (!Main.gameMenu)
             {
                 customUIBar.Update(gameTime);
+            }         
+            if (!Main.gameMenu && infinitumUI.Visible)
+            {
+                customUI?.Update(gameTime);
             }
+
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-        {         
-            
+        {
+
             int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             if (mouseTextIndex != -1)
             {
@@ -69,12 +70,11 @@ namespace Infinitum
                     "InfinitumUI: Skill UI",
                     delegate
                     {
+                        customUIBar?.Draw(Main.spriteBatch, new GameTime());
                         if (InfinitumUI.Instance.Visible)
                         {
                             customUI.Draw(Main.spriteBatch, new GameTime());
                         }
-                            
-                        customUIBar?.Draw(Main.spriteBatch, new GameTime());
                         return true;
                     },
                     InterfaceScaleType.UI)
@@ -90,6 +90,6 @@ namespace Infinitum
         {
             customUI?.SetState(null);
         }
-        
+
     }
 }

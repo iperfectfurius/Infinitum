@@ -10,12 +10,12 @@ namespace Infinitum.UI
     internal class ExpBarUI : UIState
     {
         public static ExpBarUI Instance;
-        public UIPanel bar;
+        public DragableUIPanel bar;
         public UIPanel ExpBar;
         public UIText level;
         public Character_Data stats = null;
-        private const float maxWidth = 350f;
-        private const float maxHeigth = 14f;
+        private const float maxWidth = 245f;
+        private const float maxHeigth = 12f;
         private bool Visible = true;
 
 
@@ -29,15 +29,15 @@ namespace Infinitum.UI
 
             Visible = false;
             Instance = this;
-            bar = new UIPanel();
+            bar = new DragableUIPanel();
             bar.Height.Set(maxHeigth, 0f);
             bar.Width.Set(maxWidth, 0f);
-            bar.BorderColor = Color.Coral;
+            bar.BorderColor = new Color(0,0,0,50);
             bar.SetPadding(0);
 
 
-            bar.Left.Set((Main.screenWidth - bar.Width.Pixels) - (Main.screenWidth / 2) + maxWidth / 2, 0f);
-            bar.Top.Set(Main.screenHeight - bar.Height.Pixels - (Main.screenHeight / 2) + maxHeigth / 2, 0f);
+            bar.Left.Set(Main.screenWidth - maxWidth -50, 0f);
+            bar.Top.Set(71f, 0f);
 
             addUIElementsToPanel();
 
@@ -53,7 +53,7 @@ namespace Infinitum.UI
             ExpBar.Height.Set(maxHeigth-1, 0f);
             
             ExpBar.SetPadding(0);
-            ExpBar.BackgroundColor = Color.Green;
+            ExpBar.BackgroundColor = Color.Lime;
             ExpBar.BorderColor = new Color(0, 0, 0, 0);
 
             level = new UIText("0",0.8f);
@@ -61,7 +61,7 @@ namespace Infinitum.UI
             level.VAlign = level.HAlign = 0.5f;
 
             level.SetPadding(0);
-            level.TextColor = Color.Red;
+            level.TextColor = Color.Coral;
 
 
             bar.Append(ExpBar);
@@ -81,8 +81,9 @@ namespace Infinitum.UI
 
         private void UpdateAllStats()
         {
-            ExpBar.Width.Set(((((float)stats.Exp / stats._EXPTOLEVEL) * maxWidth) / 100) * 100,0);
-            level.SetText(stats.Level.ToString());
+            float percentExp = (float)stats.Exp / stats._EXPTOLEVEL;
+            ExpBar.Width.Set((( percentExp * maxWidth) / 100) * 100,0);
+            level.SetText($"{stats.Level}  ({(percentExp*100):n1}%)");
             RecalculateChildren();
         }
 
