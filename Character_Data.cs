@@ -555,7 +555,7 @@ namespace Infinitum
 
             if (ammoConsumedReduction < 101 && ammoConsumedReduction > 1)
             {
-                return !(Main.rand.Next(ammoConsumedReduction) <= Math.Abs(ammoConsumedReduction - 100));
+                return !(Main.rand.Next(100) <= Math.Abs(100 -ammoConsumedReduction));
             }
             return base.CanConsumeAmmo(weapon, ammo);
         }
