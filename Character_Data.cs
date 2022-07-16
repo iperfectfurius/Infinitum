@@ -40,8 +40,7 @@ namespace Infinitum
             "Global Critical Chance",
             "Summon Damage",
             "Minion Capacity",
-            "Pickaxe Power",
-            "Ranged Attack Speed",
+            "Pickaxe Power"
         };
         private static int[] skillCost =
         {
@@ -59,7 +58,6 @@ namespace Infinitum
             250,
             5000,
             150,
-            0
         };
         private bool notFirstTime = false;
         private string version = "0.42";
