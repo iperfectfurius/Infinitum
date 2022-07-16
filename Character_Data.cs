@@ -55,14 +55,14 @@ namespace Infinitum
             250,
             250,
             750,
-            0,
+            1000,
             250,
             5000,
             150,
             0
         };
         private bool notFirstTime = false;
-        private string version = "0.41";
+        private string version = "0.42";
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -84,7 +84,7 @@ namespace Infinitum
         private float additionalRangedDamage = 0;
         private int ammoConsumedReduction = 101;
         private float additionalMovementSpeed = 0;
-        private float additionalthrowingAttackSpeed = 0;
+        private int additionalGlobalCriticalChance = 0;
         private float additionalSummonDamage = 0;
         private int additionalSummonCapacity = 0;
         private float additionalPickingPower = 0;
@@ -118,6 +118,7 @@ namespace Infinitum
         public bool Activate { get => activate; set => activate = value; }
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
+        public int AdditionalGlobalCriticalChance { get => additionalGlobalCriticalChance; set => additionalGlobalCriticalChance = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
@@ -198,6 +199,7 @@ namespace Infinitum
                 tag.TryGet("DisplayNumbers", out displayNumbers);
                 tag.TryGet("NotFirstTime", out notFirstTime);
                 tag.TryGet("Version", out tempVer);
+                tag.TryGet("GlobalCriticalChance", out additionalGlobalCriticalChance);
 
                 if (!notFirstTime)
                     displayNumbers = true;
@@ -241,6 +243,7 @@ namespace Infinitum
             tag.Add("PickaxePower", additionalPickingPower);
             tag.Add("DisplayNumbers", displayNumbers);
             tag.Add("MovementSpeed", additionalMovementSpeed);
+            tag.Add("GlobalCriticalChance", additionalGlobalCriticalChance);
             tag.Add("NotFirstTime", true);
             //tag.Add("FirstTime", true);
             tag.Add("Version", version);
@@ -398,11 +401,16 @@ namespace Infinitum
 
                     break;
                 case "Global Critical Chance":
-                    //if (level >= skillCost[9])
-                    //{
-                    //    level -= skillCost[9];
-                    //    additionalMagicDamage += .01f;
-                    //}
+                    if (level >= skillCost[10] && sum)
+                    {
+                        level -= skillCost[10];
+                        additionalGlobalCriticalChance += 1;
+                    }
+                    else if(!sum && additionalGlobalCriticalChance > 0)
+                    {
+                        level += skillCost[10];
+                        additionalGlobalCriticalChance--;
+                    }
                     break;
                 case "Summon Damage":
                     if (level >= skillCost[11] && sum)
@@ -472,6 +480,9 @@ namespace Infinitum
             player.accRunSpeed = player.accRunSpeed + additionalMovementSpeed;
             player.moveSpeed = player.moveSpeed + additionalMovementSpeed;
             player.maxRunSpeed = player.maxRunSpeed + additionalMovementSpeed;
+            player.GetCritChance(DamageClass.Melee) = player.GetCritChance(DamageClass.Melee) + additionalGlobalCriticalChance;
+            player.GetCritChance(DamageClass.Magic) = player.GetCritChance(DamageClass.Magic) + additionalGlobalCriticalChance;
+            player.GetCritChance(DamageClass.Ranged) = player.GetCritChance(DamageClass.Ranged) + additionalGlobalCriticalChance;
             getAdditionalsExp();
 
 
@@ -585,7 +596,7 @@ namespace Infinitum
             additionalRangedDamage = 0;
             ammoConsumedReduction = 101;
             additionalMovementSpeed = 0;
-            additionalthrowingAttackSpeed = 0;
+            additionalGlobalCriticalChance = 0;
             additionalSummonDamage = 0;
             additionalSummonCapacity = 0;
             additionalPickingPower = 0;
