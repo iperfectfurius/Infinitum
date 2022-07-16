@@ -312,8 +312,8 @@ namespace Infinitum.UI
                     case "Ammo Consumption":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AmmoConsumedReduction - 101}%");
                         break;
-                    case "Throwing  Damage":
-                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalthrowingDamage*100:n2}%");
+                    case "Movement Speed":
+                        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {(stats.AdditionalMovementSpeed*100):n2}%");
                         break;
                     case "Throwing algo?":
                         //((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{Character_Data.SkillOrder[i]}: {stats.AdditionalLifeRegen:n2}");
