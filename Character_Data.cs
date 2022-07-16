@@ -124,7 +124,6 @@ namespace Infinitum
             showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
             ExpBarUI.Instance.stats = this;
-            Main.NewText(notFirstTime);
             if(messageReset)
                 Main.NewText("Skills Reset!");
         }

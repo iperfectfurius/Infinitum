@@ -14,7 +14,7 @@ namespace Infinitum.UI
         public UIPanel ExpBar;
         public Character_Data stats = null;
         private const float maxWidth = 350f;
-        private const float maxHeigth = 15f;
+        private const float maxHeigth = 14f;
         private bool Visible = true;
 
 
@@ -31,6 +31,7 @@ namespace Infinitum.UI
             bar = new UIPanel();
             bar.Height.Set(maxHeigth, 0f);
             bar.Width.Set(maxWidth, 0f);
+            bar.BorderColor = Color.Coral;
             bar.SetPadding(0);
 
 
@@ -48,10 +49,11 @@ namespace Infinitum.UI
         {
             ExpBar = new UIPanel();
             ExpBar.Width.Set(5, 0f);
-            ExpBar.Height.Set(7, 0f);
+            ExpBar.Height.Set(maxHeigth-1, 0f);
             
             ExpBar.SetPadding(0);
-            ExpBar.BackgroundColor = Color.Red;
+            ExpBar.BackgroundColor = Color.Green;
+            ExpBar.BorderColor = new Color(0, 0, 0, 0);
             bar.Append(ExpBar);
         }
         public override void Draw(SpriteBatch spriteBatch)
