@@ -61,7 +61,7 @@ namespace Infinitum
             150,
             0
         };
-        private bool firstTime = true;
+        private bool notFirstTime = false;
         private float exp = 0.0f;
         private int level = 0;
         private int totalLevel = 0;
@@ -122,7 +122,7 @@ namespace Infinitum
             player = currentPLayer;
             showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
-            Main.NewText(firstTime);
+            Main.NewText(notFirstTime);
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
@@ -191,9 +191,9 @@ namespace Infinitum
                 tag.TryGet("PickaxePower", out additionalPickingPower);
                 tag.TryGet("MovementSpeed", out additionalMovementSpeed);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
-                tag.TryGet("FirstTime", out firstTime);
+                tag.TryGet("NotFirstTime", out notFirstTime);
 
-                if (firstTime)
+                if (!notFirstTime)
                 {
                     displayNumbers = true;
                 }
@@ -230,6 +230,7 @@ namespace Infinitum
             tag.Add("PickaxePower", additionalPickingPower);
             tag.Add("DisplayNumbers", displayNumbers);
             tag.Add("MovementSpeed", additionalMovementSpeed);
+            tag.Add("NotFirstTime", true);
             //tag.Add("FirstTime", true);
             //tag.Add("Version", "0.39");
 
