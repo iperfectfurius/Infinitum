@@ -53,7 +53,7 @@ namespace Infinitum
             if (mouseTextIndex != -1)
             {
                 layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
-                    "YourMod: A Description",
+                    "InfinitumUI: Skill UI",
                     delegate
                     {
                         if (InfinitumUI.Instance.Visible)
