@@ -62,6 +62,8 @@ namespace Infinitum
             0
         };
         private bool notFirstTime = false;
+        private string version = "0.41";
+        private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
         private int totalLevel = 0;
@@ -123,6 +125,8 @@ namespace Infinitum
             showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
             Main.NewText(notFirstTime);
+            if(messageReset)
+                Main.NewText("Skills Reset!");
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
@@ -171,6 +175,7 @@ namespace Infinitum
         {
             try
             {
+                string tempVer;
                 tag.TryGet("Level", out level);
                 tag.TryGet("ExpMultiplier", out expMultiplier);
                 tag.TryGet("Exp", out exp);
@@ -192,12 +197,18 @@ namespace Infinitum
                 tag.TryGet("MovementSpeed", out additionalMovementSpeed);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
                 tag.TryGet("NotFirstTime", out notFirstTime);
+                tag.TryGet("Version", out tempVer);
 
                 if (!notFirstTime)
-                {
                     displayNumbers = true;
+
+                if (tempVer != version)
+                {
+                    messageReset = true;
+                    resetCurrentSkills();
                 }
                     
+
                 recentChanged = true;
             }
             catch
@@ -232,7 +243,7 @@ namespace Infinitum
             tag.Add("MovementSpeed", additionalMovementSpeed);
             tag.Add("NotFirstTime", true);
             //tag.Add("FirstTime", true);
-            //tag.Add("Version", "0.39");
+            tag.Add("Version", version);
 
 
         }
@@ -379,7 +390,7 @@ namespace Infinitum
                         level -= skillCost[9];
                         additionalMovementSpeed += .01f;
                     }
-                    else if(!sum && additionalMovementSpeed > 0)
+                    else if (!sum && additionalMovementSpeed > 0)
                     {
                         level += skillCost[9];
                         additionalMovementSpeed -= 1;
