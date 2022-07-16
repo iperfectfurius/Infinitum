@@ -30,14 +30,14 @@ namespace Infinitum
             "Defense",
             "Movement Speed",
             "Life Regen",
-            "Life Steal",           
+            "Life Steal",
             "Global Critical Chance",
             "Melee Damage",
-            "Melee Attack Speed",          
+            "Melee Attack Speed",
             "Magic Damage",
             "Mana Consumption",
             "Ranged Damage",
-            "Ammo Consumption",           
+            "Ammo Consumption",
             "Summon Damage",
             "Minion Capacity",
             "Pickaxe Power"
@@ -124,7 +124,7 @@ namespace Infinitum
             showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
             ExpBarUI.Instance.stats = this;
-            if(messageReset)
+            if (messageReset)
                 Main.NewText("Skills Reset!");
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
@@ -207,7 +207,7 @@ namespace Infinitum
                     messageReset = true;
                     resetCurrentSkills();
                 }
-                    
+
 
                 recentChanged = true;
             }
@@ -287,129 +287,130 @@ namespace Infinitum
                         additionalDefense--;
                     }
                     break;
-                case "Melee Damage":
+                case "Movement Speed":
                     if (level >= skillCost[1] && sum)
                     {
                         level -= skillCost[1];
+                        additionalMovementSpeed += .01f;
+                    }
+                    else if (!sum && additionalMovementSpeed > 0)
+                    {
+                        level += skillCost[1];
+                        additionalMovementSpeed -= .01f;
+                    }
+                    break;
+                case "Life Regen":
+                    if (level >= skillCost[2] && sum)
+                    {
+                        level -= skillCost[2];
+                        AdditionalLifeRegen += 0.25f;
+                    }
+                    else if (!sum && additionalLifeRegen > 0)
+                    {
+                        level += skillCost[2];
+                        AdditionalLifeRegen -= 0.25f;
+                    }
+                    break;
+                case "Life Steal":
+                    if (level >= skillCost[3] && sum)
+                    {
+                        level -= skillCost[3];
+                        LifeSteal += 0.00025f;
+                    }
+                    else if (!sum && lifeSteal > 0)
+                    {
+                        level += skillCost[3];
+                        LifeSteal -= 0.00025f;
+                    }
+                    break;
+                case "Global Critical Chance":
+                    if (level >= skillCost[4] && sum)
+                    {
+                        level -= skillCost[4];
+                        additionalGlobalCriticalChance += 1;
+                    }
+                    else if (!sum && additionalGlobalCriticalChance > 0)
+                    {
+                        level += skillCost[4];
+                        additionalGlobalCriticalChance--;
+                    }
+                    break;
+                case "Melee Damage":
+                    if (level >= skillCost[5] && sum)
+                    {
+                        level -= skillCost[5];
                         additionalMeleeDamage += .01f;
                     }
                     else if (!sum && additionalMeleeDamage > 0)
                     {
-                        level += skillCost[1];
+                        level += skillCost[5];
                         additionalMeleeDamage -= 0.01f;
                     }
 
                     break;
                 case "Melee Attack Speed":
-                    if (level >= skillCost[2] && sum)
+                    if (level >= skillCost[6] && sum)
                     {
-                        level -= skillCost[2];
+                        level -= skillCost[6];
                         additionalMeleeAttackSpeed += 0.01f;
                     }
                     else if (!sum && additionalMeleeAttackSpeed > 0)
                     {
-                        level += skillCost[2];
+                        level += skillCost[6];
                         additionalMeleeAttackSpeed -= 0.01f;
                     }
 
                     break;
-                case "Life Regen":
-                    if (level >= skillCost[3] && sum)
-                    {
-                        level -= skillCost[3];
-                        AdditionalLifeRegen += 0.25f;
-                    }
-                    else if (!sum && additionalLifeRegen > 0)
-                    {
-                        level += skillCost[3];
-                        AdditionalLifeRegen -= 0.25f;
-                    }
-                    break;
-                case "Life Steal":
-                    if (level >= skillCost[4] && sum)
-                    {
-                        level -= skillCost[4];
-                        LifeSteal += 0.00025f;
-                    }
-                    else if (!sum && lifeSteal > 0)
-                    {
-                        level += skillCost[4];
-                        LifeSteal -= 0.00025f;
-                    }
-                    break;
+
                 case "Magic Damage":
-                    if (level >= skillCost[5] & sum)
+                    if (level >= skillCost[7] & sum)
                     {
-                        level -= skillCost[5];
+                        level -= skillCost[7];
                         additionalMagicDamage += .01f;
                     }
                     else if (!sum && additionalMagicDamage > 0)
                     {
-                        level += skillCost[5];
+                        level += skillCost[7];
                         additionalMagicDamage -= .01f;
                     }
                     break;
                 case "Mana Consumption":
-                    if (level >= skillCost[6] && sum)
+                    if (level >= skillCost[8] && sum)
                     {
-                        level -= skillCost[6];
+                        level -= skillCost[8];
                         reducedManaConsumption += 0.01f;
                     }
                     else if (!sum && reducedManaConsumption > 0)
                     {
-                        level += skillCost[6];
+                        level += skillCost[8];
                         reducedManaConsumption -= 0.01f;
                     }
                     break;
                 case "Ranged Damage":
-                    if (level >= skillCost[7] && sum)
+                    if (level >= skillCost[9] && sum)
                     {
-                        level -= skillCost[7];
+                        level -= skillCost[9];
                         additionalRangedDamage += 0.01f;
                     }
                     else if (!sum && additionalRangedDamage > 0)
                     {
-                        level += skillCost[7];
+                        level += skillCost[9];
                         additionalRangedDamage -= 0.01f;
                     }
                     break;
                 case "Ammo Consumption":
-                    if (level >= skillCost[8] && sum)
+                    if (level >= skillCost[10] && sum)
                     {
-                        level -= skillCost[8];
+                        level -= skillCost[10];
                         ammoConsumedReduction -= 1;
                     }
                     else if (!sum && ammoConsumedReduction < 101)
                     {
-                        level += skillCost[8];
+                        level += skillCost[10];
                         ammoConsumedReduction += 1;
                     }
                     break;
-                case "Movement Speed":
-                    if (level >= skillCost[9] && sum)
-                    {
-                        level -= skillCost[9];
-                        additionalMovementSpeed += .01f;
-                    }
-                    else if (!sum && additionalMovementSpeed > 0)
-                    {
-                        level += skillCost[9];
-                        additionalMovementSpeed -= .01f;
-                    }
 
-                    break;
-                case "Global Critical Chance":
-                    if (level >= skillCost[10] && sum)
-                    {
-                        level -= skillCost[10];
-                        additionalGlobalCriticalChance += 1;
-                    }
-                    else if(!sum && additionalGlobalCriticalChance > 0)
-                    {
-                        level += skillCost[10];
-                        additionalGlobalCriticalChance--;
-                    }
-                    break;
                 case "Summon Damage":
                     if (level >= skillCost[11] && sum)
                     {
