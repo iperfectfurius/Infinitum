@@ -394,7 +394,7 @@ namespace Infinitum
                     else if (!sum && additionalMovementSpeed > 0)
                     {
                         level += skillCost[9];
-                        additionalMovementSpeed -= 1;
+                        additionalMovementSpeed -= .01f;
                     }
 
                     break;
