@@ -45,16 +45,16 @@ namespace Infinitum
         private static int[] skillCost =
         {
             1000,
+            750,
+            500,
+            500,
+            1000,
+            250,
+            250,
             250,
             250,
             250,
             500,
-            250,
-            250,
-            250,
-            250,
-            750,
-            1000,
             250,
             5000,
             150,
@@ -123,7 +123,7 @@ namespace Infinitum
             player = currentPLayer;
             showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
-            Main.NewText(notFirstTime);
+            ExpBarUI.Instance.stats = this;
             if(messageReset)
                 Main.NewText("Skills Reset!");
         }

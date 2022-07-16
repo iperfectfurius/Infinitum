@@ -17,23 +17,32 @@ namespace Infinitum
     internal class InfinitumModSystem : ModSystem
     {
         private UserInterface customUI;
+        private UserInterface customUIBar;
         internal InfinitumUI infinitumUI;
+        internal ExpBarUI expBarUI;
         private GameTime _lastUpdateUiGameTime;
         public static ModKeybind UIKey;
         public static ModKeybind NumbersDisplay;
         public override void Load()
         {
-           // base.Load();
+            // base.Load();
 
             if (!Main.dedServ)
             {
                 UIKey = KeybindLoader.RegisterKeybind(Mod, "Show UI", Keys.L);
                 NumbersDisplay = KeybindLoader.RegisterKeybind(Mod, "Hide Numbers", Keys.P);
                 customUI = new UserInterface();
+                customUIBar = new UserInterface();
+
                 infinitumUI = new InfinitumUI();
+                expBarUI = new ExpBarUI();
+
                 infinitumUI.Initialize();
+                expBarUI.Initialize();
+
                 //infinitumUI.Visible = true;//static??
                 customUI.SetState(infinitumUI);
+                customUIBar.SetState(expBarUI);
 
             }
 
@@ -41,14 +50,19 @@ namespace Infinitum
         public override void UpdateUI(GameTime gameTime)
         {
             _lastUpdateUiGameTime = gameTime;
+            if (!Main.gameMenu)
+            {
+                customUIBar.Update(gameTime);
+            }         
             if (!Main.gameMenu && infinitumUI.Visible)
-            {              
+            {
                 customUI?.Update(gameTime);
             }
+
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-        {         
-            
+        {
+
             int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             if (mouseTextIndex != -1)
             {
@@ -56,11 +70,11 @@ namespace Infinitum
                     "InfinitumUI: Skill UI",
                     delegate
                     {
+                        customUIBar?.Draw(Main.spriteBatch, new GameTime());
                         if (InfinitumUI.Instance.Visible)
                         {
                             customUI.Draw(Main.spriteBatch, new GameTime());
                         }
-                            
                         return true;
                     },
                     InterfaceScaleType.UI)
@@ -76,6 +90,6 @@ namespace Infinitum
         {
             customUI?.SetState(null);
         }
-        
+
     }
 }

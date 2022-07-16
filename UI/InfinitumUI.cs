@@ -214,7 +214,6 @@ namespace Infinitum.UI
 
         private void ScrollWheelSkill(UIScrollWheelEvent evt, UIElement listeningElement)
         {
-
             //provisional
             foreach (UIElement uiel in skillsElementsPanel)
                 uiel.Top.Set(uiel.Top.Pixels + (evt.ScrollWheelValue < 0 ? -40 : 40), 0);
