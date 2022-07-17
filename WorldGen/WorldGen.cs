@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
@@ -12,7 +13,7 @@ namespace Infinitum.WorldGen
     internal class WorldGen : GlobalTile
     {
         private static Mod myMod = ModLoader.GetMod("Infinitum");
-        private float baseXP = 12f;
+        private float baseXP = 5f;
         private bool notUnloadedTiles = true;
         private const int CHANCE_BASE = 1000000;
         public HashSet<string> bannedTiles = new HashSet<string>();
@@ -21,18 +22,19 @@ namespace Infinitum.WorldGen
 
         public override bool Drop(int i, int j, int type)
         {
-            if (bannedTiles.Contains($"{i}-{j}"))
+            string pos = $"{i}-{j}";
+            if (bannedTiles.Contains(pos))
             {
-                Infinitum.instance.ChatMessage("Placed by player!!");
+                Task.Run(() => bannedTiles.Remove(pos));
                 return base.Drop(i, j, type);
             }
 
 
-            var item = TileLoader.GetTile(type);
-            if (item != null)
+            var tile = TileLoader.GetTile(type);
+            if (tile != null && isOre(type))
             {
 
-                float xp = (item.MinPick / baseXP);
+                float xp = (tile.MinPick / baseXP);
 
                 if (Main.netMode != NetmodeID.Server)
                 {
@@ -45,7 +47,7 @@ namespace Infinitum.WorldGen
                     myPacket.Write(xp);
                     myPacket.Send();
                 }
-
+                
                 //Infinitum.instance.ChatMessage("Modded");
                 return base.Drop(i, j, type);
 
@@ -53,44 +55,58 @@ namespace Infinitum.WorldGen
 
             switch (type)
             {
-                case (int)TileIDEnum.Copper:
-                    Tile t = new Tile();
+                //case (int)TileIDEnum.Copper:
+                    
 
-                    break;
+                //    break;
                 default:
-
+                    isOre(type);
                     break;
             }
             //Infinitum.instance.ChatMessage("Vanilla");
             return base.Drop(i, j, type);
 
         }
+        private bool isOre(int type)
+        {
+            bool isOre = TileID.Sets.Ore[type];
+            return isOre;
+        }
+        private bool isOre(ModTile tile,int type)
+        {
+
+            return true;
+        }
+
         public override void PlaceInWorld(int i, int j, int type, Item item)
         {
             base.PlaceInWorld(i, j, type, item);
 
-            //for(int x = 0; x < bannedTiles.Count; x += 2)
-            //{
-
-            //}
-            if (item.material)
+            if (isOre(item.createTile))
             {
                 string pos = $"{i}-{j}";
                 if (!bannedTiles.Contains(pos))
                     bannedTiles.Add(pos);
-                else
-                    Main.NewText("Ya esta dentro");
-                Main.NewText(bannedTiles.Count);
             }
 
 
 
-            Infinitum.instance.ChatMessage($"{i} : {j}");
+
+            //Infinitum.instance.ChatMessage($"{i} : {j}");
 
         }
-        private bool isIn()
+        public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
+        {          
+            base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
+            if (!fail) Infinitum.instance.ChatMessage("Tile killed");
+
+        }
+
+        public override void Unload()
         {
-            return false;
+            //save actual banned tiles?
+            bannedTiles.Clear();
+            base.Unload();
         }
     }
 

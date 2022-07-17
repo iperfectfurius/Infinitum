@@ -3,6 +3,7 @@ using Infinitum.Items.Ores;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -21,6 +22,8 @@ namespace Infinitum.WorldGen.Tiles
             Main.tileBlockLight[Type] = true;
             Main.tileLighted[Type] = true;
             Main.tileLavaDeath[Type] = false;
+            TileID.Sets.Ore[Type] = true;
+            Main.tileOreFinderPriority[Type] = 100;
             AddMapEntry(new Color(200, 200, 200));
             TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
             TileObjectData.addTile(Type);

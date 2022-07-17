@@ -25,6 +25,7 @@ namespace Infinitum.Items.Ores
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.width = 20;
 			Item.height = 20;
+			Item.material = true;
 			Item.rare = ItemRarityID.LightRed;
 			Item.consumable = true;
 			Item.autoReuse = true;
