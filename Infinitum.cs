@@ -13,6 +13,7 @@ namespace Infinitum
         {
             base.Load();
             instance = this;
+            
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {//revisar
