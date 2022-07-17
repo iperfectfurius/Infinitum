@@ -52,6 +52,6 @@ namespace Infinitum.Items.Ores
 			grabRange += 25;
 			base.GrabRange(player, ref grabRange);
 		}
-		
-	}
+
+    }
 }

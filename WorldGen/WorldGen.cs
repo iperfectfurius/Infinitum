@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -12,9 +13,21 @@ namespace Infinitum.WorldGen
     {
         private static Mod myMod = ModLoader.GetMod("Infinitum");
         private float baseXP = 12f;
+        private bool notUnloadedTiles = true;
         private const int CHANCE_BASE = 1000000;
+        public HashSet<string> bannedTiles = new HashSet<string>();
+
+        //private Dictionary<int[], int> map = new Dictionary<int[], int>();
+
         public override bool Drop(int i, int j, int type)
         {
+            if (bannedTiles.Contains($"{i}-{j}"))
+            {
+                Infinitum.instance.ChatMessage("Placed by player!!");
+                return base.Drop(i, j, type);
+            }
+
+
             var item = TileLoader.GetTile(type);
             if (item != null)
             {
@@ -33,7 +46,7 @@ namespace Infinitum.WorldGen
                     myPacket.Send();
                 }
 
-                Infinitum.instance.ChatMessage("Modded");
+                //Infinitum.instance.ChatMessage("Modded");
                 return base.Drop(i, j, type);
 
             }
@@ -48,14 +61,36 @@ namespace Infinitum.WorldGen
 
                     break;
             }
-            Infinitum.instance.ChatMessage("Vanilla");
+            //Infinitum.instance.ChatMessage("Vanilla");
             return base.Drop(i, j, type);
 
         }
         public override void PlaceInWorld(int i, int j, int type, Item item)
         {
-
             base.PlaceInWorld(i, j, type, item);
+
+            //for(int x = 0; x < bannedTiles.Count; x += 2)
+            //{
+
+            //}
+            if (item.material)
+            {
+                string pos = $"{i}-{j}";
+                if (!bannedTiles.Contains(pos))
+                    bannedTiles.Add(pos);
+                else
+                    Main.NewText("Ya esta dentro");
+                Main.NewText(bannedTiles.Count);
+            }
+
+
+
+            Infinitum.instance.ChatMessage($"{i} : {j}");
+
+        }
+        private bool isIn()
+        {
+            return false;
         }
     }
 

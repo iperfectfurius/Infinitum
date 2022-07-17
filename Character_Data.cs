@@ -148,6 +148,7 @@ namespace Infinitum
             showDamageText(CombatTextPos["xp"], $"+ {experienceObtained:n1} XP", CombatText.HealMana);
             totalNpcsKilled++;
             recentChanged = true;
+            ChatMessage(Main.netMode.ToString());
 
         }
         private void UpdateLevel()
@@ -574,7 +575,7 @@ namespace Infinitum
             {
                 ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text + " Desde Server"), Color.Red);
             }
-            else if (Main.netMode == NetmodeID.SinglePlayer)
+            else
             {
                 Main.NewText(text + " Desde single");
             }
