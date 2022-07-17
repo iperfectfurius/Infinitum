@@ -23,12 +23,7 @@ namespace Infinitum.WorldGen
 
                 if (Main.netMode != NetmodeID.Server)
                 {
-                    Task.Run(async delegate
-                    {
-                        await Task.Delay(1000);
-                        Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
-                    });
-
+                    Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
                 }
 
                 else if (Main.netMode == NetmodeID.Server)
