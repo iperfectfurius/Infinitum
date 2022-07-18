@@ -64,6 +64,9 @@ namespace Infinitum.WorldBuilding
                 case (int)TileIDEnum.Tin:
                     xp = 12.5f;
                     break;
+                case (int)TileIDEnum.Lead:
+                    xp = 15f;
+                    break;
                 case (int)TileIDEnum.Iron:
                     xp = 15f;
                     break;
