@@ -148,7 +148,6 @@ namespace Infinitum
             showDamageText(CombatTextPos["xp"], $"+ {experienceObtained:n1} XP", CombatText.HealMana);
             totalNpcsKilled++;
             recentChanged = true;
-            ChatMessage(Main.netMode.ToString());
 
         }
         private void UpdateLevel()

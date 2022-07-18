@@ -20,7 +20,6 @@ namespace Infinitum.WorldGen
 
         public override bool Drop(int i, int j, int type)
         {
-            Main.NewText(type);
             if (!isOre(type)) return base.Drop(i, j, type);
 
             float xp = 0;
@@ -132,7 +131,6 @@ namespace Infinitum.WorldGen
                     xp = 130f;
                     break;
                 default:
-
                     break;
             }
 
@@ -160,7 +158,6 @@ namespace Infinitum.WorldGen
         }
         private bool isOre(ModTile tile, int type)
         {
-
             return true;
         }
 
@@ -174,12 +171,10 @@ namespace Infinitum.WorldGen
                 bannedTiles.Add(pos);
             }
 
-
         }
         public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
             base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
-
 
         }
 
