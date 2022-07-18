@@ -1,11 +1,13 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Infinitum.ModPrefixes
 {
     internal class LegendaryPlus : ModPrefix
     {
         private readonly byte _power;
+        
         public override float RollChance(Item item)
             => 3.5f;
 
@@ -24,13 +26,6 @@ namespace Infinitum.ModPrefixes
         public LegendaryPlus(byte power)
         {
             _power = power;
-        }
-
-
-        public override void Apply(Item item)
-        {
-          
-            
         }
 
         public override void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult, ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus)
@@ -52,5 +47,6 @@ namespace Infinitum.ModPrefixes
             float multiplier = 1f + 0.05f * _power;
             valueMult *= multiplier;
         }
+        
     }
 }

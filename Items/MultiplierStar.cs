@@ -52,7 +52,7 @@ namespace Infinitum.Items
         public override void AddRecipes()
         {
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ModContent.ItemType<SanjacobosOre>(), 100);
+			recipe.AddIngredient(ModContent.ItemType<SanjacobosOre>(), 25);
 			recipe.Register();
 
 			base.AddRecipes();

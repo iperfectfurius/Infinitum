@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-namespace Infinitum.WorldGen
+namespace Infinitum.WorldBuilding
 {
     internal class WorldGen : GlobalTile
     {
@@ -63,6 +63,9 @@ namespace Infinitum.WorldGen
                     break;
                 case (int)TileIDEnum.Tin:
                     xp = 12.5f;
+                    break;
+                case (int)TileIDEnum.Lead:
+                    xp = 15f;
                     break;
                 case (int)TileIDEnum.Iron:
                     xp = 15f;

@@ -1,4 +1,4 @@
-﻿using Infinitum.WorldGen.Tiles;
+﻿using Infinitum.WorldBuilding.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,21 +21,12 @@ namespace Infinitum.Items.Ores
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
-			Item.useStyle = ItemUseStyleID.Swing;
+			Item.maxStack = 99999;
 			Item.width = 20;
 			Item.height = 20;
 			Item.material = true;
 			Item.rare = ItemRarityID.LightRed;
-			Item.consumable = true;
-			Item.autoReuse = true;
-			Item.useTime = 10;
-			Item.useAnimation = 10;
-			Item.reuseDelay = 0;
-			Item.useTurn = true;
 			Item.createTile = ModContent.TileType<SanjacobosMineralTile>();
-
-
 		}
 		public override bool OnPickup(Player player)
 		{
@@ -48,7 +39,12 @@ namespace Infinitum.Items.Ores
 			//return false; ç
 			return true;
 		}
-		public override void GrabRange(Player player, ref int grabRange)
+        public override bool CanUseItem(Player player)
+        {
+			return false;
+        }
+
+        public override void GrabRange(Player player, ref int grabRange)
 		{
 			grabRange += 25;
 			base.GrabRange(player, ref grabRange);
