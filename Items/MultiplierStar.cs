@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Infinitum;
 using Terraria.Audio;
+using Infinitum.Items.Ores;
 
 namespace Infinitum.Items
 {
@@ -48,5 +49,13 @@ namespace Infinitum.Items
 			grabRange += 35;
 			base.GrabRange(player, ref grabRange);
 		}
-	}
+        public override void AddRecipes()
+        {
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<SanjacobosOre>(), 100);
+			recipe.Register();
+
+			base.AddRecipes();
+        }
+    }
 }

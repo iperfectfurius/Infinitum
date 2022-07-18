@@ -2,6 +2,10 @@ using Terraria.ModLoader;
 using Terraria;
 using System.IO;
 using Infinitum.UI;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.Chat;
+using Microsoft.Xna.Framework;
 
 namespace Infinitum
 {
@@ -13,6 +17,7 @@ namespace Infinitum
         {
             base.Load();
             instance = this;
+            
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {//revisar
@@ -24,6 +29,18 @@ namespace Infinitum
         {//test myplayer
             Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
         }
-        
+
+        public void ChatMessage(string text)
+        {
+
+            if (Main.netMode == NetmodeID.Server)
+            {
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
+            }
+            else if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                Main.NewText(text);
+            }
+        }
     }
 }
