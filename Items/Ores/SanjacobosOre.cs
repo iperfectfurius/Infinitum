@@ -27,8 +27,6 @@ namespace Infinitum.Items.Ores
 			Item.material = true;
 			Item.rare = ItemRarityID.LightRed;
 			Item.createTile = ModContent.TileType<SanjacobosMineralTile>();
-			
-
 		}
 		public override bool OnPickup(Player player)
 		{

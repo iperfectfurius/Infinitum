@@ -19,6 +19,7 @@ namespace Infinitum
     {
         private Player player = Main.CurrentPlayer;
         private bool recentChanged = false;
+        private string lastHeldItem;
         private Dictionary<string, int> CombatTextPos = new()
         {
             { "xp", 145},
@@ -455,6 +456,11 @@ namespace Infinitum
         }
         public override void PostUpdateEquips()
         {
+            if(player.HeldItem.Name != lastHeldItem)
+            {
+                lastHeldItem = player.HeldItem.Name;
+                recentChanged = true;
+            }
             //consistency...
             if (!activate)
             {
@@ -543,13 +549,6 @@ namespace Infinitum
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 
         }
-
-        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
-        {
-
-
-            base.ModifyManaCost(item, ref reduce, ref mult);
-        }
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
 
@@ -558,13 +557,6 @@ namespace Infinitum
                 return !(Main.rand.Next(100) <= Math.Abs(100 -ammoConsumedReduction));
             }
             return base.CanConsumeAmmo(weapon, ammo);
-        }
-
-        public override void PostItemCheck()
-        {
-
-            base.PostItemCheck();
-
         }
 
         public static void ChatMessage(string text = "")

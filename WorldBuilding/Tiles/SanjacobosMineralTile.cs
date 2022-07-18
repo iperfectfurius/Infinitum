@@ -36,7 +36,10 @@ namespace Infinitum.WorldBuilding.Tiles
             base.KillTile(i, j, ref fail, ref effectOnly, ref noItem);
         }
 
-
+        public override void KillMultiTile(int i, int j, int frameX, int frameY)
+        {
+            base.KillMultiTile(i, j, frameX, frameY);
+        }
         public override bool Drop(int i, int j)
         {
             
