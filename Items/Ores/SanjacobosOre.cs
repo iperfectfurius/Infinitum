@@ -1,4 +1,4 @@
-﻿using Infinitum.WorldGen.Tiles;
+﻿using Infinitum.WorldBuilding.Tiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +32,7 @@ namespace Infinitum.Items.Ores
 			Item.useTime = 10;
 			Item.useAnimation = 10;
 			Item.reuseDelay = 0;
+			Item.UseSound = SoundID.Tink;
 			Item.useTurn = true;
 			Item.createTile = ModContent.TileType<SanjacobosMineralTile>();
 

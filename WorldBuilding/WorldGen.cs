@@ -8,7 +8,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-namespace Infinitum.WorldGen
+namespace Infinitum.WorldBuilding
 {
     internal class WorldGen : GlobalTile
     {

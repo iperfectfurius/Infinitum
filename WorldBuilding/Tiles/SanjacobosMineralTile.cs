@@ -7,12 +7,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
-namespace Infinitum.WorldGen.Tiles
+namespace Infinitum.WorldBuilding.Tiles
 {
     internal class SanjacobosMineralTile : ModTile
     {
-        //private static Mod myMod = ModLoader.GetMod("Infinitum");
-        //ModTile tile = TileLoader.get
         public override void SetStaticDefaults()
         {
             this.MinPick = 35;
