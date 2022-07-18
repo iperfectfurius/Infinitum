@@ -21,7 +21,7 @@ namespace Infinitum.Items.Ores
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 99999;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.width = 20;
 			Item.height = 20;
