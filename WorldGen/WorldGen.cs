@@ -13,13 +13,14 @@ namespace Infinitum.WorldGen
     internal class WorldGen : GlobalTile
     {
         private static Mod myMod = ModLoader.GetMod("Infinitum");
-        private float baseXP = 5f;
+        private float baseXP = 2f;
         private bool notUnloadedTiles = true;
         private const int CHANCE_BASE = 1000000;
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
         {
+            Main.NewText(type);
             if (!isOre(type)) return base.Drop(i, j, type);
 
             float xp = 0;
@@ -131,6 +132,7 @@ namespace Infinitum.WorldGen
                     xp = 130f;
                     break;
                 default:
+
                     break;
             }
 
@@ -152,8 +154,9 @@ namespace Infinitum.WorldGen
         }
         private bool isOre(int type)
         {
-            bool isOre = TileID.Sets.Ore[type];
-            return isOre;
+            if (TileID.Sets.Ore[type] || type == 67 || type == 66 || type == 63 || type == 65 || type == 64 || type == 68)
+                return true;
+            return false;
         }
         private bool isOre(ModTile tile, int type)
         {
