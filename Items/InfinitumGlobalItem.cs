@@ -21,7 +21,7 @@ namespace Infinitum.Items
                     case "UnrealPlus":
                     case "MythicalPlus":
                     case "LegendaryPlus":
-                        tooltips.Insert(6, new TooltipLine(Mod, "Inifnitum", "[c/FF0000:+ 25% Global XP!]"));
+                        tooltips.Insert(tooltips.Count,new TooltipLine(Mod, "Inifnitum", "[c/FF0000:+25% More XP]"));
                         
                         break;
                     default:
