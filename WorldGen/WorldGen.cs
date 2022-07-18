@@ -18,10 +18,11 @@ namespace Infinitum.WorldGen
         private const int CHANCE_BASE = 1000000;
         public HashSet<string> bannedTiles = new HashSet<string>();
 
-        //private Dictionary<int[], int> map = new Dictionary<int[], int>();
-
         public override bool Drop(int i, int j, int type)
         {
+            if (!isOre(type)) return base.Drop(i, j, type);
+
+            float xp = 0;
             string pos = $"{i}-{j}";
             if (bannedTiles.Contains(pos))
             {
@@ -31,10 +32,10 @@ namespace Infinitum.WorldGen
 
 
             var tile = TileLoader.GetTile(type);
-            if (tile != null && isOre(type))
+            if (tile != null)
             {
 
-                float xp = (tile.MinPick / baseXP);
+                xp = (tile.MinPick / baseXP);
 
                 if (Main.netMode != NetmodeID.Server)
                 {
@@ -47,22 +48,87 @@ namespace Infinitum.WorldGen
                     myPacket.Write(xp);
                     myPacket.Send();
                 }
-                
+
                 //Infinitum.instance.ChatMessage("Modded");
                 return base.Drop(i, j, type);
 
             }
+            xp = 0;
+            //Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp();
 
             switch (type)
             {
-                //case (int)TileIDEnum.Copper:
+                case (int)TileIDEnum.Copper:
+                    xp = 12.5f;
+                    break;
+                case (int)TileIDEnum.Tin:
+                    xp = 12.5f;
+                    break;
+                case (int)TileIDEnum.Iron:
+                    xp = 15f;
+                    break;
+                case (int)TileIDEnum.Silver:
+                    xp = 17.5f;
+                    break;
+                case (int)TileIDEnum.Tungsten:
+                    xp = 20f;
+                    break;
+                case (int)TileIDEnum.Gold:
+                    xp = 22.5f;
+                    break;
+                case (int)TileIDEnum.Platinum:
+                    xp = 25f;
+                    break;
+                case (int)TileIDEnum.Meteorite:
+                    xp = 27.5f;
+                    break;
+                case (int)TileIDEnum.Demonite:
+                    xp = 30f;
+                    break;
+                case (int)TileIDEnum.Crimtane:
+                    xp = 32.5f;
+                    break;
+                case (int)TileIDEnum.Hellstone:
+                    xp = 35f;
+                    break;
+                case (int)TileIDEnum.Cobalt:
+                    xp = 37.5f;
+                    break;
+                case (int)TileIDEnum.Palladium:
+                    xp = 40f;
+                    break;
+                case (int)TileIDEnum.Mythril:
+                    xp = 42.5f;
+                    break;
+                case (int)TileIDEnum.Orichalcum:
+                    xp = 45f;
+                    break;
+                case (int)TileIDEnum.Adamantite:
+                    xp = 47.5f;
+                    break;
+                case (int)TileIDEnum.Titanium:
+                    xp = 50f;
+                    break;
+                case (int)TileIDEnum.Chlorophyte:
+                    xp = 52.5f;
+                    break;
                     
-
-                //    break;
                 default:
-                    isOre(type);
                     break;
             }
+
+            if (Main.netMode != NetmodeID.Server)
+            {
+                Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
+            }
+
+            else if (Main.netMode == NetmodeID.Server)//too much traffic?
+            {
+                ModPacket myPacket = myMod.GetPacket();
+                myPacket.Write(xp);
+                myPacket.Send();
+            }
+
             //Infinitum.instance.ChatMessage("Vanilla");
             return base.Drop(i, j, type);
 
@@ -72,7 +138,7 @@ namespace Infinitum.WorldGen
             bool isOre = TileID.Sets.Ore[type];
             return isOre;
         }
-        private bool isOre(ModTile tile,int type)
+        private bool isOre(ModTile tile, int type)
         {
 
             return true;
@@ -85,20 +151,15 @@ namespace Infinitum.WorldGen
             if (isOre(item.createTile))
             {
                 string pos = $"{i}-{j}";
-                if (!bannedTiles.Contains(pos))
-                    bannedTiles.Add(pos);
+                bannedTiles.Add(pos);
             }
 
 
-
-
-            //Infinitum.instance.ChatMessage($"{i} : {j}");
-
         }
         public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
-        {          
+        {
             base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
-            if (!fail) Infinitum.instance.ChatMessage("Tile killed");
+
 
         }
 
