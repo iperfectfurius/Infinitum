@@ -112,7 +112,24 @@ namespace Infinitum.WorldGen
                 case (int)TileIDEnum.Chlorophyte:
                     xp = 52.5f;
                     break;
-                    
+                case (int)TileIDEnum.Amethyst:
+                    xp = 100f;
+                    break;
+                case (int)TileIDEnum.Topaz:
+                    xp = 105f;
+                    break;
+                case (int)TileIDEnum.Sapphire:
+                    xp = 110f;
+                    break;
+                case (int)TileIDEnum.Emerald:
+                    xp = 115f;
+                    break;
+                case (int)TileIDEnum.Ruby:
+                    xp = 120;
+                    break;
+                case (int)TileIDEnum.Diamond:
+                    xp = 130f;
+                    break;
                 default:
                     break;
             }

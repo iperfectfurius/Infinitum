@@ -603,7 +603,6 @@ namespace Infinitum
 
             recentChanged = true;
         }
-
         private void returnLevels()
         {
 
