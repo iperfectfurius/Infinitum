@@ -55,6 +55,10 @@ namespace Infinitum.Items
 			recipe.AddIngredient(ModContent.ItemType<SanjacobosOre>(), 25);
 			recipe.Register();
 
+			recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<SanjacobosBar>(), 6);
+			recipe.Register();
+
 			base.AddRecipes();
         }
     }
