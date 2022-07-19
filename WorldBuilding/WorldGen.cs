@@ -15,7 +15,7 @@ namespace Infinitum.WorldBuilding
         private static Mod myMod = ModLoader.GetMod("Infinitum");
         private float baseXP = 2f;
         private bool notUnloadedTiles = true;
-        private const int CHANCE_BASE = 1000000;
+        private const int CHANCE_BASE = 100;
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
@@ -30,25 +30,27 @@ namespace Infinitum.WorldBuilding
                 return base.Drop(i, j, type);
             }
 
-
             var tile = TileLoader.GetTile(type);
             if (tile != null)
             {
 
                 xp = (tile.MinPick / baseXP);
+                Infinitum.instance.ChatMessage(tile.GetType().ToString());
 
                 if (Main.netMode != NetmodeID.Server)
                 {
                     Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
-                }
 
+
+                }
                 else if (Main.netMode == NetmodeID.Server)
                 {
                     ModPacket myPacket = myMod.GetPacket();
                     myPacket.Write(xp);
                     myPacket.Send();
                 }
-
+                if (Main.rand.NextBool(CHANCE_BASE))
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
                 //Infinitum.instance.ChatMessage("Modded");
                 return base.Drop(i, j, type);
 
@@ -148,6 +150,9 @@ namespace Infinitum.WorldBuilding
                 myPacket.Write(xp);
                 myPacket.Send();
             }
+
+            if (Main.rand.NextBool(CHANCE_BASE))
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
 
             //Infinitum.instance.ChatMessage("Vanilla");
             return base.Drop(i, j, type);
