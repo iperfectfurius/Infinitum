@@ -123,6 +123,14 @@ namespace Infinitum.Items
             recipe.AddIngredient(ItemID.LunarBar, 4);
             recipe.Register();
 
+            recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.FragmentNebula, 2);
+            recipe.AddIngredient(ItemID.FragmentSolar, 2);
+            recipe.AddIngredient(ItemID.FragmentVortex, 2);
+            recipe.AddIngredient(ItemID.FragmentStardust, 2);
+            recipe.Register();
+
+
             base.AddRecipes();
         }
     }
