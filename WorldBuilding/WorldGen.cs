@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using System.Linq;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -15,7 +16,8 @@ namespace Infinitum.WorldBuilding
         private static Mod myMod = ModLoader.GetMod("Infinitum");
         private float baseXP = 2f;
         private bool notUnloadedTiles = true;
-        private const int CHANCE_BASE = 100;
+        private const int CHANCE_BASE = 125;
+        private int[] blockCountedAsORe = new int[] {63,64,65,66,67,68,262,263,264,265,266,267};
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
@@ -35,13 +37,14 @@ namespace Infinitum.WorldBuilding
             {
 
                 xp = (tile.MinPick / baseXP);
-                Infinitum.instance.ChatMessage(tile.GetType().ToString());
+
+                if(tile.GetType().Name == "SanjacobosMineralTile")
+                        xp += 50f;
+
 
                 if (Main.netMode != NetmodeID.Server)
                 {
                     Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
-
-
                 }
                 else if (Main.netMode == NetmodeID.Server)
                 {
@@ -51,7 +54,6 @@ namespace Infinitum.WorldBuilding
                 }
                 if (Main.rand.NextBool(CHANCE_BASE))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
-                //Infinitum.instance.ChatMessage("Modded");
                 return base.Drop(i, j, type);
 
             }
@@ -117,21 +119,27 @@ namespace Infinitum.WorldBuilding
                 case (int)TileIDEnum.Chlorophyte:
                     xp = 52.5f;
                     break;
+                case (int)TileIDEnum.AmethystGemspark:
                 case (int)TileIDEnum.Amethyst:
                     xp = 100f;
                     break;
+                case (int)TileIDEnum.TopazGemspark:
                 case (int)TileIDEnum.Topaz:
                     xp = 105f;
                     break;
+                case (int)TileIDEnum.SapphireGemspark:
                 case (int)TileIDEnum.Sapphire:
                     xp = 110f;
                     break;
+                case (int)TileIDEnum.EmeraldGemspark:
                 case (int)TileIDEnum.Emerald:
                     xp = 115f;
                     break;
+                case (int)TileIDEnum.RubyGemspark:
                 case (int)TileIDEnum.Ruby:
                     xp = 120;
                     break;
+                case (int)TileIDEnum.DiamondGemspark:
                 case (int)TileIDEnum.Diamond:
                     xp = 130f;
                     break;
@@ -160,7 +168,7 @@ namespace Infinitum.WorldBuilding
         }
         private bool isOre(int type)
         {
-            if (TileID.Sets.Ore[type] || type == 67 || type == 66 || type == 63 || type == 65 || type == 64 || type == 68)
+            if (TileID.Sets.Ore[type] || Array.Exists(blockCountedAsORe, x => x == type))
                 return true;
             return false;
         }
