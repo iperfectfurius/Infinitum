@@ -17,7 +17,7 @@ namespace Infinitum.WorldBuilding
         private float baseXP = 2f;
         private bool notUnloadedTiles = true;
         private const int CHANCE_BASE = 125;
-        private int[] blockCountedAsORe = new int[] {63,64,65,66,67,68,262,263,264,265,266,267};
+        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267 };
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
@@ -38,8 +38,8 @@ namespace Infinitum.WorldBuilding
 
                 xp = (tile.MinPick / baseXP);
 
-                if(tile.GetType().Name == "SanjacobosMineralTile")
-                        xp += 50f;
+                if (tile.GetType().Name == "SanjacobosMineralTile")
+                    xp += 50f;
 
 
                 if (Main.netMode != NetmodeID.Server)
@@ -48,9 +48,8 @@ namespace Infinitum.WorldBuilding
                 }
                 else if (Main.netMode == NetmodeID.Server)
                 {
-                    ModPacket myPacket = myMod.GetPacket();
-                    myPacket.Write(xp);
-                    myPacket.Send();
+                    sendXPToPlayers(xp);
+                    
                 }
                 if (Main.rand.NextBool(CHANCE_BASE))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
@@ -58,7 +57,6 @@ namespace Infinitum.WorldBuilding
 
             }
             xp = 0;
-            //Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp();
 
             switch (type)
             {
@@ -154,9 +152,7 @@ namespace Infinitum.WorldBuilding
 
             else if (Main.netMode == NetmodeID.Server)//too much traffic?
             {
-                ModPacket myPacket = myMod.GetPacket();
-                myPacket.Write(xp);
-                myPacket.Send();
+                sendXPToPlayers(xp);
             }
 
             if (Main.rand.NextBool(CHANCE_BASE))
@@ -168,9 +164,10 @@ namespace Infinitum.WorldBuilding
         }
         private bool isOre(int type)
         {
-            if (TileID.Sets.Ore[type] || Array.Exists(blockCountedAsORe, x => x == type))
+            if (TileID.Sets.Ore[type] || blockCountedAsORe.Contains(type))
                 return true;
             return false;
+            
         }
         private bool isOre(ModTile tile, int type)
         {
@@ -199,6 +196,15 @@ namespace Infinitum.WorldBuilding
             //save actual banned tiles?
             bannedTiles.Clear();
             base.Unload();
+        }
+        private void sendXPToPlayers(float xp)
+        {
+            Task.Run(() =>
+            {
+                ModPacket myPacket = myMod.GetPacket();
+                myPacket.Write(xp);
+                myPacket.Send();
+            });
         }
     }
 

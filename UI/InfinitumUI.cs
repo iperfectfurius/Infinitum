@@ -61,7 +61,7 @@ namespace Infinitum.UI
                 marginTop += 20f;
             }
             //0.30
-            
+
             reset = new UIButton("Reset Skills", restartProgress);
             reset.Top.Set(marginTop, 0f);
             reset.Left.Set(marginLeft, 0f);
@@ -271,7 +271,7 @@ namespace Infinitum.UI
             statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {(stats.ExpMultiplier * stats.MoreExpMultiplier) * 100:n1}%");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             statsTexts[(int)statsOrder.TotalKills].SetText("Total Kills: " + stats.TotalNpcsKilled);
-           statsTexts[(int)statsOrder.AverageXP].SetText("Average XP: " + stats.getAvgXP());
+            statsTexts[(int)statsOrder.AverageXP].SetText("Average XP: " + stats.getAvgXP());
             activateStatsButton.Text = stats.Activate ? "Disable Stats" : "Enable Stats";
             numbers.Text = stats.DisplayNumbers ? "Disable Numbers" : "Enable Numbers";
 

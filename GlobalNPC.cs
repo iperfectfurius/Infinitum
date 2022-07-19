@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using System.Threading.Tasks;
 
 namespace Infinitum
 {
@@ -18,15 +19,19 @@ namespace Infinitum
 
 		public override void OnKill(NPC npc)
 		{
-			Main.NewText("what");
 
 			float xp = GetXpFromNPC(npc);
 
 			if (Main.netMode == NetmodeID.Server)
 			{
-				ModPacket myPacket = myMod.GetPacket();
-				myPacket.Write(xp);
-				myPacket.Send();
+				//This helps in performance??
+				Task.Run(() =>
+                {
+					ModPacket myPacket = myMod.GetPacket();
+					myPacket.Write(xp);
+					myPacket.Send();
+				});
+				
 			}
 			else if (Main.netMode == NetmodeID.SinglePlayer)
 			{
