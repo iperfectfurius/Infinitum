@@ -14,14 +14,12 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = ModLoader.GetMod("Infinitum");
-	
 		private float GetXpFromNPC(NPC target) => (float)target.defense + 0.5f * (float)(target.lifeMax / 4.5);
 
-		
 		public override void OnKill(NPC npc)
 		{
-			
-			base.OnKill(npc);
+			Main.NewText("what");
+
 			float xp = GetXpFromNPC(npc);
 
 			if (Main.netMode == NetmodeID.Server)
@@ -32,8 +30,11 @@ namespace Infinitum
 			}
 			else if (Main.netMode == NetmodeID.SinglePlayer)
 			{
+				
 				addXpToPlayer(xp);
+
 			}
+			base.OnKill(npc);
 		}
 			
 		public static void ChatMessage(string text)
@@ -78,6 +79,21 @@ namespace Infinitum
 			npc.defense += (int)(npc.defense * 0.10f);
 
 			base.OnSpawn(npc, source);
+        }
+        public override void SetupShop(int type, Chest shop, ref int nextSlot)
+        {
+
+            if (type == NPCID.Merchant)
+            {
+                shop.item[nextSlot].SetDefaults(ModContent.ItemType<MultiplierStar>());
+                shop.item[nextSlot].value = 0;
+                shop.item[nextSlot].shopCustomPrice = Item.sellPrice(platinum: 2);
+
+                nextSlot++;
+
+
+            }
+            //base.SetupShop(type, shop, ref nextSlot);
         }
 
     }

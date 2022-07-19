@@ -12,7 +12,7 @@ namespace Infinitum.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star Multiplier EXP");
-			Tooltip.SetDefault("LOL");
+			Tooltip.SetDefault("LOL +(2.5%) XP!");
 		}
 
 		public override void SetDefaults()
@@ -22,11 +22,11 @@ namespace Infinitum.Items
 			Item.height = 25;
 			Item.rare = ItemRarityID.Orange;
 			Item.consumable = true;
-			Item.UseSound = SoundID.DD2_BallistaTowerShot;
+			Item.UseSound = SoundID.Item129;
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.autoReuse = true;
-			Item.useTime = 10;
-			Item.useAnimation = 10;
+			Item.useTime = 1;
+			Item.useAnimation = 1;
 			Item.reuseDelay = 0;
 			Item.useTurn = true;
 			
@@ -55,7 +55,12 @@ namespace Infinitum.Items
 			recipe.AddIngredient(ModContent.ItemType<SanjacobosOre>(), 25);
 			recipe.Register();
 
+			recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<SanjacobosBar>(), 6);
+			recipe.Register();
+
 			base.AddRecipes();
         }
+		
     }
 }

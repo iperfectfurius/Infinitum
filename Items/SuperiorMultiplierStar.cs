@@ -45,7 +45,7 @@ namespace Infinitum.Items
 			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
 			{
 				player.GetModPlayer<Character_Data>().AddXpMultiplier(0.075f);
-				SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+				SoundEngine.PlaySound(SoundID.Item113);
 			}
 				
 			return false; ;
