@@ -35,11 +35,11 @@ namespace Infinitum
 
             if (Main.netMode == NetmodeID.Server)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text + " Desde Server"), Color.Red);
             }
             else if (Main.netMode == NetmodeID.SinglePlayer)
             {
-                Main.NewText(text);
+                Main.NewText(text + " Desde single");
             }
         }
     }

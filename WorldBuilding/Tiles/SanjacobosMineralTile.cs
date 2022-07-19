@@ -11,11 +11,11 @@ namespace Infinitum.WorldBuilding.Tiles
 {
     internal class SanjacobosMineralTile : ModTile
     {
-        private int baseChance = 250;
+        private int baseChance = 75;
         public override void SetStaticDefaults()
         {
             this.MinPick = 35;
-            this.MineResist = 3f;
+            this.MineResist = 1f;
             Main.tileSolid[Type] = true;
             Main.tileMergeDirt[Type] = true;
             Main.tileBlockLight[Type] = true;
