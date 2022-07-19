@@ -23,7 +23,12 @@ namespace Infinitum.WorldBuilding
         public override bool Drop(int i, int j, int type)
         {
 
-            if (!isOre(type)) return base.Drop(i, j, type);
+            if (!isOre(type))
+            {
+                if (Main.rand.NextBool(CHANCE_BASE * 25))
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+                return base.Drop(i, j, type);             
+            }
 
             float xp = 0;
             string pos = $"{i}-{j}";

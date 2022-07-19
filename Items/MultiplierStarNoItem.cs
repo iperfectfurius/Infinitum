@@ -13,7 +13,7 @@ namespace Infinitum.Items
         
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Star Multiplier EXP");
+            DisplayName.SetDefault("Star Multiplier EXP(No item)");
             Tooltip.SetDefault("LOL +(2.5%) XP!");
         }
 
@@ -23,7 +23,8 @@ namespace Infinitum.Items
             Item.width = 25;
             Item.height = 25;
             Item.rare = ItemRarityID.Orange;
-            Item.consumable = true;
+            Item.consumable = false;
+            Item.stack = 1;
             
         }
 
@@ -44,7 +45,7 @@ namespace Infinitum.Items
         {
             if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
             {
-                player.GetModPlayer<Character_Data>().AddXpMultiplier(0.025f);
+                player.GetModPlayer<Character_Data>().AddXpMultiplier(0.025f * Item.stack);
                 SoundEngine.PlaySound(SoundID.Item129);
             }
 
