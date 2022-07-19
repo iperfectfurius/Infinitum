@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
@@ -21,6 +22,8 @@ namespace Infinitum
         private Player player = Main.CurrentPlayer;
         private bool recentChanged = false;
         private string lastHeldItem;
+        private List<float> avgXP =  new List<float>() {0};
+        public float getAvgXP() => (float)Queryable.Average(avgXP.AsQueryable());
         private Dictionary<string, int> CombatTextPos = new()
         {
             { "xp", 155},
@@ -149,6 +152,10 @@ namespace Infinitum
             UpdateLevel();
             showDamageText(CombatTextPos["xp"], $"+ {experienceObtained:n1} XP", CombatText.HealMana);
             totalNpcsKilled++;
+
+            if (avgXP.Count > 100)
+                avgXP.RemoveRange(0,50);
+            avgXP.Add(experienceObtained);
             recentChanged = true;
 
         }
@@ -543,8 +550,9 @@ namespace Infinitum
             if (activate && target.netID != 488)
                 getLifeSteal(damage);
             base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
-        }
 
+        }
+        
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
             if (activate && target.netID != 488)
