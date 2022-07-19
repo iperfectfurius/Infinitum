@@ -12,7 +12,7 @@ namespace Infinitum.Items
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star Multiplier EXP");
-			Tooltip.SetDefault("LOL");
+			Tooltip.SetDefault("LOL +(2.5%) XP!");
 		}
 
 		public override void SetDefaults()
@@ -25,8 +25,8 @@ namespace Infinitum.Items
 			Item.UseSound = SoundID.DD2_BallistaTowerShot;
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.autoReuse = true;
-			Item.useTime = 10;
-			Item.useAnimation = 10;
+			Item.useTime = 1;
+			Item.useAnimation = 1;
 			Item.reuseDelay = 0;
 			Item.useTurn = true;
 			
