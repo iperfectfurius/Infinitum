@@ -61,5 +61,6 @@ namespace Infinitum.Items
 
 			base.AddRecipes();
         }
+		
     }
 }

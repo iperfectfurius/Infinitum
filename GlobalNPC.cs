@@ -14,10 +14,15 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = ModLoader.GetMod("Infinitum");
-	
+		public bool HasBeenHitByPlayer;
 		private float GetXpFromNPC(NPC target) => (float)target.defense + 0.5f * (float)(target.lifeMax / 4.5);
 
-		
+		public override bool InstancePerEntity => true;
+
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
+		{
+			return lateInstantiation && entity.townNPC;
+		}
 		public override void OnKill(NPC npc)
 		{
 			
@@ -78,6 +83,21 @@ namespace Infinitum
 			npc.defense += (int)(npc.defense * 0.10f);
 
 			base.OnSpawn(npc, source);
+        }
+        public override void SetupShop(int type, Chest shop, ref int nextSlot)
+        {
+
+			if(type == NPCID.Merchant)
+            {
+				shop.item[nextSlot].SetDefaults(ModContent.ItemType<MultiplierStar>());
+				shop.item[nextSlot].value = 0;
+				shop.item[nextSlot].shopCustomPrice = Item.sellPrice(platinum:2);
+
+				nextSlot++;
+
+                
+			}
+			//base.SetupShop(type, shop, ref nextSlot);
         }
 
     }
