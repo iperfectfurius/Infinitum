@@ -243,24 +243,24 @@ namespace Infinitum.UI
         {
             UIButton me = (UIButton)listeningElement.Parent;
             stats.ApplyStats(me.OwnStat, me.Text == "+" ? true : false);
-            SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+            SoundEngine.PlaySound(SoundID.AchievementComplete);
         }
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.resetCurrentSkills();
-            SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+            SoundEngine.PlaySound(SoundID.Camera);
         }
         private void activateStats(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.Activate = !stats.Activate;
             stats.RecentChanged = true;
-            SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+            SoundEngine.PlaySound(SoundID.ChesterOpen);
         }
         private void activateNumbers(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.DisplayNumbers = !stats.DisplayNumbers;
             stats.RecentChanged = true;
-            SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
+            SoundEngine.PlaySound(SoundID.AchievementComplete);
 
         }
         private void UpdateAllStats()

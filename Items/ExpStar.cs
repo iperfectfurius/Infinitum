@@ -22,7 +22,7 @@ namespace Infinitum.Items
 			Item.height = 25;
 			Item.rare = ItemRarityID.Orange;
 			Item.consumable = true;
-			Item.UseSound = SoundID.DD2_BallistaTowerShot;
+			Item.UseSound = SoundID.Item2;
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.autoReuse = true;
 			Item.useTime = 15;

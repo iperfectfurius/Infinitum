@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -162,6 +163,8 @@ namespace Infinitum
 
             showDamageText(CombatTextPos["addedLevels"], $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
             showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
+
+            SoundEngine.PlaySound(SoundID.Chat);
 
         }
         public void AddXpMultiplier(float multiplier)
