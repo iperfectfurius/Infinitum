@@ -22,8 +22,8 @@ namespace Infinitum
         private string lastHeldItem;
         private Dictionary<string, int> CombatTextPos = new()
         {
-            { "xp", 145},
-            { "addedLevels", 180},
+            { "xp", 155},
+            { "addedLevels", 190},
             { "currentLevels", 50}
         };
 
