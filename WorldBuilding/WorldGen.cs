@@ -14,7 +14,7 @@ namespace Infinitum.WorldBuilding
     internal class WorldGen : GlobalTile
     {
         private static Mod myMod = ModLoader.GetMod("Infinitum");
-        private float baseXP = 2f;
+        private float baseXP = 0.5f;
         private bool notUnloadedTiles = true;
         private const int CHANCE_BASE = 125;
         private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267 };
@@ -22,6 +22,7 @@ namespace Infinitum.WorldBuilding
 
         public override bool Drop(int i, int j, int type)
         {
+
             if (!isOre(type)) return base.Drop(i, j, type);
 
             float xp = 0;
@@ -36,10 +37,10 @@ namespace Infinitum.WorldBuilding
             if (tile != null)
             {
 
-                xp = (tile.MinPick / baseXP);
+                xp = (tile.MinPick * baseXP);
 
                 if (tile.GetType().Name == "SanjacobosMineralTile")
-                    xp += 50f;
+                    xp += 35f;
 
 
                 if (Main.netMode != NetmodeID.Server)
@@ -52,11 +53,10 @@ namespace Infinitum.WorldBuilding
                     
                 }
                 if (Main.rand.NextBool(CHANCE_BASE))
-                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
 
             }
-            xp = 0;
 
             switch (type)
             {
@@ -156,7 +156,7 @@ namespace Infinitum.WorldBuilding
             }
 
             if (Main.rand.NextBool(CHANCE_BASE))
-                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
 
             //Infinitum.instance.ChatMessage("Vanilla");
             return base.Drop(i, j, type);

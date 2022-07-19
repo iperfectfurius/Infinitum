@@ -25,7 +25,6 @@ namespace Infinitum.Items
 			Item.useTime = 10;
 			Item.useAnimation = 10;
 			Item.reuseDelay = 0;
-			Item.useTurn = true;
 
 
 		}
