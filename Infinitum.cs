@@ -21,8 +21,9 @@ namespace Infinitum
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {//revisar
-            base.HandlePacket(reader, whoAmI);
             AddXPToPlayer(reader.ReadSingle());
+            base.HandlePacket(reader, whoAmI);
+        
 
         }
         private void AddXPToPlayer(float xp)
