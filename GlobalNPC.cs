@@ -41,8 +41,7 @@ namespace Infinitum
 			}
 			base.OnKill(npc);
 		}
-			
-		public static void ChatMessage(string text)
+        public static void ChatMessage(string text)
 		{
 			
 			if (Main.netMode == NetmodeID.Server)
@@ -78,12 +77,17 @@ namespace Infinitum
 		}
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
+			
+			
+			//base.OnSpawn(npc, source);
+        }
+        public override void SetDefaults(NPC npc)
+        {
 			npc.life += (int)(npc.life * 0.25f);
 			npc.lifeMax += (int)(npc.lifeMax * 0.25f);
 			npc.damage += (int)(npc.damage * 0.10f);
 			npc.defense += (int)(npc.defense * 0.10f);
-
-			base.OnSpawn(npc, source);
+			base.SetDefaults(npc);
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {
