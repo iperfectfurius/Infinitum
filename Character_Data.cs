@@ -49,30 +49,30 @@ namespace Infinitum
         };
         private static int[] skillCost =
         {
-            1000,
-            750,
-            500,
-            500,
-            1000,
             250,
+            185,
+            125,
+            125,
             250,
-            250,
-            250,
-            250,
-            500,
-            250,
-            5000,
-            150,
+            60,
+            60,
+            60,
+            60,
+            60,
+            125,
+            60,
+            1250,
+            40,
         };
         private bool notFirstTime = false;
-        private string version = "0.43";
+        private string version = "0.55";
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
         private int totalLevel = 0;
         private float expMultiplier = 1.0f;
         private float moreExpMultiplier = 1.0f;
-        private const int EXPTOLEVEL = 15000;
+        private const int EXPTOLEVEL = 60000;
         private long totalNpcsKilled = 0;
         private bool activate = true;
         private bool displayNumbers = true;

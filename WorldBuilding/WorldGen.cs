@@ -14,15 +14,33 @@ namespace Infinitum.WorldBuilding
     internal class WorldGen : GlobalTile
     {
         private static Mod myMod = ModLoader.GetMod("Infinitum");
-        private float baseXP = 2f;
+        private float baseXP = 0.5f;
+        private float accumulatedXP = 0;
+        private bool haveXPAccumulated = false;
+        private Task timer;
         private bool notUnloadedTiles = true;
         private const int CHANCE_BASE = 125;
-        private int[] blockCountedAsORe = new int[] {63,64,65,66,67,68,262,263,264,265,266,267};
+        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, };
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
         {
-            if (!isOre(type)) return base.Drop(i, j, type);
+
+            if (!isOre(type))
+            {
+                int specificChance = 25;
+
+                //This can avoid spam XP from trees.
+                if (type == ItemID.Mushroom)//tree Works a bit different 
+                {
+                    specificChance -= 23;
+                    sendAccumulatedXPFromTrees(1.5f);
+                }
+
+                if (Main.rand.NextBool(CHANCE_BASE * specificChance))
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+                return base.Drop(i, j, type);
+            }
 
             float xp = 0;
             string pos = $"{i}-{j}";
@@ -36,10 +54,10 @@ namespace Infinitum.WorldBuilding
             if (tile != null)
             {
 
-                xp = (tile.MinPick / baseXP);
+                xp = (tile.MinPick * baseXP);
 
-                if(tile.GetType().Name == "SanjacobosMineralTile")
-                        xp += 50f;
+                if (tile.GetType().Name == "SanjacobosMineralTile")
+                    xp += 35f;
 
 
                 if (Main.netMode != NetmodeID.Server)
@@ -48,17 +66,14 @@ namespace Infinitum.WorldBuilding
                 }
                 else if (Main.netMode == NetmodeID.Server)
                 {
-                    ModPacket myPacket = myMod.GetPacket();
-                    myPacket.Write(xp);
-                    myPacket.Send();
+                    sendXPToPlayers(xp);
+
                 }
                 if (Main.rand.NextBool(CHANCE_BASE))
-                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
 
             }
-            xp = 0;
-            //Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp();
 
             switch (type)
             {
@@ -154,13 +169,11 @@ namespace Infinitum.WorldBuilding
 
             else if (Main.netMode == NetmodeID.Server)//too much traffic?
             {
-                ModPacket myPacket = myMod.GetPacket();
-                myPacket.Write(xp);
-                myPacket.Send();
+                sendXPToPlayers(xp);
             }
 
             if (Main.rand.NextBool(CHANCE_BASE))
-                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
 
             //Infinitum.instance.ChatMessage("Vanilla");
             return base.Drop(i, j, type);
@@ -168,9 +181,10 @@ namespace Infinitum.WorldBuilding
         }
         private bool isOre(int type)
         {
-            if (TileID.Sets.Ore[type] || Array.Exists(blockCountedAsORe, x => x == type))
+            if (TileID.Sets.Ore[type] || blockCountedAsORe.Contains(type))
                 return true;
             return false;
+
         }
         private bool isOre(ModTile tile, int type)
         {
@@ -199,6 +213,42 @@ namespace Infinitum.WorldBuilding
             //save actual banned tiles?
             bannedTiles.Clear();
             base.Unload();
+        }
+        private void sendXPToPlayers(float xp)
+        {
+            Task.Run(() =>
+            {
+                ModPacket myPacket = myMod.GetPacket();
+                myPacket.Write(xp);
+                myPacket.Send();
+            });
+        }
+        private void sendAccumulatedXPFromTrees(float xp)
+        {
+            //This method can prevent a lot of traffic
+            accumulatedXP += xp;
+
+            if (!haveXPAccumulated)
+            {
+                haveXPAccumulated = true;
+                timer = Task.Delay(100).ContinueWith((e) =>
+                {
+
+                    if (Main.netMode != NetmodeID.Server)
+                    {
+                        Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(accumulatedXP);
+                    }
+
+                    else if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket myPacket = myMod.GetPacket();
+                        myPacket.Write(accumulatedXP);
+                        myPacket.Send();
+                    }
+                    haveXPAccumulated = false;
+                    accumulatedXP = 0;
+                });
+            }
         }
     }
 
