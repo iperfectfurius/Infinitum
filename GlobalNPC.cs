@@ -100,6 +100,7 @@ namespace Infinitum
             }
             //base.SetupShop(type, shop, ref nextSlot);
         }
+		
 
     }
 }
