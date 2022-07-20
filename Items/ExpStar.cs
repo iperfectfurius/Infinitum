@@ -11,8 +11,8 @@ namespace Infinitum.Items
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Star Exp");
-			Tooltip.SetDefault("What you expect?");
+			DisplayName.SetDefault("Star XP");
+			Tooltip.SetDefault("What you expect?(XP)");
 		}
 
 		public override void SetDefaults()
@@ -25,8 +25,8 @@ namespace Infinitum.Items
 			Item.UseSound = SoundID.Item2;
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.autoReuse = true;
-			Item.useTime = 15;
-			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useAnimation = 10;
 			Item.reuseDelay = 0;
 			Item.useTurn = true;
 

@@ -65,7 +65,7 @@ namespace Infinitum
             40,
         };
         private bool notFirstTime = false;
-        private string version = "0.55";
+        private string version = "0.55";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
