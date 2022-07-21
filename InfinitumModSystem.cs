@@ -112,7 +112,7 @@ namespace Infinitum
 
                 // Ores are quite simple, we simply use a for loop and the WorldGen.TileRunner to place splotches of the specified Tile in the world.
                 // "6E-05" is "scientific notation". It simply means 0.00006 but in some ways is easier to read.
-                for (int k = 0; k < (int)(Main.maxTilesX * Main.maxTilesY * 0.0002); k++)
+                for (int k = 0; k < (int)(Main.maxTilesX * Main.maxTilesY * 0.00005); k++)
                 {
                     // The inside of this for loop corresponds to one single splotch of our Ore.
                     // First, we randomly choose any coordinate in the world by choosing a random x and y value.
@@ -124,7 +124,7 @@ namespace Infinitum
 
                     // Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
                     // Feel free to experiment with strength and step to see the shape they generate.
-                    WorldGen.TileRunner(x, y, WorldGen.genRand.Next(8, 12), WorldGen.genRand.Next(6, 9), ModContent.TileType<SanjacobosMineralTile>());
+                    WorldGen.TileRunner(x, y, WorldGen.genRand.Next(16, 24), WorldGen.genRand.Next(12, 18), ModContent.TileType<SanjacobosMineralTile>());
 
                     // Alternately, we could check the tile already present in the coordinate we are interested.
                     // Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.

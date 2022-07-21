@@ -36,6 +36,14 @@ namespace Infinitum.Items
         {
             return false;
         }
+        public override bool CanPickup(Player player)
+        {
+            return true;
+        }
+        public override bool ItemSpace(Player player)
+        {
+            return true;
+        }
         public override void GrabRange(Player player, ref int grabRange)
         {
             grabRange += 35;

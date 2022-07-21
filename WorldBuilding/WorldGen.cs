@@ -30,6 +30,8 @@ namespace Infinitum.WorldBuilding
             {
                 int specificChance = 25;
 
+               
+
                 switch (type)
                 {
                     case (int)TileIDEnum.PineTree:
@@ -68,6 +70,9 @@ namespace Infinitum.WorldBuilding
                         break;
 
                     default:
+                        if (TileID.Sets.IsATreeTrunk[type])
+                            Main.NewText(type + " Arbre modd");
+
                         break;
                 }
                 
