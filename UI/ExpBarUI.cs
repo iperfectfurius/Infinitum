@@ -33,7 +33,7 @@ namespace Infinitum.UI
             bar.Height.Set(maxHeigth, 0f);
             bar.Width.Set(maxWidth, 0f);
             bar.BackgroundColor = new Color(63, 82, 151) * 0.5f;
-            bar.BorderColor = new Color(0,0,0,50);
+            bar.BorderColor = new Color(0, 0, 0, 50);
             bar.SetPadding(0);
             bar.Left.Set(Main.screenWidth - 270, 0f);
             bar.Top.Set(71f, 0f);
@@ -46,14 +46,14 @@ namespace Infinitum.UI
         {
             ExpBar = new UIPanel();
             ExpBar.Width.Set(5, 0f);
-            ExpBar.Height.Set(maxHeigth-1, 0f);
-            
+            ExpBar.Height.Set(maxHeigth - 1, 0f);
+
             ExpBar.SetPadding(0);
             ExpBar.BackgroundColor = Color.Lime * 0.6f;
             ExpBar.BorderColor = new Color(0, 0, 0, 0);
-            
 
-            level = new UIText("0",0.8f);
+
+            level = new UIText("0", 0.8f);
             level.Left.Set(0, 0);
             level.VAlign = level.HAlign = 0.5f;
 
@@ -79,8 +79,8 @@ namespace Infinitum.UI
         private void UpdateAllStats()
         {
             float percentExp = (float)stats.Exp / stats._EXPTOLEVEL;
-            ExpBar.Width.Set((( percentExp * maxWidth) / 100) * 100,0);
-            level.SetText($"{stats.Level}  ({(percentExp*100):n1}%)");
+            ExpBar.Width.Set(((percentExp * maxWidth) / 100) * 100, 0);
+            level.SetText($"{stats.Level}  ({(percentExp * 100):n1}%)");
             RecalculateChildren();
         }
 
