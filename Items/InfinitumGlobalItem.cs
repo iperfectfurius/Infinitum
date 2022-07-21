@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Infinitum.Items
@@ -28,6 +30,12 @@ namespace Infinitum.Items
                         break;
                 }
             }
+
+        }
+        public override void OpenVanillaBag(string context, Player player, int arg)
+        {
+            player.QuickSpawnItem(player.GetSource_OpenItem(arg), ModContent.ItemType<MiniExpStar>(),1);
+            base.OpenVanillaBag(context, player, arg);
 
         }
     }

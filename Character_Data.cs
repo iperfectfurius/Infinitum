@@ -65,7 +65,7 @@ namespace Infinitum
             40,
         };
         private bool notFirstTime = false;
-        private string version = "0.55";
+        private string version = "0.55";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -136,8 +136,9 @@ namespace Infinitum
         {
             if (Main.netMode == NetmodeID.Server || !displayNumbers) return;
 
-            int test = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
-            Main.combatText[test].lifeTime = duration;
+            int i =  CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
+            if(i<100)//haha meme (out of index???)
+                Main.combatText[i].lifeTime = duration;
 
         }
         public override void Load()
@@ -147,16 +148,25 @@ namespace Infinitum
         }
         public void AddXp(float xp)
         {
-            float experienceObtained = xp * (expMultiplier * moreExpMultiplier);
-            exp += experienceObtained;
-            UpdateLevel();
-            showDamageText(CombatTextPos["xp"], $"+ {experienceObtained:n1} XP", CombatText.HealMana);
-            totalNpcsKilled++;
+            try
+            {
+                float experienceObtained = xp * (expMultiplier * moreExpMultiplier);
+                exp += experienceObtained;
+                UpdateLevel();
+                showDamageText(CombatTextPos["xp"], $"+ {experienceObtained:n1} XP", CombatText.HealMana);
+                totalNpcsKilled++;
 
-            if (avgXP.Count > 100)
-                avgXP.RemoveRange(0,50);
-            avgXP.Add(experienceObtained);
-            recentChanged = true;
+                if (avgXP.Count > 100)
+                    avgXP.RemoveRange(0, 50);
+                avgXP.Add(experienceObtained);
+                recentChanged = true;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Main.NewText("error");
+                
+            }
+            
 
         }
         private void UpdateLevel()

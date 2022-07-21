@@ -30,19 +30,13 @@ namespace Infinitum.Items.Ores
 		}
 		public override bool OnPickup(Player player)
 		{
-			//if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
-			//{
-			//	player.GetModPlayer<Character_Data>().AddXpMultiplier(0.075f);
-			//	SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot);
-			//}
-
-			//return false; ç
 			return true;
 		}
         public override bool CanUseItem(Player player)
         {
 			return false;
         }
+		
 
         public override void GrabRange(Player player, ref int grabRange)
 		{

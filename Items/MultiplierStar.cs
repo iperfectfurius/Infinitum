@@ -11,7 +11,7 @@ namespace Infinitum.Items
 	{
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Star Multiplier EXP");
+			DisplayName.SetDefault("Star Multiplier XP");
 			Tooltip.SetDefault("LOL +(2.5%) XP!");
 		}
 
@@ -46,7 +46,7 @@ namespace Infinitum.Items
 		}
 		public override void GrabRange(Player player, ref int grabRange)
 		{
-			grabRange += 35;
+			grabRange += 55;
 			base.GrabRange(player, ref grabRange);
 		}
         public override void AddRecipes()

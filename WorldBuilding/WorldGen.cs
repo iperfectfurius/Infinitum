@@ -25,18 +25,54 @@ namespace Infinitum.WorldBuilding
 
         public override bool Drop(int i, int j, int type)
         {
-
+            
             if (!isOre(type))
             {
                 int specificChance = 25;
 
-                //This can avoid spam XP from trees.
-                if (type == ItemID.Mushroom)//tree Works a bit different 
+                switch (type)
                 {
-                    specificChance -= 23;
-                    sendAccumulatedXPFromTrees(1.5f);
-                }
+                    case (int)TileIDEnum.PineTree:
+                    case (int)TileIDEnum.PalmTree:
+                    case (int)TileIDEnum.Trees:
+                        sendAccumulatedXPFromTrees(1.5f);
+                        specificChance -= 23;
+                        break;
+                    case TileID.TreeAmber:
+                        sendAccumulatedXPFromTrees(50.0f);
+                        specificChance -= 23;
+                        break;
+                    case TileID.TreeDiamond:
+                        sendAccumulatedXPFromTrees(50.0f);
+                        specificChance -= 23;
+                        break;
+                    case TileID.TreeRuby:
+                        sendAccumulatedXPFromTrees(42.5f);
+                        specificChance -= 23;
+                        break;
+                    case TileID.TreeEmerald:
+                        sendAccumulatedXPFromTrees(40.0f);
+                        specificChance -= 23;
+                        break;
+                    case TileID.TreeAmethyst:
+                        sendAccumulatedXPFromTrees(35.0f);
+                        specificChance -= 23;
+                        break;
+                    case TileID.TreeTopaz:
+                        sendAccumulatedXPFromTrees(37.5f);
+                        specificChance -= 23;
+                        break;
+                    case TileID.TreeSapphire:
+                        sendAccumulatedXPFromTrees(38.5f);
+                        specificChance -= 23;
+                        break;
 
+                    default:
+                        break;
+                }
+                
+
+                
                 if (Main.rand.NextBool(CHANCE_BASE * specificChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
