@@ -71,7 +71,7 @@ namespace Infinitum.WorldBuilding
 
                     default:
                         if (TileID.Sets.IsATreeTrunk[type])
-                            Main.NewText(type + " Arbre modd");
+                            sendAccumulatedXPFromTrees(0.5f);
 
                         break;
                 }

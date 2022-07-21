@@ -22,11 +22,12 @@ namespace Infinitum.WorldBuilding.Tiles
             Main.tileLighted[Type] = true;
             Main.tileLavaDeath[Type] = false;
             TileID.Sets.Ore[Type] = true;
+            Main.tileSpelunker[Type] = true;
             Main.tileOreFinderPriority[Type] = 100;
             AddMapEntry(new Color(200, 200, 200));
             TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
             TileObjectData.addTile(Type);
-            
+            HitSound = SoundID.Tink;
         }
         
         
