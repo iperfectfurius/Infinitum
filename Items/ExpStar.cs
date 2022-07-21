@@ -20,7 +20,7 @@ namespace Infinitum.Items
 			Item.maxStack = 999;
 			Item.width = 25;
 			Item.height = 25;
-			Item.rare = ItemRarityID.Orange;
+			Item.rare = ItemRarityID.Lime;
 			Item.consumable = true;
 			Item.UseSound = SoundID.Item2;
 			Item.useStyle = ItemUseStyleID.HoldUp;

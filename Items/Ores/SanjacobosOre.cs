@@ -43,6 +43,7 @@ namespace Infinitum.Items.Ores
         {
 			return false;
         }
+		
 
         public override void GrabRange(Player player, ref int grabRange)
 		{
