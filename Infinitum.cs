@@ -26,7 +26,7 @@ namespace Infinitum
         
 
         }
-        private void AddXPToPlayer(float xp)
+        public void AddXPToPlayer(float xp)
         {//test myplayer
             Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
         }

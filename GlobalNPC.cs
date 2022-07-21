@@ -15,6 +15,7 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = ModLoader.GetMod("Infinitum");
+
 		private float GetXpFromNPC(NPC target) => (float)target.defense + 0.5f * (float)(target.lifeMax / 4.5);
 
 		public override void OnKill(NPC npc)
@@ -73,7 +74,7 @@ namespace Infinitum
         }
         private void addXpToPlayer(float xp)
 		{
-			Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
+			Infinitum.instance.AddXPToPlayer(xp);
 		}
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
