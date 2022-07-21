@@ -30,6 +30,11 @@ namespace Infinitum
             { "addedLevels", 190},
             { "currentLevels", 50}
         };
+        private enum combatTextPos : int {
+            Xp = 155,
+            AddedLevels = 190,
+            CurrentLevels = 50
+        };
 
         private static string[] skillOrder = {
             "Defense",
@@ -65,7 +70,7 @@ namespace Infinitum
             40,
         };
         private bool notFirstTime = false;
-        private string version = "0.55";//Only used in case need for all players in next update.
+        private string version = "0.61";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -130,7 +135,7 @@ namespace Infinitum
             InfinitumUI.Instance.stats = this;
             ExpBarUI.Instance.stats = this;
             if (messageReset)
-                Main.NewText("Skills Reset!");
+                showDamageText((int)combatTextPos.CurrentLevels,"Skills Reset!" + 50 ,CombatText.DamagedFriendlyCrit,120,true);
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
@@ -163,10 +168,9 @@ namespace Infinitum
             }
             catch (IndexOutOfRangeException)
             {
-                Main.NewText("error");
+                Infinitum.instance.ChatMessage("Error addXp");
                 
-            }
-            
+            }          
 
         }
         private void UpdateLevel()

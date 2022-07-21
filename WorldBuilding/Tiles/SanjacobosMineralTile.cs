@@ -45,7 +45,7 @@ namespace Infinitum.WorldBuilding.Tiles
             
             Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<SanjacobosOre>());
             if(Main.rand.NextBool(baseChance))
-                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
             return base.Drop(i, j);
         }
     }
