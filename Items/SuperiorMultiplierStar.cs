@@ -44,7 +44,7 @@ namespace Infinitum.Items
         {
 			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
 			{
-				player.GetModPlayer<Character_Data>().AddXpMultiplier(0.075f);
+				player.GetModPlayer<Character_Data>().AddXpMultiplier(0.075f * Item.stack);
 				SoundEngine.PlaySound(SoundID.Item113);
 			}
 				

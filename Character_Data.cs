@@ -137,6 +137,7 @@ namespace Infinitum
             if (Main.netMode == NetmodeID.Server || !displayNumbers) return;
 
             int test = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
+            //CombatText.UpdateCombatText();
             Main.combatText[test].lifeTime = duration;
 
         }
