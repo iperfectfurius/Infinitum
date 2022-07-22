@@ -30,6 +30,8 @@ namespace Infinitum.WorldBuilding
             {
                 int specificChance = 25;
 
+               
+
                 switch (type)
                 {
                     case (int)TileIDEnum.PineTree:
@@ -68,11 +70,12 @@ namespace Infinitum.WorldBuilding
                         break;
 
                     default:
+                        if (TileID.Sets.IsATreeTrunk[type])
+                            sendAccumulatedXPFromTrees(0.5f);
+
                         break;
                 }
-                
-
-                
+               
                 if (Main.rand.NextBool(CHANCE_BASE * specificChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);

@@ -22,11 +22,12 @@ namespace Infinitum.WorldBuilding.Tiles
             Main.tileLighted[Type] = true;
             Main.tileLavaDeath[Type] = false;
             TileID.Sets.Ore[Type] = true;
+            Main.tileSpelunker[Type] = true;
             Main.tileOreFinderPriority[Type] = 100;
             AddMapEntry(new Color(200, 200, 200));
             TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
             TileObjectData.addTile(Type);
-            
+            HitSound = SoundID.Tink;
         }
         
         
@@ -45,7 +46,7 @@ namespace Infinitum.WorldBuilding.Tiles
             
             Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<SanjacobosOre>());
             if(Main.rand.NextBool(baseChance))
-                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStar>());
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
             return base.Drop(i, j);
         }
     }

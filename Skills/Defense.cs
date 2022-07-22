@@ -17,6 +17,7 @@ namespace Infinitum.Skills
         public override void LevelUp(ref int Levels)
         {
             throw new NotImplementedException();
+            
         }
 
         public override void OnInitialize()

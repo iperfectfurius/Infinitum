@@ -40,7 +40,15 @@ namespace Infinitum.Items
 			
 			return false;
 		}
-        public override bool OnPickup(Player player)
+		public override bool CanPickup(Player player)
+		{
+			return true;
+		}
+		public override bool ItemSpace(Player player)
+		{
+			return true;
+		}
+		public override bool OnPickup(Player player)
         {
 			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
 			{
