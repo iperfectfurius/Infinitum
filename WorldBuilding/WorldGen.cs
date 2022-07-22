@@ -75,9 +75,7 @@ namespace Infinitum.WorldBuilding
 
                         break;
                 }
-                
-
-                
+               
                 if (Main.rand.NextBool(CHANCE_BASE * specificChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);

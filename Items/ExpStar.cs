@@ -39,7 +39,7 @@ namespace Infinitum.Items
 		public override bool? UseItem(Player player)
 		{
 			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
-				player.GetModPlayer<Character_Data>().AddXp(Main.rand.Next(300000));
+				player.GetModPlayer<Character_Data>().AddXp(Main.rand.Next(30000));
 			return true;
 		}
 		public override void GrabRange(Player player, ref int grabRange)
