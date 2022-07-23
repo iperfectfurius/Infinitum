@@ -294,34 +294,38 @@ namespace Infinitum
             CombatTextPos = new();
             base.Unload();
         }
-        public void ApplyStats(string stat, bool sum)
+        public bool ApplyStats(string stat, bool sum)
         {
             //implement skill class
+            bool statApplied = false;
             switch (stat)
             {
                 case "Defense":
-
                     if (level >= skillCost[0] && sum)
                     {
                         level -= skillCost[0];
                         additionalDefense++;
+                        statApplied =  true;
                     }
                     else if (!sum && additionalDefense > 0)
                     {
                         level += skillCost[0];
                         additionalDefense--;
-                    }
+                        statApplied = true;
+                    }                 
                     break;
                 case "Movement Speed":
                     if (level >= skillCost[1] && sum)
                     {
                         level -= skillCost[1];
                         additionalMovementSpeed += .01f;
+                        statApplied = true;
                     }
                     else if (!sum && additionalMovementSpeed > 0)
                     {
                         level += skillCost[1];
                         additionalMovementSpeed -= .01f;
+                        statApplied = true;
                     }
                     break;
                 case "Life Regen":
@@ -329,11 +333,14 @@ namespace Infinitum
                     {
                         level -= skillCost[2];
                         AdditionalLifeRegen += 0.25f;
+                        statApplied = true;
                     }
                     else if (!sum && additionalLifeRegen > 0)
                     {
                         level += skillCost[2];
                         AdditionalLifeRegen -= 0.25f;
+                        statApplied = true;
+                        statApplied = true;
                     }
                     break;
                 case "Life Steal":
@@ -341,11 +348,13 @@ namespace Infinitum
                     {
                         level -= skillCost[3];
                         LifeSteal += 0.00025f;
+                        statApplied = true;
                     }
                     else if (!sum && lifeSteal > 0)
                     {
                         level += skillCost[3];
                         LifeSteal -= 0.00025f;
+                        statApplied = true;
                     }
                     break;
                 case "Global Critical Chance":
@@ -353,11 +362,13 @@ namespace Infinitum
                     {
                         level -= skillCost[4];
                         additionalGlobalCriticalChance += 1;
+                        statApplied = true;
                     }
                     else if (!sum && additionalGlobalCriticalChance > 0)
                     {
                         level += skillCost[4];
                         additionalGlobalCriticalChance--;
+                        statApplied = true;
                     }
                     break;
                 case "Melee Damage":
@@ -365,11 +376,13 @@ namespace Infinitum
                     {
                         level -= skillCost[5];
                         additionalMeleeDamage += .01f;
+                        statApplied = true;
                     }
                     else if (!sum && additionalMeleeDamage > 0)
                     {
                         level += skillCost[5];
                         additionalMeleeDamage -= 0.01f;
+                        statApplied = true;
                     }
 
                     break;
@@ -378,11 +391,13 @@ namespace Infinitum
                     {
                         level -= skillCost[6];
                         additionalMeleeAttackSpeed += 0.01f;
+                        statApplied = true;
                     }
                     else if (!sum && additionalMeleeAttackSpeed > 0)
                     {
                         level += skillCost[6];
                         additionalMeleeAttackSpeed -= 0.01f;
+                        statApplied = true;
                     }
 
                     break;
@@ -392,11 +407,13 @@ namespace Infinitum
                     {
                         level -= skillCost[7];
                         additionalMagicDamage += .01f;
+                        statApplied = true;
                     }
                     else if (!sum && additionalMagicDamage > 0)
                     {
                         level += skillCost[7];
                         additionalMagicDamage -= .01f;
+                        statApplied = true;
                     }
                     break;
                 case "Mana Consumption":
@@ -404,11 +421,13 @@ namespace Infinitum
                     {
                         level -= skillCost[8];
                         reducedManaConsumption += 0.01f;
+                        statApplied = true;
                     }
                     else if (!sum && reducedManaConsumption > 0)
                     {
                         level += skillCost[8];
                         reducedManaConsumption -= 0.01f;
+                        statApplied = true;
                     }
                     break;
                 case "Ranged Damage":
@@ -416,11 +435,13 @@ namespace Infinitum
                     {
                         level -= skillCost[9];
                         additionalRangedDamage += 0.01f;
+                        statApplied = true;
                     }
                     else if (!sum && additionalRangedDamage > 0)
                     {
                         level += skillCost[9];
                         additionalRangedDamage -= 0.01f;
+                        statApplied = true;
                     }
                     break;
                 case "Ammo Consumption":
@@ -428,11 +449,13 @@ namespace Infinitum
                     {
                         level -= skillCost[10];
                         ammoConsumedReduction -= 1;
+                        statApplied = true;
                     }
                     else if (!sum && ammoConsumedReduction < 101)
                     {
                         level += skillCost[10];
                         ammoConsumedReduction += 1;
+                        statApplied = true;
                     }
                     break;
 
@@ -441,11 +464,13 @@ namespace Infinitum
                     {
                         level -= skillCost[11];
                         additionalSummonDamage += 0.01f;
+                        statApplied = true;
                     }
                     else if (!sum && additionalSummonDamage > 0)
                     {
                         level += skillCost[11];
                         additionalSummonDamage -= 0.01f;
+                        statApplied = true;
                     }
                     break;
                 case "Minion Capacity":
@@ -453,11 +478,13 @@ namespace Infinitum
                     {
                         level -= skillCost[12];
                         additionalSummonCapacity += 1;
+                        statApplied = true;
                     }
                     else if (!sum && additionalSummonCapacity > 0)
                     {
                         level += skillCost[12];
                         additionalSummonCapacity -= 1;
+                        statApplied = true;
                     }
                     break;
                 case "Pickaxe Power":
@@ -465,18 +492,24 @@ namespace Infinitum
                     {
                         level -= skillCost[13];
                         additionalPickingPower += .025f;
+                        statApplied = true;
                     }
                     else if (!sum && additionalPickingPower > 0)
                     {
                         level += skillCost[13];
                         additionalPickingPower -= .025f;
+                        statApplied = true;
                     }
                     break;
 
                 default:
                     break;
             }
-            recentChanged = true;
+            if (statApplied)
+            {
+                recentChanged = true;
+            }
+            return recentChanged;
         }
         public override void PostUpdateEquips()
         {
