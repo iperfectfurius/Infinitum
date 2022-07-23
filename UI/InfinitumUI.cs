@@ -325,7 +325,7 @@ namespace Infinitum.UI
                     case "Minion Capacity":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalSummonCapacity}");
                         break;
-                    case "Pickaxe Power":
+                    case "Pickaxe Speed":
                         ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalPickingPower * 100:n2}%");
                         break;
                     default:
