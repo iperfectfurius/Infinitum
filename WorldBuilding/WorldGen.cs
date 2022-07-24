@@ -38,11 +38,20 @@ namespace Infinitum.WorldBuilding
             var tile = TileLoader.GetTile(type);
             if (tile != null)
             {
+                //provisional, calamity dont register ores to main.
+                if (!TileID.Sets.Ore[type] && !Main.tileSpelunker[type])
+                {
+                    if (Main.rand.NextBool(CHANCE_BASE * 25))
+                        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+
+                    return base.Drop(i, j, type);
+                }
+
 
                 xp = (tile.MinPick * baseXP);
 
                 if (tile.GetType().Name == "SanjacobosMineralTile")
-                    xp += 35f;
+                    xp += 55f;
 
 
                 if (Main.netMode != NetmodeID.Server)
@@ -63,9 +72,10 @@ namespace Infinitum.WorldBuilding
 
             if (!isOre(type))
             {
+                //Special and global Tiles.
                 int specificChance = 25;
 
-               
+
 
                 switch (type)
                 {
@@ -110,11 +120,14 @@ namespace Infinitum.WorldBuilding
 
                         break;
                 }
-               
+
                 if (Main.rand.NextBool(CHANCE_BASE * specificChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
-            }  
+
+            }
+
+
 
             switch (type)
             {
