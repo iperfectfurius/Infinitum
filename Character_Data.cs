@@ -50,7 +50,7 @@ namespace Infinitum
             "Ammo Consumption",
             "Summon Damage",
             "Minion Capacity",
-            "Pickaxe Power"
+            "Pickaxe Speed"
         };
         private static int[] skillCost =
         {
@@ -67,10 +67,10 @@ namespace Infinitum
             125,
             60,
             1250,
-            40,
+            10,
         };
         private bool notFirstTime = false;
-        private string version = "0.61";//Only used in case need for all players in next update.
+        private string version = "0.64";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -131,11 +131,11 @@ namespace Infinitum
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
-            showDamageText(CombatTextPos["currentLevels"], $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
+            showDamageText((int)combatTextPos.CurrentLevels, $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
             ExpBarUI.Instance.stats = this;
             if (messageReset)
-                showDamageText((int)combatTextPos.CurrentLevels,"Skills Reset!" + 50 ,CombatText.DamagedFriendlyCrit,120,true);
+                showDamageText((int)combatTextPos.CurrentLevels + 35,"Skills Reset!" + 50 ,Color.Red,180,true);
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
@@ -218,7 +218,7 @@ namespace Infinitum
                 tag.TryGet("RangedAmmoConsumption", out ammoConsumedReduction);
                 tag.TryGet("SummonDamage", out additionalSummonDamage);
                 tag.TryGet("MinionCapacity", out additionalSummonCapacity);
-                tag.TryGet("PickaxePower", out additionalPickingPower);
+                tag.TryGet("PickaxeSpeed", out additionalPickingPower);
                 tag.TryGet("MovementSpeed", out additionalMovementSpeed);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
                 tag.TryGet("NotFirstTime", out notFirstTime);
@@ -264,7 +264,7 @@ namespace Infinitum
             tag.Add("RangedAmmoConsumption", ammoConsumedReduction);
             tag.Add("SummonDamage", additionalSummonDamage);
             tag.Add("MinionCapacity", additionalSummonCapacity);
-            tag.Add("PickaxePower", additionalPickingPower);
+            tag.Add("PickaxeSpeed", additionalPickingPower);
             tag.Add("DisplayNumbers", displayNumbers);
             tag.Add("MovementSpeed", additionalMovementSpeed);
             tag.Add("GlobalCriticalChance", additionalGlobalCriticalChance);
@@ -488,17 +488,17 @@ namespace Infinitum
                         statApplied = true;
                     }
                     break;
-                case "Pickaxe Power":
+                case "Pickaxe Speed":
                     if (level >= skillCost[13] && sum)
                     {
                         level -= skillCost[13];
-                        additionalPickingPower += .025f;
+                        additionalPickingPower += .01f;
                         statApplied = true;
                     }
                     else if (!sum && additionalPickingPower > 0)
                     {
                         level += skillCost[13];
-                        additionalPickingPower -= .025f;
+                        additionalPickingPower -= .01f;
                         statApplied = true;
                     }
                     break;
@@ -546,6 +546,7 @@ namespace Infinitum
             player.GetCritChance(DamageClass.Melee) = player.GetCritChance(DamageClass.Melee) + additionalGlobalCriticalChance;
             player.GetCritChance(DamageClass.Magic) = player.GetCritChance(DamageClass.Magic) + additionalGlobalCriticalChance;
             player.GetCritChance(DamageClass.Ranged) = player.GetCritChance(DamageClass.Ranged) + additionalGlobalCriticalChance;
+            
             getAdditionalsExp();
 
 

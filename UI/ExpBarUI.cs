@@ -37,9 +37,15 @@ namespace Infinitum.UI
             bar.SetPadding(0);
             bar.Left.Set(Main.screenWidth - 270, 0f);
             bar.Top.Set(71f, 0f);
+            bar.OnMiddleClick += openStatsTab;
 
             addUIElementsToPanel();
             Append(bar);
+        }
+
+        private void openStatsTab(UIMouseEvent evt, UIElement listeningElement)
+        {
+            InfinitumUI.Instance.Visible = !InfinitumUI.Instance.Visible;
         }
 
         private void addUIElementsToPanel()
@@ -75,7 +81,7 @@ namespace Infinitum.UI
 
             base.Update(gameTime);
         }
-
+        
         private void UpdateAllStats()
         {
             float percentExp = (float)stats.Exp / stats._EXPTOLEVEL;
