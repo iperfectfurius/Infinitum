@@ -135,7 +135,7 @@ namespace Infinitum
             InfinitumUI.Instance.stats = this;
             ExpBarUI.Instance.stats = this;
             if (messageReset)
-                showDamageText((int)combatTextPos.CurrentLevels + 35,"Skills Reset!" + 50 ,Color.Red,180,true);
+                showDamageText((int)combatTextPos.CurrentLevels + 50,"Skills Reset!" ,Color.Red,180,true);
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
