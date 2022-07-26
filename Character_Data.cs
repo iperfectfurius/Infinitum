@@ -305,14 +305,21 @@ namespace Infinitum
                     {
                         level -= skillCost[0];
                         additionalDefense++;
-                        statApplied =  true;
+                        statApplied = true;
                     }
                     else if (apply == (int)ApplyStat.Subs && additionalDefense > 0)
                     {
                         level += skillCost[0];
                         additionalDefense--;
                         statApplied = true;
-                    }                 
+                    }
+                    else if(level >= skillCost[0] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level/skillCost[0];
+                        level -= skillCost[0] * maxLevel;
+                        additionalDefense += maxLevel;
+                        statApplied = true;
+                    }
                     break;
                 case "Movement Speed":
                     if (level >= skillCost[1] && apply == (int)ApplyStat.Sum)
@@ -325,6 +332,13 @@ namespace Infinitum
                     {
                         level += skillCost[1];
                         additionalMovementSpeed -= .01f;
+                        statApplied = true;
+                    }
+                    else if (level >= skillCost[1] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[1];
+                        level -= skillCost[1] * maxLevel;
+                        additionalMovementSpeed += maxLevel * .01f;
                         statApplied = true;
                     }
                     break;
@@ -340,6 +354,12 @@ namespace Infinitum
                         level += skillCost[2];
                         AdditionalLifeRegen -= 0.25f;
                         statApplied = true;
+                    }
+                    else if (level >= skillCost[2] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[2];
+                        level -= skillCost[2] * maxLevel;
+                        AdditionalLifeRegen += maxLevel * .25f;
                         statApplied = true;
                     }
                     break;
@@ -356,6 +376,13 @@ namespace Infinitum
                         LifeSteal -= 0.00025f;
                         statApplied = true;
                     }
+                    else if (level >= skillCost[3] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[3];
+                        level -= skillCost[3] * maxLevel;
+                        LifeSteal += maxLevel * 0.00025f;
+                        statApplied = true;
+                    }
                     break;
                 case "Global Critical Chance":
                     if (level >= skillCost[4] && apply ==  (int)ApplyStat.Sum)
@@ -368,6 +395,13 @@ namespace Infinitum
                     {
                         level += skillCost[4];
                         additionalGlobalCriticalChance--;
+                        statApplied = true;
+                    }
+                    else if (level >= skillCost[4] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[4];
+                        level -= skillCost[4] * maxLevel;
+                        additionalGlobalCriticalChance += maxLevel;
                         statApplied = true;
                     }
                     break;
@@ -384,7 +418,13 @@ namespace Infinitum
                         additionalMeleeDamage -= 0.01f;
                         statApplied = true;
                     }
-
+                    else if (level >= skillCost[5] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[5];
+                        level -= skillCost[5] * maxLevel;
+                        additionalMeleeDamage += maxLevel * 0.01f;
+                        statApplied = true;
+                    }
                     break;
                 case "Melee Attack Speed":
                     if (level >= skillCost[6] && apply ==  (int)ApplyStat.Sum)
@@ -399,7 +439,13 @@ namespace Infinitum
                         additionalMeleeAttackSpeed -= 0.01f;
                         statApplied = true;
                     }
-
+                    else if (level >= skillCost[6] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[6];
+                        level -= skillCost[6] * maxLevel;
+                        additionalMeleeAttackSpeed += maxLevel * 0.01f;
+                        statApplied = true;
+                    }
                     break;
 
                 case "Magic Damage":
@@ -413,6 +459,13 @@ namespace Infinitum
                     {
                         level += skillCost[7];
                         additionalMagicDamage -= .01f;
+                        statApplied = true;
+                    }
+                    else if (level >= skillCost[7] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[7];
+                        level -= skillCost[7] * maxLevel;
+                        additionalMagicDamage += maxLevel * 0.01f;
                         statApplied = true;
                     }
                     break;
@@ -429,6 +482,13 @@ namespace Infinitum
                         reducedManaConsumption -= 0.01f;
                         statApplied = true;
                     }
+                    else if (level >= skillCost[8] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[8];
+                        level -= skillCost[8] * maxLevel;
+                        reducedManaConsumption += maxLevel * 0.01f;
+                        statApplied = true;
+                    }
                     break;
                 case "Ranged Damage":
                     if (level >= skillCost[9] && apply ==  (int)ApplyStat.Sum)
@@ -441,6 +501,13 @@ namespace Infinitum
                     {
                         level += skillCost[9];
                         additionalRangedDamage -= 0.01f;
+                        statApplied = true;
+                    }
+                    else if (level >= skillCost[9] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[9];
+                        level -= skillCost[9] * maxLevel;
+                        additionalRangedDamage += maxLevel * 0.01f;
                         statApplied = true;
                     }
                     break;
@@ -457,8 +524,15 @@ namespace Infinitum
                         ammoConsumedReduction += 1;
                         statApplied = true;
                     }
+                    else if (level >= skillCost[10] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[10];
+                        level -= skillCost[10] * maxLevel;
+                        ammoConsumedReduction -= maxLevel;
+                        //check for max
+                        statApplied = true;
+                    }
                     break;
-
                 case "Summon Damage":
                     if (level >= skillCost[11] && apply ==  (int)ApplyStat.Sum)
                     {
@@ -470,6 +544,13 @@ namespace Infinitum
                     {
                         level += skillCost[11];
                         additionalSummonDamage -= 0.01f;
+                        statApplied = true;
+                    }
+                    else if (level >= skillCost[11] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[11];
+                        level -= skillCost[11] * maxLevel;
+                        additionalSummonDamage += maxLevel * 0.01f;
                         statApplied = true;
                     }
                     break;
@@ -486,6 +567,13 @@ namespace Infinitum
                         additionalSummonCapacity -= 1;
                         statApplied = true;
                     }
+                    else if (level >= skillCost[12] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[12];
+                        level -= skillCost[12] * maxLevel;
+                        additionalSummonCapacity += maxLevel;
+                        statApplied = true;
+                    }
                     break;
                 case "Pickaxe Speed":
                     if (level >= skillCost[13] && apply ==  (int)ApplyStat.Sum)
@@ -498,6 +586,13 @@ namespace Infinitum
                     {
                         level += skillCost[13];
                         additionalPickingPower -= .01f;
+                        statApplied = true;
+                    }
+                    else if (level >= skillCost[13] && apply == (int)ApplyStat.All)
+                    {
+                        int maxLevel = level / skillCost[13];
+                        level -= skillCost[13] * maxLevel;
+                        additionalPickingPower += maxLevel * 0.01f;
                         statApplied = true;
                     }
                     break;
