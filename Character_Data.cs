@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
+using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -20,6 +21,7 @@ namespace Infinitum
     public class Character_Data : ModPlayer
     {
         private Player player = Main.CurrentPlayer;
+        private static Mod myMod = ModLoader.GetMod("Infinitum");
         private bool recentChanged = false;
         private string lastHeldItem;
         private List<float> avgXP =  new List<float>() {0};
@@ -748,6 +750,29 @@ namespace Infinitum
 
             recentChanged = true;
         }
+        public override void ModifyCaughtFish(Item fish)
+        {
+            float xp = (((fish.rare * 5) + 1) * 2 + (fish.value / 750)) * fish.stack;
+
+            if (Main.netMode == NetmodeID.SinglePlayer)
+                AddXp(xp);
+            else if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+
+                Task.Run(() =>
+                {
+                    ModPacket myPacket = Infinitum.instance.GetPacket();
+                    myPacket.Write(xp);
+                    myPacket.Send();
+                });
+            }
+            ChatMessage(Main.netMode.ToString());
+            
+            
+            base.ModifyCaughtFish(fish);
+        }
+
+
         private void returnLevels()
         {
 
