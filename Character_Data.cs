@@ -24,12 +24,6 @@ namespace Infinitum
         private string lastHeldItem;
         private List<float> avgXP =  new List<float>() {0};
         public float getAvgXP() => (float)Queryable.Average(avgXP.AsQueryable());
-        private Dictionary<string, int> CombatTextPos = new()
-        {
-            { "xp", 155},
-            { "addedLevels", 190},
-            { "currentLevels", 50}
-        };
         private enum combatTextPos : int {
             Xp = 155,
             AddedLevels = 190,
@@ -69,6 +63,12 @@ namespace Infinitum
             1250,
             10,
         };
+        public enum ApplyStat : ushort
+        {
+            Sum = 0,
+            Subs = 1,
+            All = 2
+        }
         private bool notFirstTime = false;
         private string version = "0.64";//Only used in case need for all players in next update.
         private bool messageReset = false;
@@ -96,6 +96,7 @@ namespace Infinitum
         private float additionalSummonDamage = 0;
         private int additionalSummonCapacity = 0;
         private float additionalPickingPower = 0;
+        //to do
         private List<Skill> skills = new List<Skill>();
 
 
@@ -159,7 +160,7 @@ namespace Infinitum
                 float experienceObtained = xp * (expMultiplier * moreExpMultiplier);
                 exp += experienceObtained;
                 UpdateLevel();
-                showDamageText(CombatTextPos["xp"], $"+ {experienceObtained:n1} XP", CombatText.HealMana);
+                showDamageText((int)combatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);
                 totalNpcsKilled++;
 
                 if (avgXP.Count > 100)
@@ -183,8 +184,8 @@ namespace Infinitum
             level += LevelsUp;
             totalLevel += LevelsUp;
 
-            showDamageText(CombatTextPos["addedLevels"], $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
-            showDamageText(CombatTextPos["currentLevels"], $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
+            showDamageText((int)combatTextPos.AddedLevels, $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
+            showDamageText((int)combatTextPos.CurrentLevels, $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
 
             SoundEngine.PlaySound(SoundID.Chat);
 
@@ -192,7 +193,7 @@ namespace Infinitum
         public void AddXpMultiplier(float multiplier)
         {
             expMultiplier += multiplier;
-            showDamageText(CombatTextPos["xp"], $"{(expMultiplier * 100f):n2}% Multiplier!", CombatText.DamagedFriendlyCrit);
+            showDamageText((int)combatTextPos.Xp, $"{(expMultiplier * 100f):n2}% Multiplier!", CombatText.DamagedFriendlyCrit);
             recentChanged = true;
         }
 
@@ -269,7 +270,6 @@ namespace Infinitum
             tag.Add("MovementSpeed", additionalMovementSpeed);
             tag.Add("GlobalCriticalChance", additionalGlobalCriticalChance);
             tag.Add("NotFirstTime", true);
-            //tag.Add("FirstTime", true);
             tag.Add("Version", version);
 
 
@@ -292,23 +292,22 @@ namespace Infinitum
         }
         public override void Unload()
         {
-            CombatTextPos = new();
             base.Unload();
         }
-        public bool ApplyStats(string stat, bool sum)
+        public bool ApplyStats(string stat,int apply)
         {
             //implement skill class
             bool statApplied = false;
             switch (stat)
             {
                 case "Defense":
-                    if (level >= skillCost[0] && sum)
+                    if (level >= skillCost[0] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[0];
                         additionalDefense++;
                         statApplied =  true;
                     }
-                    else if (!sum && additionalDefense > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalDefense > 0)
                     {
                         level += skillCost[0];
                         additionalDefense--;
@@ -316,13 +315,13 @@ namespace Infinitum
                     }                 
                     break;
                 case "Movement Speed":
-                    if (level >= skillCost[1] && sum)
+                    if (level >= skillCost[1] && apply == (int)ApplyStat.Sum)
                     {
                         level -= skillCost[1];
                         additionalMovementSpeed += .01f;
                         statApplied = true;
                     }
-                    else if (!sum && additionalMovementSpeed > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalMovementSpeed > 0)
                     {
                         level += skillCost[1];
                         additionalMovementSpeed -= .01f;
@@ -330,13 +329,13 @@ namespace Infinitum
                     }
                     break;
                 case "Life Regen":
-                    if (level >= skillCost[2] && sum)
+                    if (level >= skillCost[2] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[2];
                         AdditionalLifeRegen += 0.25f;
                         statApplied = true;
                     }
-                    else if (!sum && additionalLifeRegen > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalLifeRegen > 0)
                     {
                         level += skillCost[2];
                         AdditionalLifeRegen -= 0.25f;
@@ -345,13 +344,13 @@ namespace Infinitum
                     }
                     break;
                 case "Life Steal":
-                    if (level >= skillCost[3] && sum)
+                    if (level >= skillCost[3] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[3];
                         LifeSteal += 0.00025f;
                         statApplied = true;
                     }
-                    else if (!sum && lifeSteal > 0)
+                    else if (apply == (int)ApplyStat.Subs && lifeSteal > 0)
                     {
                         level += skillCost[3];
                         LifeSteal -= 0.00025f;
@@ -359,13 +358,13 @@ namespace Infinitum
                     }
                     break;
                 case "Global Critical Chance":
-                    if (level >= skillCost[4] && sum)
+                    if (level >= skillCost[4] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[4];
                         additionalGlobalCriticalChance += 1;
                         statApplied = true;
                     }
-                    else if (!sum && additionalGlobalCriticalChance > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalGlobalCriticalChance > 0)
                     {
                         level += skillCost[4];
                         additionalGlobalCriticalChance--;
@@ -373,13 +372,13 @@ namespace Infinitum
                     }
                     break;
                 case "Melee Damage":
-                    if (level >= skillCost[5] && sum)
+                    if (level >= skillCost[5] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[5];
                         additionalMeleeDamage += .01f;
                         statApplied = true;
                     }
-                    else if (!sum && additionalMeleeDamage > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalMeleeDamage > 0)
                     {
                         level += skillCost[5];
                         additionalMeleeDamage -= 0.01f;
@@ -388,13 +387,13 @@ namespace Infinitum
 
                     break;
                 case "Melee Attack Speed":
-                    if (level >= skillCost[6] && sum)
+                    if (level >= skillCost[6] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[6];
                         additionalMeleeAttackSpeed += 0.01f;
                         statApplied = true;
                     }
-                    else if (!sum && additionalMeleeAttackSpeed > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalMeleeAttackSpeed > 0)
                     {
                         level += skillCost[6];
                         additionalMeleeAttackSpeed -= 0.01f;
@@ -404,13 +403,13 @@ namespace Infinitum
                     break;
 
                 case "Magic Damage":
-                    if (level >= skillCost[7] & sum)
+                    if (level >= skillCost[7] & apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[7];
                         additionalMagicDamage += .01f;
                         statApplied = true;
                     }
-                    else if (!sum && additionalMagicDamage > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalMagicDamage > 0)
                     {
                         level += skillCost[7];
                         additionalMagicDamage -= .01f;
@@ -418,13 +417,13 @@ namespace Infinitum
                     }
                     break;
                 case "Mana Consumption":
-                    if (level >= skillCost[8] && sum)
+                    if (level >= skillCost[8] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[8];
                         reducedManaConsumption += 0.01f;
                         statApplied = true;
                     }
-                    else if (!sum && reducedManaConsumption > 0)
+                    else if (apply == (int)ApplyStat.Subs && reducedManaConsumption > 0)
                     {
                         level += skillCost[8];
                         reducedManaConsumption -= 0.01f;
@@ -432,13 +431,13 @@ namespace Infinitum
                     }
                     break;
                 case "Ranged Damage":
-                    if (level >= skillCost[9] && sum)
+                    if (level >= skillCost[9] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[9];
                         additionalRangedDamage += 0.01f;
                         statApplied = true;
                     }
-                    else if (!sum && additionalRangedDamage > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalRangedDamage > 0)
                     {
                         level += skillCost[9];
                         additionalRangedDamage -= 0.01f;
@@ -446,13 +445,13 @@ namespace Infinitum
                     }
                     break;
                 case "Ammo Consumption":
-                    if (level >= skillCost[10] && sum)
+                    if (level >= skillCost[10] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[10];
                         ammoConsumedReduction -= 1;
                         statApplied = true;
                     }
-                    else if (!sum && ammoConsumedReduction < 101)
+                    else if (apply == (int)ApplyStat.Subs && ammoConsumedReduction < 101)
                     {
                         level += skillCost[10];
                         ammoConsumedReduction += 1;
@@ -461,13 +460,13 @@ namespace Infinitum
                     break;
 
                 case "Summon Damage":
-                    if (level >= skillCost[11] && sum)
+                    if (level >= skillCost[11] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[11];
                         additionalSummonDamage += 0.01f;
                         statApplied = true;
                     }
-                    else if (!sum && additionalSummonDamage > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalSummonDamage > 0)
                     {
                         level += skillCost[11];
                         additionalSummonDamage -= 0.01f;
@@ -475,13 +474,13 @@ namespace Infinitum
                     }
                     break;
                 case "Minion Capacity":
-                    if (level >= skillCost[12] && sum)
+                    if (level >= skillCost[12] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[12];
                         additionalSummonCapacity += 1;
                         statApplied = true;
                     }
-                    else if (!sum && additionalSummonCapacity > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalSummonCapacity > 0)
                     {
                         level += skillCost[12];
                         additionalSummonCapacity -= 1;
@@ -489,13 +488,13 @@ namespace Infinitum
                     }
                     break;
                 case "Pickaxe Speed":
-                    if (level >= skillCost[13] && sum)
+                    if (level >= skillCost[13] && apply ==  (int)ApplyStat.Sum)
                     {
                         level -= skillCost[13];
                         additionalPickingPower += .01f;
                         statApplied = true;
                     }
-                    else if (!sum && additionalPickingPower > 0)
+                    else if (apply == (int)ApplyStat.Subs && additionalPickingPower > 0)
                     {
                         level += skillCost[13];
                         additionalPickingPower -= .01f;

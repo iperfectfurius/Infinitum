@@ -243,7 +243,7 @@ namespace Infinitum.UI
         private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
             UIButton me = (UIButton)listeningElement.Parent;
-            if (stats.ApplyStats(me.OwnStat, me.Text == "+" ? true : false))
+            if (stats.ApplyStats(me.OwnStat, me.Text == "+" ? (int)Character_Data.ApplyStat.Sum : (int)Character_Data.ApplyStat.Subs))
                 SoundEngine.PlaySound(SoundID.AchievementComplete);
 
         }
