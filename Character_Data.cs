@@ -766,7 +766,6 @@ namespace Infinitum
                     myPacket.Send();
                 });
             }
-            ChatMessage(Main.netMode.ToString());
             
             
             base.ModifyCaughtFish(fish);
