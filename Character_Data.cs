@@ -26,11 +26,17 @@ namespace Infinitum
         private string lastHeldItem;
         private List<float> avgXP =  new List<float>() {0};
         public float getAvgXP() => (float)Queryable.Average(avgXP.AsQueryable());
-        private enum combatTextPos : int {
+        private enum CombatTextPos : int {
             Xp = 155,
             AddedLevels = 190,
             CurrentLevels = 50
         };
+        private enum SkillType : ushort
+        {
+            PostUpdateEquips = 0,
+            ModifyHitNPC = 1,
+            CanConsumeAmmo = 2
+        }
 
         private static string[] skillOrder = {
             "Defense",
@@ -100,6 +106,7 @@ namespace Infinitum
         private float additionalPickingPower = 0;
         //to do
         private List<Skill> skills = new List<Skill>();
+        private Dictionary<int, List<Skill>> skillsTest = new();
 
 
 
@@ -134,11 +141,12 @@ namespace Infinitum
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
-            showDamageText((int)combatTextPos.CurrentLevels, $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
+            showDamageText((int)CombatTextPos.CurrentLevels, $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
             InfinitumUI.Instance.stats = this;
             ExpBarUI.Instance.stats = this;
+            Skill.player = currentPLayer;
             if (messageReset)
-                showDamageText((int)combatTextPos.CurrentLevels + 50,"Skills Reset!" ,Color.Red,180,true);
+                showDamageText((int)CombatTextPos.CurrentLevels + 50,"Skills Reset!" ,Color.Red,180,true);
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
@@ -162,7 +170,7 @@ namespace Infinitum
                 float experienceObtained = xp * (expMultiplier * moreExpMultiplier);
                 exp += experienceObtained;
                 UpdateLevel();
-                showDamageText((int)combatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);
+                showDamageText((int)CombatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);
                 totalNpcsKilled++;
 
                 if (avgXP.Count > 100)
@@ -186,8 +194,8 @@ namespace Infinitum
             level += LevelsUp;
             totalLevel += LevelsUp;
 
-            showDamageText((int)combatTextPos.AddedLevels, $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
-            showDamageText((int)combatTextPos.CurrentLevels, $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
+            showDamageText((int)CombatTextPos.AddedLevels, $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
+            showDamageText((int)CombatTextPos.CurrentLevels, $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
 
             SoundEngine.PlaySound(SoundID.Chat);
 
@@ -195,12 +203,13 @@ namespace Infinitum
         public void AddXpMultiplier(float multiplier)
         {
             expMultiplier += multiplier;
-            showDamageText((int)combatTextPos.Xp, $"{(expMultiplier * 100f):n2}% Multiplier!", CombatText.DamagedFriendlyCrit);
+            showDamageText((int)CombatTextPos.Xp, $"{(expMultiplier * 100f):n2}% Multiplier!", CombatText.DamagedFriendlyCrit);
             recentChanged = true;
         }
 
         public override void LoadData(TagCompound tag)
         {
+
             try
             {
                 string tempVer;
@@ -239,7 +248,13 @@ namespace Infinitum
 
 
                 recentChanged = true;
-                skills.Add(new Defense(0));
+                skills.AddRange(new List<Skill> { 
+                    new Defense((int)additionalDefense),
+                    new MeleeDamage((int)(additionalMeleeDamage * 100)),
+
+
+                
+                });
             }
             catch
             {
@@ -708,7 +723,6 @@ namespace Infinitum
         }
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
-
             if (ammoConsumedReduction < 101 && ammoConsumedReduction > 1)
             {
                 return !(Main.rand.Next(100) <= Math.Abs(100 -ammoConsumedReduction));

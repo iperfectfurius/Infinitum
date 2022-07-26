@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Infinitum.Skills
+{
+    internal class AmmoConsumption : Skill
+    {
+        public AmmoConsumption(int level) : base(level)
+        {
+        }
+
+        public override void ApplyStatToPlayer(out bool arg)
+        {
+            if (EffectBuff < 101 && EffectBuff > 1)
+            {
+                arg = !(Main.rand.Next(100) <= Math.Abs(100 - EffectBuff));
+                return;
+            }
+            arg = false;
+        }
+
+
+        public override void OnInitialize()
+        {
+            Name = "Ammo Consumption";
+            DisplayName = "Ammo Consumption";
+            StatName = "CanConsumeAmmo";
+            Cost = 125;
+            MultiplierCost = 0;//after 1.0v
+            EffectBuff = 101;
+            MultiplierEffect = 1;
+        }
+    }
+}

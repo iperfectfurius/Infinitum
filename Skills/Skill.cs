@@ -1,19 +1,21 @@
-﻿using System;
+﻿global using Terraria.ModLoader;
+global using Terraria;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Infinitum.Skills
 {
     internal abstract class Skill
     {
-        public enum action : ushort
+        public enum actions : ushort
         {
             LevelUp = 0,
             LevelDown = 1,
             LevelUpAll = 2
         }
+        public static Player player;
         private string name;
         private string statName;
         private string displayName;
@@ -37,34 +39,37 @@ namespace Infinitum.Skills
         public Skill(int level)
         {
             this.maxLevel = 9999;
-            this.level = level;           
+            this.level = level;
             OnInitialize();
             calculateBuff();
 
         }
-        public virtual void ApplyStat(int action,ref int Levels)
+        public abstract void OnInitialize();
+        public bool ApplyStat(int action, ref int Levels)
         {
+            bool succes = false;
+
             switch (action)
             {
-                case 0:
-                    LevelUp(ref Levels);
+                case (int)actions.LevelUp:
+                    succes = LevelUp(ref Levels);
                     break;
-                    case 1:
-                    LevelDown(ref Levels);
+                case (int)actions.LevelDown:
+                    succes = LevelDown(ref Levels);
                     break;
-                case 2:
-                    LevelUpAll(ref Levels);
+                case (int)actions.LevelUpAll:
+                    succes = LevelUpAll(ref Levels);
                     break;
                 default:
                     break;
             }
+            //CalcCost();
+            return succes;
         }
-        private void calculateBuff()
+        public void calculateBuff()
         {
-            effectBuff =  level * multiplierEffect;
+            effectBuff = level * multiplierEffect;
         }
-        public abstract void OnInitialize();
-
         public virtual bool LevelUp(ref int Levels)
         {
             if (Levels > cost)
@@ -93,12 +98,20 @@ namespace Infinitum.Skills
             {
                 int maxLevels = level / cost;
                 Levels -= cost * maxLevels;
-                level+= maxLevels;
+                level += maxLevels;
                 effectBuff += maxLevels * multiplierEffect;
                 return true;
             }
             return false;
         }
+        private void CalcCost()
+        {
+            cost += (int)(cost * multiplierCost);
+        }
+        public virtual void ApplyStatToPlayer() { return; }
+        public virtual void ApplyStatToPlayer(int arg) { return; }
+
+        public virtual void ApplyStatToPlayer(out bool arg) { arg = false; }
 
     }
 }

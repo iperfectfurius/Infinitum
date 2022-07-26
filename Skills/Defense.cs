@@ -11,7 +11,7 @@ namespace Infinitum.Skills
         public Defense(int level) : base(level)
         {
         }
-
+     
         public override void OnInitialize()
         {
             Name = "Defense";
@@ -20,7 +20,12 @@ namespace Infinitum.Skills
             Cost = 250;
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
-            MultiplierEffect = 1;
+            MultiplierEffect = 1;         
         }
+        public override void ApplyStatToPlayer()
+        {
+            player.statDefense = player.statDefense + (int)EffectBuff;
+        }
+
     }
 }
