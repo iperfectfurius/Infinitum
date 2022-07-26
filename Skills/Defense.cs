@@ -8,26 +8,19 @@ namespace Infinitum.Skills
 {
     internal class Defense : Skill
     {
-
-        public Defense(string name, string statName) : base(name, statName)
+        public Defense(int level) : base(level)
         {
-            
-        }
-
-        public override void LevelUp(ref int Levels)
-        {
-            throw new NotImplementedException();
-            
         }
 
         public override void OnInitialize()
         {
-            //this.Level = 0;
-            //effectBuff = 0f;
-            //cost = 0;
-            //multiplierCost = 0;
-            //maxLevel = 999999;
-            
+            Name = "Defense";
+            DisplayName = "Defense";
+            StatName = "statDefense";
+            Cost = 250;
+            MultiplierCost = 0;//after 1.0v
+            EffectBuff = 0;
+            MultiplierEffect = 1;
         }
     }
 }

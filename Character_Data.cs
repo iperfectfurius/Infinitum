@@ -239,6 +239,7 @@ namespace Infinitum
 
 
                 recentChanged = true;
+                skills.Add(new Defense(0));
             }
             catch
             {

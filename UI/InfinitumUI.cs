@@ -158,11 +158,6 @@ namespace Infinitum.UI
 
                 marginTop += 20f;
             }
-
-
-
-
-
             skillsElementsPanel.SetPadding(0);
         }
 
