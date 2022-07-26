@@ -38,6 +38,7 @@ namespace Infinitum.UI
             bar.Left.Set(Main.screenWidth - 270, 0f);
             bar.Top.Set(71f, 0f);
             bar.OnMiddleClick += openStatsTab;
+            bar.continueStuff = true;
 
             addUIElementsToPanel();
             Append(bar);

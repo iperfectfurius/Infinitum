@@ -19,7 +19,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 570f;
+        private const float maxWidth = 610f;
         private const float maxHeigth = 200f;
         private UIButton reset;
         private UIButton activateStatsButton;
@@ -118,6 +118,8 @@ namespace Infinitum.UI
             {
                 UIButton sumStat = new UIButton("+", addStat);
                 UIButton subStat = new UIButton("-", addStat);
+                UIButton allStat = new UIButton("All", addStat);
+
                 UIText cost = new UIText(Character_Data.SkillCost[i].ToString());
 
 
@@ -136,14 +138,22 @@ namespace Infinitum.UI
                 subStat.OwnStat = Character_Data.SkillOrder[i];
                 subStat.OverflowHidden = false;
 
+                allStat.Top.Set(marginTop, 0f);
+                allStat.Left.Set(marginLeft + 48, 0f);
+                allStat.Height.Set(18f, 0);
+                allStat.Width.Set(30f, 0);
+                allStat.OwnStat = Character_Data.SkillOrder[i];
+                allStat.OverflowHidden = false;
+
                 cost.Top.Set(marginTop, 0f);
-                cost.Left.Set(marginLeft + 35, 0f);
+                cost.Left.Set(marginLeft + 60, 0f);
                 cost.Height.Set(20f, 0);
                 cost.Width.Set(80, 0);
                 cost.OverflowHidden = false;
 
                 skillsElementsPanel.Add(sumStat);
                 skillsElementsPanel.Add(subStat);
+                skillsElementsPanel.Add(allStat);
                 skillsElementsPanel.Add(cost);
 
                 marginTop += 20f;
@@ -243,8 +253,20 @@ namespace Infinitum.UI
         private void addStat(UIMouseEvent evt, UIElement listeningElement)
         {
             UIButton me = (UIButton)listeningElement.Parent;
-            if (stats.ApplyStats(me.OwnStat, me.Text == "+" ? true : false))
-                SoundEngine.PlaySound(SoundID.AchievementComplete);
+            switch (me.Text)
+            {
+                case "+":
+                    if (stats.ApplyStats(me.OwnStat, (int)Character_Data.ApplyStat.Sum)) SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    break;
+                case "-":
+                    if (stats.ApplyStats(me.OwnStat, (int)Character_Data.ApplyStat.Subs)) SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    break;
+                case "All":
+                    if (stats.ApplyStats(me.OwnStat, (int)Character_Data.ApplyStat.All)) SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    break;
+                default:
+                    break;
+            }
 
         }
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)

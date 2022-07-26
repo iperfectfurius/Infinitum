@@ -9,6 +9,7 @@ namespace Infinitum.UI
     {
         private Vector2 offset;
         public bool dragging;
+		public bool continueStuff = false;
 
         public override void OnInitialize()
         {
@@ -46,10 +47,9 @@ namespace Infinitum.UI
 		{
 			base.Update(gameTime); 
 
-			if (ContainsPoint(Main.MouseScreen) && dragging)
+			if ((ContainsPoint(Main.MouseScreen) && !continueStuff) || dragging)
 			{
-				Main.LocalPlayer.mouseInterface = true;
-				
+				Main.LocalPlayer.mouseInterface = true;				
 			}
 
 			if (dragging)

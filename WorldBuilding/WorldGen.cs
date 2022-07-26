@@ -20,17 +20,65 @@ namespace Infinitum.WorldBuilding
         private Task timer;
         private bool notUnloadedTiles = true;
         private const int CHANCE_BASE = 125;
-        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, };
+        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267 };
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
         {
-            
+
+            float xp = 0;
+            string pos = $"{i}-{j}";
+
+            if (bannedTiles.Contains(pos))
+            {
+                Task.Run(() => bannedTiles.Remove(pos));
+                return base.Drop(i, j, type);
+            }
+
+            var tile = TileLoader.GetTile(type);
+            if (tile != null)
+            {
+                //provisional, calamity dont register ores to main.
+                if (!TileID.Sets.Ore[type] && !Main.tileSpelunker[type])
+                {
+                    if (Main.rand.NextBool(CHANCE_BASE * 25))
+                        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+
+                    return base.Drop(i, j, type);
+                }
+
+
+                xp = (tile.MinPick * baseXP);
+
+                if (xp == 0)
+                    xp = 1;
+
+                if (tile.GetType().Name == "SanjacobosMineralTile")
+                    xp += 55f;
+
+
+                if (Main.netMode != NetmodeID.Server)
+                {
+                    Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
+                }
+                else if (Main.netMode == NetmodeID.Server)
+                {
+                    sendXPToPlayers(xp);
+
+                }
+                if (Main.rand.NextBool(CHANCE_BASE))
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+                return base.Drop(i, j, type);
+
+            }
+
+
             if (!isOre(type))
             {
+                //Special and global Tiles.
                 int specificChance = 25;
 
-               
+
 
                 switch (type)
                 {
@@ -75,44 +123,14 @@ namespace Infinitum.WorldBuilding
 
                         break;
                 }
-               
+
                 if (Main.rand.NextBool(CHANCE_BASE * specificChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
-            }
-
-            float xp = 0;
-            string pos = $"{i}-{j}";
-            if (bannedTiles.Contains(pos))
-            {
-                Task.Run(() => bannedTiles.Remove(pos));
-                return base.Drop(i, j, type);
-            }
-
-            var tile = TileLoader.GetTile(type);
-            if (tile != null)
-            {
-
-                xp = (tile.MinPick * baseXP);
-
-                if (tile.GetType().Name == "SanjacobosMineralTile")
-                    xp += 35f;
-
-
-                if (Main.netMode != NetmodeID.Server)
-                {
-                    Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
-                }
-                else if (Main.netMode == NetmodeID.Server)
-                {
-                    sendXPToPlayers(xp);
-
-                }
-                if (Main.rand.NextBool(CHANCE_BASE))
-                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
-                return base.Drop(i, j, type);
 
             }
+
+
 
             switch (type)
             {
@@ -220,7 +238,7 @@ namespace Infinitum.WorldBuilding
         }
         private bool isOre(int type)
         {
-            if (TileID.Sets.Ore[type] || blockCountedAsORe.Contains(type))
+            if (TileID.Sets.Ore[type] || blockCountedAsORe.Contains(type) || TileLoader.GetTile(type) != null)
                 return true;
             return false;
 

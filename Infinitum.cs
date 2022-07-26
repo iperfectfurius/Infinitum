@@ -12,6 +12,8 @@ namespace Infinitum
     public class Infinitum : Mod
     {
         public static Infinitum instance;
+        public static Mod myMod = ModLoader.GetMod("Infinitum");
+
         public Infinitum() { }
         public override void Load()
         {
@@ -20,8 +22,16 @@ namespace Infinitum
             
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
-        {//revisar
-            AddXPToPlayer(reader.ReadSingle());
+        {//Rework with ids and stuff
+            if (Main.netMode == NetmodeID.Server)
+            {
+                ModPacket myPacket = myMod.GetPacket();
+                myPacket.Write(reader.ReadSingle());
+                myPacket.Send();
+            }             
+            else//singlePlayer or client, doesn't matter
+                AddXPToPlayer(reader.ReadSingle());
+
             base.HandlePacket(reader, whoAmI);
         
 
