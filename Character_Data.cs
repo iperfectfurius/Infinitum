@@ -758,7 +758,7 @@ namespace Infinitum
                 AddXp(xp);
             else if (Main.netMode == NetmodeID.MultiplayerClient)
             {
-
+                //mirar
                 Task.Run(() =>
                 {
                     ModPacket myPacket = Infinitum.instance.GetPacket();

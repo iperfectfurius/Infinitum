@@ -50,6 +50,9 @@ namespace Infinitum.WorldBuilding
 
                 xp = (tile.MinPick * baseXP);
 
+                if (xp == 0)
+                    xp = 1;
+
                 if (tile.GetType().Name == "SanjacobosMineralTile")
                     xp += 55f;
 
