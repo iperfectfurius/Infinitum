@@ -24,7 +24,7 @@ namespace Infinitum.Skills
         {
 
             Name = "GlobalCriticalChance";
-            DisplayName = "Global Critical Chance";
+            DisplayName = "Critical Chance";
             StatName = "GetCritChance";
             Cost = 250;
             MultiplierCost = 0;//after 1.0v

@@ -27,6 +27,10 @@ namespace Infinitum.Skills
         {
             player.statDefense = player.statDefense + (int)EffectBuff;
         }
+        public override string GetStatText()
+        {
+            return $"{PreText} {EffectBuff}";
+        }
 
     }
 }

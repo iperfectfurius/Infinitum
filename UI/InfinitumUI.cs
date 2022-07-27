@@ -25,6 +25,7 @@ namespace Infinitum.UI
         private UIButton reset;
         private UIButton activateStatsButton;
         private UIButton numbers;
+        private int numberOfSkills = Enum.GetNames(typeof(SkillEnums.SkillOrder)).Length;
         UIText[] statsTexts = new UIText[6];
         private int[] skillTexts = new int[0];//Stats and cost
         
@@ -101,7 +102,7 @@ namespace Infinitum.UI
             skillsElementsPanel.Add(costText);
             //This goes in other panel
             //Unify!
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < numberOfSkills; i++)
             {
                 UIText text = new("test" + ": 0", .9f);
 
@@ -120,7 +121,7 @@ namespace Infinitum.UI
             marginTop = 0;
             marginLeft = 225;
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < numberOfSkills; i++)
             {
                 UIButton sumStat = new UIButton("+", addStat);
                 UIButton subStat = new UIButton("-", addStat);
@@ -302,10 +303,10 @@ namespace Infinitum.UI
             activateStatsButton.Text = stats.Activate ? "Disable Stats" : "Enable Stats";
             numbers.Text = stats.DisplayNumbers ? "Disable Numbers" : "Enable Numbers";
 
-            for(int i = 0; i < SkillEnums.skillOrder.Length; i++)
+            for(int i = 0; i < numberOfSkills; i++)
             {
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i])).SetText($"{stats.Skills[i].DisplayName}: {stats.Skills[i].GetStatText()}");
-                ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + 13])).SetText($"{stats.Skills[i].Cost}");
+                ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + numberOfSkills])).SetText($"{stats.Skills[i].Cost}");
             }
 
             //UIElement[] test = skillsElementsPanel._items.ToArray();

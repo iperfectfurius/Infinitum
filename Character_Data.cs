@@ -61,7 +61,7 @@ namespace Infinitum
         public bool Activate { get => activate; set => activate = value; }
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
-       internal Skill[] Skills { get => skills; set => skills = value; }
+        internal Skill[] Skills { get => skills; set => skills = value; }
 
         public override void OnEnterWorld(Player currentPLayer)
         {
@@ -134,7 +134,7 @@ namespace Infinitum
 
         public override void LoadData(TagCompound tag)
         {
-           
+
             try
             {
                 string tempVer;
@@ -155,10 +155,10 @@ namespace Infinitum
                 {
                     messageReset = true;
                     resetCurrentSkills();
-                    return;                
+                    return;
                 }
 
-                Skills = new Skill[14];
+                Skills = new Skill[Enum.GetNames(typeof(SkillEnums.SkillOrder)).Length];
                 Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(tag.GetInt("Defense"));
                 Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(tag.GetInt("LifeRegen"));
                 Skills[(int)SkillEnums.SkillOrder.MeleeDamage] = new MeleeDamage(tag.GetInt("MeleeDamage"));
@@ -172,7 +172,7 @@ namespace Infinitum
                 Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(tag.GetInt("MovementSpeed"));
                 Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(tag.GetInt("GlobalCriticalChance"));
 
-                
+
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(tag.GetInt("LifeSteal"));
                 Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(tag.GetInt("RangedAmmoConsumption"));
                 recentChanged = true;
@@ -194,6 +194,7 @@ namespace Infinitum
             tag.Add("TotalNpcsKilled", totalNpcsKilled);
             tag.Add("Activate", activate);
             tag.Add("NotFirstTime", true);
+            tag.Add("DisplayNumbers", displayNumbers);
             tag.Add("Version", version);
 
             foreach (Skill s in Skills)
@@ -225,8 +226,11 @@ namespace Infinitum
         public bool ApplyStats(int stat, int apply)
         {
             //implement skill class     
-            if (skills[stat].ApplyStat(apply, ref level)) return true;
-
+            if (skills[stat].ApplyStat(apply, ref level))
+            {
+                recentChanged = true;
+                return true;
+            }
             return false;
         }
         public override void PostUpdateEquips()
@@ -243,15 +247,14 @@ namespace Infinitum
                 return;
             }
 
-            foreach(Skill s in skills)
+            foreach (Skill s in skills)
             {
                 if (s.Type == (int)SkillEnums.Type.PostUpdateEquips)
                     s.ApplyStatToPlayer();
             }
-            
+
+
             getAdditionalsExp();
-
-
             base.PostUpdateEquips();
 
         }
@@ -340,8 +343,9 @@ namespace Infinitum
         public void resetCurrentSkills()
         {
 
+            level = totalLevel;
 
-            skills = new Skill[14];
+            skills = new Skill[Enum.GetNames(typeof(SkillEnums.SkillOrder)).Length];
 
             Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(0);
             Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(0);

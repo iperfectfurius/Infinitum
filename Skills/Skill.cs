@@ -42,6 +42,7 @@ namespace Infinitum.Skills
             this.level = level;
             OnInitialize();
             calculateBuff();
+            //calcCost();
 
         }
         public abstract void OnInitialize();
