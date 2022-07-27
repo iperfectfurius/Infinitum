@@ -339,6 +339,8 @@ namespace Infinitum
 
         public void resetCurrentSkills()
         {
+
+
             skills = new Skill[14];
 
             Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(0);
