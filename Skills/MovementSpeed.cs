@@ -14,20 +14,21 @@ namespace Infinitum.Skills
 
         public override void ApplyStatToPlayer()
         {
-            player.accRunSpeed = player.accRunSpeed + EffectBuff;
-            player.moveSpeed = player.moveSpeed + EffectBuff;
-            player.maxRunSpeed = player.maxRunSpeed + EffectBuff;
+            player.accRunSpeed = player.accRunSpeed + (float)EffectBuff;
+            player.moveSpeed = player.moveSpeed + (float)EffectBuff;
+            player.maxRunSpeed = player.maxRunSpeed + (float)EffectBuff;
         }
 
         public override void OnInitialize()
         {
-            Name = "Movement Speed";
+            Name = "MovementSpeed";
             DisplayName = "Movement Speed";
             StatName = "moveSpeed";
             Cost = 185;
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 0.01f;
+            Type = (int)SkillEnums.Type.PostUpdateEquips;
         }
     }
 }

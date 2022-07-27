@@ -15,14 +15,14 @@ namespace Infinitum.UI
         private UIElement.MouseEvent _clickAction;
         private UIPanel _uiPanel;
         private UIText _uiText;
-		private string ownStat;
+		private int ownStat;
 		private Color color;
         public string Text
         {
             get => _uiText?.Text ?? string.Empty;
             set => _text = value;
         }
-        public string OwnStat { get => ownStat; set => ownStat = value; }
+        public int OwnStat { get => ownStat; set => ownStat = value; }
 
         public UIButton(object text, UIElement.MouseEvent clickAction) : base()
 		{ 

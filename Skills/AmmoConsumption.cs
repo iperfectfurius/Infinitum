@@ -16,7 +16,7 @@ namespace Infinitum.Skills
         {
             if (EffectBuff < 101 && EffectBuff > 1)
             {
-                arg = !(Main.rand.Next(100) <= Math.Abs(100 - EffectBuff));
+                arg = !(Main.rand.Next(100) <= Math.Abs(100 - (int)EffectBuff));
                 return;
             }
             arg = false;
@@ -25,13 +25,14 @@ namespace Infinitum.Skills
 
         public override void OnInitialize()
         {
-            Name = "Ammo Consumption";
+            Name = "RangedAmmoConsumption";
             DisplayName = "Ammo Consumption";
             StatName = "CanConsumeAmmo";
             Cost = 125;
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 101;
             MultiplierEffect = 1;
+            Type = (int)SkillEnums.Type.CanConsumeAmmo;
         }
     }
 }

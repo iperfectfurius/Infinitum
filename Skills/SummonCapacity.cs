@@ -14,17 +14,18 @@ namespace Infinitum.Skills
 
         public override void OnInitialize()
         {
-            Name = "Summon Minions";
+            Name = "MinionCapacity";
             DisplayName = "Summon Minions";
             StatName = "maxMinions";
             Cost = 1250;
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 1;
+            Type = (int)SkillEnums.Type.PostUpdateEquips;
         }
         public override void ApplyStatToPlayer()
         {
-            player.maxMinions = player.maxMinions + EffectBuff;
+            player.maxMinions = player.maxMinions + (int)EffectBuff;
         }
     }
 }

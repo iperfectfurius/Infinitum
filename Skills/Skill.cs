@@ -9,22 +9,20 @@ namespace Infinitum.Skills
 {
     internal abstract class Skill
     {
-        public enum actions : ushort
-        {
-            LevelUp = 0,
-            LevelDown = 1,
-            LevelUpAll = 2
-        }
+
         public static Player player;
         private string name;
         private string statName;
         private string displayName;
+        private char preText = '+';
         private int level;
         private dynamic effectBuff;
         private float multiplierEffect;
         private int cost;
         private float multiplierCost;
         private int maxLevel;
+        private bool automaticMode = false;
+        private int type;
 
         public string Name { get => name; set => name = value; }
         public string StatName { get => statName; set => statName = value; }
@@ -35,6 +33,8 @@ namespace Infinitum.Skills
         public int MaxLevel { get => maxLevel; set => maxLevel = value; }
         public string DisplayName { get => displayName; set => displayName = value; }
         public float MultiplierEffect { get => multiplierEffect; set => multiplierEffect = value; }
+        public char PreText { get => preText; set => preText = value; }
+        public int Type { get => type; set => type = value; }
 
         public Skill(int level)
         {
@@ -51,13 +51,13 @@ namespace Infinitum.Skills
 
             switch (action)
             {
-                case (int)actions.LevelUp:
+                case (int)SkillEnums.Actions.LevelUp:
                     succes = LevelUp(ref Levels);
                     break;
-                case (int)actions.LevelDown:
+                case (int)SkillEnums.Actions.LevelDown:
                     succes = LevelDown(ref Levels);
                     break;
-                case (int)actions.LevelUpAll:
+                case (int)SkillEnums.Actions.LevelUpAll:
                     succes = LevelUpAll(ref Levels);
                     break;
                 default:
@@ -66,7 +66,7 @@ namespace Infinitum.Skills
             //CalcCost();
             return succes;
         }
-        public void calculateBuff()
+        private void calculateBuff()
         {
             effectBuff = level * multiplierEffect;
         }
@@ -103,6 +103,10 @@ namespace Infinitum.Skills
                 return true;
             }
             return false;
+        }
+        public virtual string GetStatText()
+        {
+            return $"{preText} {(effectBuff * 100):n2}%";
         }
         private void CalcCost()
         {

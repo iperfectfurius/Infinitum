@@ -20,18 +20,19 @@ namespace Infinitum.Skills
         }
         public override void OnInitialize()
         {
-            Name = "Life Steal";
+            Name = "LifeSteal";
             DisplayName = "Life Steal";
             StatName = "statLife";
             Cost = 125;
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 0.00025f;
+            Type = (int)SkillEnums.Type.ModifyHitNPC;
         }
         private void GetLifeSteal(int damage)
         {
-            int toHeal = (int)(damage * EffectBuff);
-            stackedLifeSteal += (damage * EffectBuff) - (float)Math.Truncate(damage * EffectBuff);
+            int toHeal = (int)(damage * (float)EffectBuff);
+            stackedLifeSteal += (damage * (float)EffectBuff) - (float)Math.Truncate(damage * (float)EffectBuff);
 
             //rework
             if (stackedLifeSteal > 1)

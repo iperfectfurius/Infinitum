@@ -13,13 +13,14 @@
 
         public override void OnInitialize()
         {
-            Name = "Life Regen";
+            Name = "LifeRegen";
             DisplayName = "Life Regen";
             StatName = "lifeRegen";
             Cost = 125;
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 0.25f;
+            Type = (int)SkillEnums.Type.PostUpdateEquips;
         }
     }
 }

@@ -14,18 +14,19 @@ namespace Infinitum.Skills
 
         public override void OnInitialize()
         {
-            Name = "Picking Speed";
+            Name = "PickaxeSpeed";
             DisplayName = "Picking Speed";
             StatName = "pickSpeed";
             Cost = 10;
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 0.01f;
+            Type = (int)SkillEnums.Type.PostUpdateEquips;
         }
 
         public override void ApplyStatToPlayer()
         {
-            player.pickSpeed = player.pickSpeed - EffectBuff;
+            player.pickSpeed = player.pickSpeed - (float)EffectBuff;
         }
     }
 }

@@ -14,22 +14,23 @@ namespace Infinitum.Skills
 
         public override void ApplyStatToPlayer()
         {
-            player.GetCritChance(DamageClass.Melee) = player.GetCritChance(DamageClass.Melee) + EffectBuff;
-            player.GetCritChance(DamageClass.Magic) = player.GetCritChance(DamageClass.Magic) + EffectBuff;
-            player.GetCritChance(DamageClass.Ranged) = player.GetCritChance(DamageClass.Ranged) + EffectBuff;
+            player.GetCritChance(DamageClass.Melee) = player.GetCritChance(DamageClass.Melee) + (float)EffectBuff;
+            player.GetCritChance(DamageClass.Magic) = player.GetCritChance(DamageClass.Magic) + (float)EffectBuff;
+            player.GetCritChance(DamageClass.Ranged) = player.GetCritChance(DamageClass.Ranged) + (float)EffectBuff;
             //add for mods?
         }
 
         public override void OnInitialize()
         {
 
-            Name = "Global Critical Chance";
+            Name = "GlobalCriticalChance";
             DisplayName = "Global Critical Chance";
             StatName = "GetCritChance";
             Cost = 250;
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 1;
+            Type = (int)SkillEnums.Type.PostUpdateEquips;
         }
     }
 
