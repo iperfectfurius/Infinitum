@@ -320,7 +320,7 @@ namespace Infinitum
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
 
-            skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(out bool canConsumeAmmo);
+            skills[(int)SkillEnums.SkillOrder.AmmoConsumption].ApplyStatToPlayer(out bool canConsumeAmmo);
 
             return canConsumeAmmo;
 
