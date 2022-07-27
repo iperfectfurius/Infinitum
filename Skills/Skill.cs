@@ -67,7 +67,7 @@ namespace Infinitum.Skills
             //CalcCost();
             return succes;
         }
-        private void calculateBuff()
+        public virtual void calculateBuff()
         {
             effectBuff = level * multiplierEffect;
         }
@@ -97,7 +97,7 @@ namespace Infinitum.Skills
         {
             if (Levels > cost)
             {
-                int maxLevels = level / cost;
+                int maxLevels = Levels / cost;
                 Levels -= cost * maxLevels;
                 level += maxLevels;
                 effectBuff += maxLevels * multiplierEffect;

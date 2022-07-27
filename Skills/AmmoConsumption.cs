@@ -12,6 +12,10 @@ namespace Infinitum.Skills
         {
         }
 
+        public override void calculateBuff()
+        {
+            EffectBuff -= Level;
+        }
         public override void ApplyStatToPlayer(out bool arg)
         {
             if (EffectBuff < 101 && EffectBuff > 1)
@@ -19,7 +23,7 @@ namespace Infinitum.Skills
                 arg = !(Main.rand.Next(100) <= Math.Abs(100 - (int)EffectBuff));
                 return;
             }
-            arg = false;
+            arg = true;
         }
 
 
@@ -33,6 +37,12 @@ namespace Infinitum.Skills
             EffectBuff = 101;
             MultiplierEffect = 1;
             Type = (int)SkillEnums.Type.CanConsumeAmmo;
+            PreText = '-';
+        }
+
+        public override string GetStatText()
+        {
+            return $"{(int)EffectBuff-101}%";
         }
     }
 }

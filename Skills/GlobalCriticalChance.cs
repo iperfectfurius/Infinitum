@@ -32,6 +32,10 @@ namespace Infinitum.Skills
             MultiplierEffect = 1;
             Type = (int)SkillEnums.Type.PostUpdateEquips;
         }
+        public override string GetStatText()
+        {
+            return $"{PreText} {EffectBuff}%";
+        }
     }
 
 }
