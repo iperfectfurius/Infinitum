@@ -32,8 +32,6 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-
-        private bool notFirstTime = false;
         private string version = "0.70";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
@@ -48,7 +46,7 @@ namespace Infinitum
         private float lifeSteal = 0;
         private float stackedLifeSteal = 0;
         //to do
-        private Skill[] skills;
+        private Skill[] skills = new Skill[0];
 
         public float Exp { get => exp; }
         public int Level { get => level; }
@@ -63,15 +61,24 @@ namespace Infinitum
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
         internal Skill[] Skills { get => skills; set => skills = value; }
 
+        public override void Initialize()
+        {
+            base.Initialize();
+            
+        }
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
+
             showDamageText((int)CombatTextPos.CurrentLevels, $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
+
             InfinitumUI.Instance.stats = this;
             ExpBarUI.Instance.stats = this;
             Skill.player = currentPLayer;
+
             if (messageReset)
                 showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 180, true);
+
         }
         private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
@@ -140,16 +147,12 @@ namespace Infinitum
                 string tempVer;
                 tag.TryGet("Version", out tempVer);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
-                tag.TryGet("NotFirstTime", out notFirstTime);
                 tag.TryGet("Level", out level);
                 tag.TryGet("ExpMultiplier", out expMultiplier);
                 tag.TryGet("Exp", out exp);
                 tag.TryGet("TotalLevel", out totalLevel);
                 tag.TryGet("TotalNpcsKilled", out totalNpcsKilled);
                 tag.TryGet("Activate", out activate);
-
-                if (!notFirstTime)
-                    displayNumbers = true;
 
                 if (tempVer != version)
                 {
@@ -193,7 +196,6 @@ namespace Infinitum
             tag.Add("TotalLevel", totalLevel);
             tag.Add("TotalNpcsKilled", totalNpcsKilled);
             tag.Add("Activate", activate);
-            tag.Add("NotFirstTime", true);
             tag.Add("DisplayNumbers", displayNumbers);
             tag.Add("Version", version);
 

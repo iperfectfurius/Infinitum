@@ -64,7 +64,6 @@ namespace Infinitum.UI
 
                 marginTop += 20f;
             }
-            //0.30
 
             reset = new UIButton("Reset Skills", restartProgress);
             reset.Top.Set(marginTop, 0f);
