@@ -55,10 +55,8 @@ namespace Infinitum.Skills
             if (EffectBuff < 101 && EffectBuff > 1)
             {
                 arg = !(Main.rand.Next(100) <= Math.Abs(100 - (int)EffectBuff));
-                Main.NewText(arg);
                 return;
             }
-            Main.NewText("true");
             arg = true;
         }
 
@@ -72,6 +70,7 @@ namespace Infinitum.Skills
             MultiplierCost = 0;//after 1.0v
             EffectBuff = 101;
             MultiplierEffect = 1;
+            MaxLevel = 99;
             Type = (int)SkillEnums.Type.CanConsumeAmmo;
             PreText = '-';
         }

@@ -27,5 +27,10 @@ namespace Infinitum.Skills
         {
             player.maxMinions = player.maxMinions + (int)EffectBuff;
         }
+
+        public override string GetStatText()
+        {
+            return $"{PreText} {EffectBuff}";
+        }
     }
 }
