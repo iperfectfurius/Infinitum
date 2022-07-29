@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.UI;
@@ -61,7 +62,6 @@ namespace Infinitum.UI
         private void inicializeUIElements()
         {
 
-            
             //need improve...
             float marginTop = 8;
             float marginLeft = 8;
@@ -100,6 +100,9 @@ namespace Infinitum.UI
             activateStatsButton.Width.Set(180, 0);
             activateStatsButton.ChangeColor(Color.Pink);
             activateStatsButton.changeOnMouse = false;
+
+            
+
 
             marginTop = 3;
             marginLeft = 0;
@@ -146,6 +149,7 @@ namespace Infinitum.UI
                 sumStat.Width.Set(18f, 0);
                 sumStat.OwnStat = i;
                 sumStat.OverflowHidden = false;
+                
 
 
                 subStat.Top.Set(marginTop, 0f);
@@ -155,12 +159,14 @@ namespace Infinitum.UI
                 subStat.OwnStat = i;
                 subStat.OverflowHidden = false;
 
+
                 allStat.Top.Set(marginTop, 0f);
                 allStat.Left.Set(marginLeft + 48, 0f);
                 allStat.Height.Set(18f, 0);
                 allStat.Width.Set(30f, 0);
                 allStat.OwnStat = i;
                 allStat.OverflowHidden = false;
+
 
                 cost.Top.Set(marginTop, 0f);
                 cost.Left.Set(marginLeft + 60, 0f);
@@ -183,6 +189,13 @@ namespace Infinitum.UI
 
         private void addUIElementsToPanel()
         {
+            UIImageButton close = new(ModContent.Request<Texture2D>("Infinitum/UI/Textures/close"));
+            close.Top.Set(0f, 0f);
+            close.Left.Set(maxWidth - 25, 0f);
+            close.Height.Set(22, 0);
+            close.Width.Set(22, 0);
+            close.OnClick += (e,i) => Visible = false;
+
             foreach (UIText text in statsTexts)
                 InfinitumPanel.Append(text);
 
@@ -211,17 +224,23 @@ namespace Infinitum.UI
             foreach (UIElement el in skillsElementsPanel)
                 skillsPanel.Append(el);
 
-            skillsPanel.Append(skillScrollbar);
+           // skillsPanel.Append(skillScrollbar);
 
 
             InfinitumPanel.Append(skillsPanel);
+            InfinitumPanel.Append(close);
         }
 
         private void ScrollWheelSkill(UIScrollWheelEvent evt, UIElement listeningElement)
         {
             //provisional
             foreach (UIElement uiel in skillsElementsPanel)
+            {
+                if (uiel.GetType() == typeof(UIImageButton)) continue;
+
                 uiel.Top.Set(uiel.Top.Pixels + (evt.ScrollWheelValue < 0 ? -40 : 40), 0);
+            }
+                
 
             Recalculate();
 

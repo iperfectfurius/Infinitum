@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.UI;
 
 namespace Infinitum.UI
@@ -53,14 +55,17 @@ namespace Infinitum.UI
         private void _uiPanel_OnMouseOut(UIMouseEvent evt, UIElement listeningElement)
         {
 			if(changeOnMouse)
-				_uiPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
+				_uiPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;		
 		}
 
         private void _uiPanel_OnMouseOver(UIMouseEvent evt, UIElement listeningElement)
         {
 			if (changeOnMouse)
 				_uiPanel.BackgroundColor = new Color(133,151,219) * 0.8f;
-        }
+
+			SoundEngine.PlaySound(SoundID.MenuTick);
+		}
+
 
         public override void Update(GameTime gameTime)
 		{
