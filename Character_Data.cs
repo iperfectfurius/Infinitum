@@ -26,7 +26,7 @@ namespace Infinitum
         private string lastHeldItem;
         private List<float> avgXP = new List<float>() { 0 };
         public float getAvgXP() => (float)Queryable.Average(avgXP.AsQueryable());
-        private enum CombatTextPos : int
+        public enum CombatTextPos : int
         {
             Xp = 155,
             AddedLevels = 190,
@@ -62,7 +62,7 @@ namespace Infinitum
         public override void Initialize()
         {
             base.Initialize();
-            
+
         }
         public override void OnEnterWorld(Player currentPLayer)
         {
@@ -78,7 +78,7 @@ namespace Infinitum
                 showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 180, true);
 
         }
-        private void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
+        public void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
             if (Main.netMode == NetmodeID.Server || !displayNumbers) return;
 
@@ -127,9 +127,13 @@ namespace Infinitum
             showDamageText((int)CombatTextPos.AddedLevels, $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
             showDamageText((int)CombatTextPos.CurrentLevels, $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
 
+            Skill.AutoLevelUpSkills(ref skills, ref level);
+
+
             SoundEngine.PlaySound(SoundID.Chat);
 
         }
+
         public void AddXpMultiplier(float multiplier)
         {
             expMultiplier += multiplier;

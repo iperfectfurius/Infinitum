@@ -3,11 +3,11 @@ global using Terraria;
 global using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Microsoft.Xna.Framework;
 
 namespace Infinitum.Skills
 {
-    internal abstract class Skill
+    internal abstract class Skill 
     {
 
         public static Player player;
@@ -119,6 +119,34 @@ namespace Infinitum.Skills
         public virtual void ApplyStatToPlayer(int arg) { return; }
 
         public virtual void ApplyStatToPlayer(out bool arg) { arg = false; }
+
+        public static bool AutoLevelUpSkills(ref Skill[] skills, ref int levels)
+        {
+            //this need to wokr in recursive
+            int minimumLevel = int.MaxValue;
+            int skillId = skills.Length + 1;
+
+            for (int i = 0; i < skills.Length; i++)
+            {
+                if (!skills[i].automaticMode) continue;
+                if (skills[i].level < minimumLevel)
+                {
+                    minimumLevel = skills[i].level;
+                    skillId = i;
+                }
+            }
+
+            if (skillId > skills.Length) return false;
+
+            if (skills[skillId].ApplyStat((int)SkillEnums.Actions.LevelUp, ref levels))
+            {
+                player.GetModPlayer<Character_Data>().showDamageText(0, $"{skills[skillId].displayName} {skills[skillId].GetStatText()}", Color.Purple, 120, true, false);
+
+                return true;
+            }
+            return false;
+
+        }
 
     }
 }
