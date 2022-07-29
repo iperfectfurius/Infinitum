@@ -27,8 +27,6 @@ namespace Infinitum.UI
         private UIButton numbers;
         UIText[] statsTexts = new UIText[6];
         private int[] skillTexts = new int[0];//Stats and cost
-        
-
         UIList skillsElementsPanel = new();
         private enum statsOrder : ushort
         {
@@ -39,16 +37,31 @@ namespace Infinitum.UI
             TotalKills = 4,
             AverageXP = 5
         }
-
-
         public InfinitumUI()
         {
             inicializeUIElements();
-
         }
+        public override void OnInitialize()
+        {
 
+            Visible = false;
+            Instance = this;
+            InfinitumPanel = new DragableUIPanel();
+            InfinitumPanel.Height.Set(maxHeigth, 0f);
+            InfinitumPanel.Width.Set(maxWidth, 0f);
+            InfinitumPanel.PaddingBottom = 0f;
+
+
+            InfinitumPanel.Left.Set((Main.screenWidth - InfinitumPanel.Width.Pixels) - (Main.screenWidth / 2) + maxWidth / 2, 0f);
+            InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels - (Main.screenHeight / 2) + maxHeigth / 2, 0f);
+
+            addUIElementsToPanel();
+            Append(InfinitumPanel);
+        }
         private void inicializeUIElements()
         {
+
+            
             //need improve...
             float marginTop = 8;
             float marginLeft = 8;
@@ -70,6 +83,7 @@ namespace Infinitum.UI
             reset.Height.Set(20f, 0);
             reset.Width.Set(180, 0);
             reset.ChangeColor(new Color(205, 61, 61));
+            reset.changeOnMouse = false;
 
             numbers = new UIButton("Disable Numbers", activateNumbers);
             numbers.Top.Set(marginTop + 22, 0f);
@@ -77,6 +91,7 @@ namespace Infinitum.UI
             numbers.Height.Set(20f, 0);
             numbers.Width.Set(180, 0);
             numbers.ChangeColor(Color.Purple);
+            numbers.changeOnMouse = false;
 
             activateStatsButton = new UIButton("Disable Stats", activateStats);
             activateStatsButton.Top.Set(marginTop + 44, 0f);
@@ -84,10 +99,7 @@ namespace Infinitum.UI
             activateStatsButton.Height.Set(20f, 0);
             activateStatsButton.Width.Set(180, 0);
             activateStatsButton.ChangeColor(Color.Pink);
-
-
-
-
+            activateStatsButton.changeOnMouse = false;
 
             marginTop = 3;
             marginLeft = 0;
@@ -167,27 +179,6 @@ namespace Infinitum.UI
                 marginTop += 20f;
             }
             skillsElementsPanel.SetPadding(0);
-        }
-
-        public override void OnInitialize()
-        {
-
-            Visible = false;
-            Instance = this;
-            InfinitumPanel = new DragableUIPanel();
-            InfinitumPanel.Height.Set(maxHeigth, 0f);
-            InfinitumPanel.Width.Set(maxWidth, 0f);
-            InfinitumPanel.PaddingBottom = 0f;
-
-
-            InfinitumPanel.Left.Set((Main.screenWidth - InfinitumPanel.Width.Pixels) - (Main.screenWidth / 2) + maxWidth / 2, 0f);
-            InfinitumPanel.Top.Set(Main.screenHeight - InfinitumPanel.Height.Pixels - (Main.screenHeight / 2) + maxHeigth / 2, 0f);
-
-            addUIElementsToPanel();
-
-
-
-            Append(InfinitumPanel);
         }
 
         private void addUIElementsToPanel()
@@ -307,73 +298,8 @@ namespace Infinitum.UI
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + SkillEnums.GetNumberOfSkills])).SetText($"{stats.Skills[i].Cost}");
             }
 
-            //UIElement[] test = skillsElementsPanel._items.ToArray();
-            //int loop = 1;
-
-            //for (int i = 0; i < test.Length; i++)
-            //{
-            //    if (test[i].GetType() != typeof(UIText)) continue;
-            //    if (loop == 14) return;
-            //    //int uniqueID = test[i].UniqueId;
-            //    //string message = ((UIText)test[i]).Text.Split(':')[0];
-
-            //        ((UIText)test[i]).SetText($"{stats.Skills[loop].DisplayName} {stats.Skills[loop].GetStatText()}");
-            //        ((UIText)test[i+14]).SetText(stats.Skills[loop].Cost.ToString());
-
-            //    loop++;
-            //    //switch (message)
-            //    //{
-            //    //    case "Defense":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: +{stats.AdditionalDefense}");
-            //    //        break;
-            //    //    case "Melee Damage":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMeleeDamage * 100:n2}%");
-            //    //        break;
-            //    //    case "Melee Attack Speed":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMeleeAttackSpeed * 100:n2}%");
-            //    //        break;
-            //    //    case "Life Regen":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalLifeRegen * 100:n2}%");
-            //    //        break;
-            //    //    case "Life Steal":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.LifeSteal * 100:n2}%");
-            //    //        break;
-            //    //    case "Magic Damage":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalMagicDamage * 100:n2}%");
-            //    //        break;
-            //    //    case "Mana Consumption":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: -{stats.ReducedManaConsumption * 100:n2}%");
-            //    //        break;
-            //    //    case "Ranged Damage":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalRangedDamage * 100:n2}%");
-            //    //        break;
-            //    //    case "Ammo Consumption":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AmmoConsumedReduction - 101}%");
-            //    //        break;
-            //    //    case "Movement Speed":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {(stats.AdditionalMovementSpeed * 100):n2}%");
-            //    //        break;
-            //    //    case "Global Critical Chance":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: +{stats.AdditionalGlobalCriticalChance}%");
-            //    //        break;
-            //    //    case "Summon Damage":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalsummonDamage * 100:n2}%");
-            //    //        break;
-            //    //    case "Minion Capacity":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalSummonCapacity}");
-            //    //        break;
-            //    //    case "Pickaxe Speed":
-            //    //        ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == uniqueID)).SetText($"{message}: {stats.AdditionalPickingPower * 100:n2}%");
-            //    //        break;
-            //    //    default:
-            //    //        break;
-            //    //}
-            //    // Main.NewText(uniqueID);
-
-            //}
+            
             stats.RecentChanged = false;
-
-            //recalculate here
         }
 
     }

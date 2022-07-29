@@ -17,6 +17,7 @@ namespace Infinitum.UI
         private UIText _uiText;
 		private int ownStat;
 		private Color color;
+		public bool changeOnMouse = true;
         public string Text
         {
             get => _uiText?.Text ?? string.Empty;
@@ -38,6 +39,8 @@ namespace Infinitum.UI
 			_uiPanel.Width = StyleDimension.Fill; 
 			_uiPanel.Height = StyleDimension.Fill;
 			_uiPanel.BackgroundColor = color;
+            _uiPanel.OnMouseOver += _uiPanel_OnMouseOver;
+            _uiPanel.OnMouseOut += _uiPanel_OnMouseOut;
 			Append(_uiPanel);
 
 			_uiText = new UIText("");
@@ -47,7 +50,19 @@ namespace Infinitum.UI
 			_uiPanel.OnClick += _clickAction;
 		}
 
-		public override void Update(GameTime gameTime)
+        private void _uiPanel_OnMouseOut(UIMouseEvent evt, UIElement listeningElement)
+        {
+			if(changeOnMouse)
+				_uiPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
+		}
+
+        private void _uiPanel_OnMouseOver(UIMouseEvent evt, UIElement listeningElement)
+        {
+			if (changeOnMouse)
+				_uiPanel.BackgroundColor = new Color(133,151,219) * 0.8f;
+        }
+
+        public override void Update(GameTime gameTime)
 		{
 			if (_text != null)
 			{ 
@@ -62,6 +77,7 @@ namespace Infinitum.UI
         {
 			this.color = c;
         }
+		
        
     }
 }

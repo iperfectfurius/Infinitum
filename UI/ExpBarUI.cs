@@ -35,13 +35,19 @@ namespace Infinitum.UI
             bar.BackgroundColor = new Color(63, 82, 151) * 0.5f;
             bar.BorderColor = new Color(0, 0, 0, 50);
             bar.SetPadding(0);
-            bar.Left.Set(Main.screenWidth - 270, 0f);
-            bar.Top.Set(71f, 0f);
+            bar.OnMouseOver += Bar_OnMouseOver;
             bar.OnMiddleClick += openStatsTab;
             bar.continueStuff = true;
 
             addUIElementsToPanel();
+            bar.Left.Set(Main.screenWidth - 270, 0f);
+            bar.Top.Set(71f, 0f);
             Append(bar);
+        }
+
+        private void Bar_OnMouseOver(UIMouseEvent evt, UIElement listeningElement)
+        {
+            
         }
 
         private void openStatsTab(UIMouseEvent evt, UIElement listeningElement)

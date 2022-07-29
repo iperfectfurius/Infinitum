@@ -14,7 +14,8 @@ namespace Infinitum.UI
         public override void OnInitialize()
         {
             base.OnInitialize();
-			this.SetPadding(0);
+			SetPadding(0);
+			
         }
         public override void MouseDown(UIMouseEvent evt)
         {
