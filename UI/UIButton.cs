@@ -82,7 +82,7 @@ namespace Infinitum.UI
         {
 			this.color = c;
 			_uiPanel.BackgroundColor = color;
-			_uiPanel.Recalculate();
+		//	_uiPanel.Recalculate();
         }
 		
        
