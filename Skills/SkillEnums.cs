@@ -31,29 +31,13 @@ namespace Infinitum.Skills
             MinionCapacity = 12,
             PickaxeSpeed = 13
         }
+
+        public static int GetNumberOfSkills = Enum.GetNames(typeof(SkillOrder)).Length;
         public enum Type : ushort
         {
             PostUpdateEquips = 0,
             ModifyHitNPC = 1,
             CanConsumeAmmo = 2
-        }
-        public static string[] skillOrder = {
-            "Defense",
-            "Movement Speed",
-            "Life Regen",
-            "Life Steal",
-            "Global Critical Chance",
-            "Melee Damage",
-            "Melee Attack Speed",
-            "Magic Damage",
-            "Mana Consumption",
-            "Ranged Damage",
-            "Ammo Consumption",
-            "Summon Damage",
-            "Minion Capacity",
-            "Pickaxe Speed"
-        };
-        
-
+        }     
     }
 }

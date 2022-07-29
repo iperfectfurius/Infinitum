@@ -43,8 +43,6 @@ namespace Infinitum
         private long totalNpcsKilled = 0;
         private bool activate = true;
         private bool displayNumbers = true;
-        private float lifeSteal = 0;
-        private float stackedLifeSteal = 0;
         //to do
         private Skill[] skills = new Skill[0];
 
@@ -161,7 +159,7 @@ namespace Infinitum
                     return;
                 }
 
-                Skills = new Skill[Enum.GetNames(typeof(SkillEnums.SkillOrder)).Length];
+                Skills = new Skill[SkillEnums.GetNumberOfSkills];
                 Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(tag.GetInt("Defense"));
                 Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(tag.GetInt("LifeRegen"));
                 Skills[(int)SkillEnums.SkillOrder.MeleeDamage] = new MeleeDamage(tag.GetInt("MeleeDamage"));
@@ -277,25 +275,6 @@ namespace Infinitum
                         break;
                 }
         }
-
-        private void getLifeSteal(int damage)
-        {
-            int toHeal = (int)(damage * lifeSteal);
-            stackedLifeSteal += (damage * lifeSteal) - (float)Math.Truncate(damage * lifeSteal);
-
-            if (stackedLifeSteal > 1)
-            {
-                stackedLifeSteal -= 1f;
-
-                player.HealEffect(toHeal + 1);
-                player.statLife += toHeal + 1;
-            }
-            else if (toHeal >= 1)
-            {
-                player.HealEffect(toHeal);
-                player.statLife += toHeal;
-            }
-        }
         public override void PreUpdate()
         {
             MoreExpMultiplier = 1f;
@@ -345,7 +324,7 @@ namespace Infinitum
 
             level = totalLevel;
 
-            skills = new Skill[Enum.GetNames(typeof(SkillEnums.SkillOrder)).Length];
+            skills = new Skill[SkillEnums.GetNumberOfSkills];
 
             Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(0);
             Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(0);
@@ -365,6 +344,8 @@ namespace Infinitum
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(0);
 
             recentChanged = true;
+
+            //show text here?
         }
         public override void ModifyCaughtFish(Item fish)
         {

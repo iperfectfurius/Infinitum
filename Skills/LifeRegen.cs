@@ -9,7 +9,12 @@
 
         public override void ApplyStatToPlayer()
         {
+            //StacketLifeRegen += (float)EffectBuff - (int)EffectBuff;
+            //if((int)StacketLifeRegen %15 == 0)
+            //    Main.NewText(StacketLifeRegen);
             player.lifeRegen = player.lifeRegen + (int)EffectBuff;
+
+            
         }
 
         public override void OnInitialize()

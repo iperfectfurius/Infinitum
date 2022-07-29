@@ -1,6 +1,6 @@
 ﻿global using Terraria.ModLoader;
 global using Terraria;
-using System;
+global using System;
 using System.Collections.Generic;
 using System.Text;
 
