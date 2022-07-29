@@ -35,6 +35,7 @@ namespace Infinitum.Skills
         public float MultiplierEffect { get => multiplierEffect; set => multiplierEffect = value; }
         public char PreText { get => preText; set => preText = value; }
         public int Type { get => type; set => type = value; }
+        public bool AutomaticMode { get => automaticMode; set => automaticMode = value; }
 
         public Skill(int level)
         {

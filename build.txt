@@ -1,5 +1,5 @@
 displayName = Infinitum [ALPHA]
 author = Adrián García
-version = 0.72
+version = 0.73
 homepage = https://github.com/iperfectfurius/Infinitum/wiki/Infinitum-Wiki
 buildIgnore = *.csproj, *.sln, *.user, *.md, obj\*, Guides\*, bin\*, .vs\*, .git\*, .gitignore

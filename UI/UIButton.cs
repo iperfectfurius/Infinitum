@@ -15,7 +15,7 @@ namespace Infinitum.UI
     {
         private object _text;
         private UIElement.MouseEvent _clickAction;
-        private UIPanel _uiPanel;
+        private UIPanel _uiPanel = new();
         private UIText _uiText;
 		private int ownStat;
 		private Color color;
@@ -55,7 +55,7 @@ namespace Infinitum.UI
         private void _uiPanel_OnMouseOut(UIMouseEvent evt, UIElement listeningElement)
         {
 			if(changeOnMouse)
-				_uiPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;		
+				_uiPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
 		}
 
         private void _uiPanel_OnMouseOver(UIMouseEvent evt, UIElement listeningElement)
@@ -72,8 +72,8 @@ namespace Infinitum.UI
 			if (_text != null)
 			{ 
 				_uiText.SetText(_text.ToString());
-				_text = null;
-				Recalculate(); 
+				_text = null;				
+				Recalculate();
 				base.MinWidth = _uiText.MinWidth; 
 				base.MinHeight = _uiText.MinHeight; 
 			}
@@ -81,6 +81,8 @@ namespace Infinitum.UI
 		public void ChangeColor(Color c)
         {
 			this.color = c;
+			_uiPanel.BackgroundColor = color;
+			_uiPanel.Recalculate();
         }
 		
        

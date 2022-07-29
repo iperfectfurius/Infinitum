@@ -29,6 +29,7 @@ namespace Infinitum.UI
         UIText[] statsTexts = new UIText[6];
         private int[] skillTexts = new int[0];//Stats and cost
         UIList skillsElementsPanel = new();
+
         private enum statsOrder : ushort
         {
             Level = 0,
@@ -109,7 +110,7 @@ namespace Infinitum.UI
 
             UIText costText = new UIText("Cost");
             costText.Top.Set(marginTop - 20, 0f);
-            costText.Left.Set(marginLeft + 307, 0f);
+            costText.Left.Set(marginLeft + 325, 0f);
             costText.Height.Set(20f, 0);
 
             skillsElementsPanel.Add(costText);
@@ -136,10 +137,11 @@ namespace Infinitum.UI
 
             for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
             {
-                UIButton sumStat = new UIButton("+", addStat);
-                UIButton subStat = new UIButton("-", addStat);
-                UIButton allStat = new UIButton("All", addStat);
-
+                UIButton sumStat = new UIButton("+", ModifyStat);
+                UIButton subStat = new UIButton("-", ModifyStat);
+                UIButton allStat = new UIButton("All", ModifyStat);
+                UIButton automatic = new ("×", ModifyStat);
+                //☓ ✓
                 UIText cost = new UIText("test");
 
 
@@ -167,16 +169,26 @@ namespace Infinitum.UI
                 allStat.OwnStat = i;
                 allStat.OverflowHidden = false;
 
+                automatic.Top.Set(marginTop, 0f);
+                automatic.Left.Set(marginLeft + 82, 0f);
+                automatic.Height.Set(18f, 0);
+                automatic.Width.Set(18f, 0);
+                automatic.OwnStat = i;
+                automatic.OverflowHidden = false;
+                automatic.ChangeColor(new Color(229, 38, 0) * 0.7f);
+                automatic.changeOnMouse = false;
 
                 cost.Top.Set(marginTop, 0f);
-                cost.Left.Set(marginLeft + 60, 0f);
+                cost.Left.Set(marginLeft + 105, 0f);
                 cost.Height.Set(20f, 0);
-                cost.Width.Set(80, 0);
+                cost.Width.Set(35, 0);
                 cost.OverflowHidden = false;
+
 
                 skillsElementsPanel.Add(sumStat);
                 skillsElementsPanel.Add(subStat);
                 skillsElementsPanel.Add(allStat);
+                skillsElementsPanel.Add(automatic);
                 skillsElementsPanel.Add(cost);
 
                 Array.Resize(ref skillTexts, skillTexts.Length + 1);
@@ -263,7 +275,7 @@ namespace Infinitum.UI
 
             base.Update(gameTime);
         }
-        private void addStat(UIMouseEvent evt, UIElement listeningElement)
+        private void ModifyStat(UIMouseEvent evt, UIElement listeningElement)
         {
             UIButton me = (UIButton)listeningElement.Parent;
             switch (me.Text)
@@ -276,6 +288,16 @@ namespace Infinitum.UI
                     break;
                 case "All":
                     if (stats.ApplyStats(me.OwnStat, (int)SkillEnums.Actions.LevelUpAll)) SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    break;
+                case "×":
+                    stats.Skills[me.OwnStat].AutomaticMode = true;
+                    me.Text = "✓";
+                    me.ChangeColor(new Color(18,223,52));
+                    break; 
+                case "✓":
+                    stats.Skills[me.OwnStat].AutomaticMode = false;
+                    me.Text = "×";
+                    me.ChangeColor(new Color(229, 38, 0) * 0.7f);                  
                     break;
                 default:
                     break;
