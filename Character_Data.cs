@@ -411,8 +411,8 @@ namespace Infinitum
         }
         public override void ModifyCaughtFish(Item fish)
         {
-            float xp = (((fish.rare * 5) + 1) * 2 + (fish.value / 750)) * fish.stack;
-
+            float xp = (((fish.rare * 5) + 1) * 3.5f + (fish.value / 500)) * fish.stack;
+            
             if (Main.netMode == NetmodeID.SinglePlayer)
                 AddXp(xp);
             else if (Main.netMode == NetmodeID.MultiplayerClient)

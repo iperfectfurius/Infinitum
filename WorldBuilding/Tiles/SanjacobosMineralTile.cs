@@ -11,7 +11,7 @@ namespace Infinitum.WorldBuilding.Tiles
 {
     internal class SanjacobosMineralTile : ModTile
     {
-        private int baseChance = 75;
+        private int baseChance = 100;
         public override void SetStaticDefaults()
         {
             this.MinPick = 35;
