@@ -14,7 +14,7 @@ namespace Infinitum
 {
 	public class InfinitumNPCs : GlobalNPC
 	{
-		private Mod myMod = Infinitum.myMod;
+		private static Mod myMod = Infinitum.myMod;
 
 		private float GetXpFromNPC(NPC target) => (float)target.defense + 0.5f * (float)(target.lifeMax / 4.5);
 

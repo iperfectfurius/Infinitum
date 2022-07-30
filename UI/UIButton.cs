@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.UI;
 
 namespace Infinitum.UI
@@ -13,16 +15,17 @@ namespace Infinitum.UI
     {
         private object _text;
         private UIElement.MouseEvent _clickAction;
-        private UIPanel _uiPanel;
+        private UIPanel _uiPanel = new();
         private UIText _uiText;
-		private string ownStat;
+		private int ownStat;
 		private Color color;
+		public bool changeOnMouse = true;
         public string Text
         {
             get => _uiText?.Text ?? string.Empty;
             set => _text = value;
         }
-        public string OwnStat { get => ownStat; set => ownStat = value; }
+        public int OwnStat { get => ownStat; set => ownStat = value; }
 
         public UIButton(object text, UIElement.MouseEvent clickAction) : base()
 		{ 
@@ -38,6 +41,8 @@ namespace Infinitum.UI
 			_uiPanel.Width = StyleDimension.Fill; 
 			_uiPanel.Height = StyleDimension.Fill;
 			_uiPanel.BackgroundColor = color;
+            _uiPanel.OnMouseOver += _uiPanel_OnMouseOver;
+            _uiPanel.OnMouseOut += _uiPanel_OnMouseOut;
 			Append(_uiPanel);
 
 			_uiText = new UIText("");
@@ -47,13 +52,28 @@ namespace Infinitum.UI
 			_uiPanel.OnClick += _clickAction;
 		}
 
-		public override void Update(GameTime gameTime)
+        private void _uiPanel_OnMouseOut(UIMouseEvent evt, UIElement listeningElement)
+        {
+			if(changeOnMouse)
+				_uiPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
+		}
+
+        private void _uiPanel_OnMouseOver(UIMouseEvent evt, UIElement listeningElement)
+        {
+			if (changeOnMouse)
+				_uiPanel.BackgroundColor = new Color(133,151,219) * 0.8f;
+
+			SoundEngine.PlaySound(SoundID.MenuTick);
+		}
+
+
+        public override void Update(GameTime gameTime)
 		{
 			if (_text != null)
 			{ 
 				_uiText.SetText(_text.ToString());
-				_text = null;
-				Recalculate(); 
+				_text = null;				
+				Recalculate();
 				base.MinWidth = _uiText.MinWidth; 
 				base.MinHeight = _uiText.MinHeight; 
 			}
@@ -61,7 +81,10 @@ namespace Infinitum.UI
 		public void ChangeColor(Color c)
         {
 			this.color = c;
+			_uiPanel.BackgroundColor = color;
+		//	_uiPanel.Recalculate();
         }
+		
        
     }
 }
