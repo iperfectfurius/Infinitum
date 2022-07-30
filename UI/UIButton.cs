@@ -20,7 +20,11 @@ namespace Infinitum.UI
 		private int ownStat;
 		private Color color;
 		public bool changeOnMouse = true;
-        public string Text
+
+		public static Color Green = new Color(18, 223, 52);
+		public static Color Red = new Color(229, 38, 0) * 0.7f;
+
+		public string Text
         {
             get => _uiText?.Text ?? string.Empty;
             set => _text = value;
@@ -72,7 +76,7 @@ namespace Infinitum.UI
 			if (_text != null)
 			{ 
 				_uiText.SetText(_text.ToString());
-				_text = null;				
+				_text = null;
 				Recalculate();
 				base.MinWidth = _uiText.MinWidth; 
 				base.MinHeight = _uiText.MinHeight; 
@@ -83,6 +87,20 @@ namespace Infinitum.UI
 			this.color = c;
 			_uiPanel.BackgroundColor = color;
 		//	_uiPanel.Recalculate();
+        }
+
+		public void ChangeBackgroundFromValue(bool auto)
+        {
+            if (auto)
+            {
+                _uiText.SetText("✓");
+				ChangeColor(Green);
+			}
+            else
+            {
+				_uiText.SetText("×");
+				ChangeColor(Red);
+			}
         }
 		
        

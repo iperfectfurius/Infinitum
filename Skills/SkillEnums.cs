@@ -9,6 +9,7 @@ namespace Infinitum.Skills
     internal class SkillEnums
     {
         public static int GetNumberOfSkills = Enum.GetNames(typeof(SkillOrder)).Length;
+        public static string[] FullSkillNames = new string[GetNumberOfSkills];
         public enum Actions : ushort
         {
             LevelUp = 0,
@@ -31,7 +32,7 @@ namespace Infinitum.Skills
             SummonDamage = 11,
             MinionCapacity = 12,
             PickaxeSpeed = 13
-        }       
+        }     
         public enum Type : ushort
         {
             PostUpdateEquips = 0,
