@@ -18,7 +18,6 @@
             DisplayName = "Life Steal";
             StatName = "statLife";
             Cost = 125;
-            MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 0.00025f;
             Type = (int)SkillEnums.Type.ModifyHitNPC;

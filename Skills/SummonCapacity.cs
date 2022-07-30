@@ -18,9 +18,9 @@ namespace Infinitum.Skills
             DisplayName = "Summon Minions";
             StatName = "maxMinions";
             Cost = 1250;
-            MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 1;
+            MultiplierCost = 0.25f;
             Type = (int)SkillEnums.Type.PostUpdateEquips;
         }
         public override void ApplyStatToPlayer()

@@ -110,7 +110,7 @@ namespace Infinitum.UI
 
             UIText costText = new UIText("Cost");
             costText.Top.Set(marginTop - 20, 0f);
-            costText.Left.Set(marginLeft + 325, 0f);
+            costText.Left.Set(marginLeft + 334, 0f);
             costText.Height.Set(20f, 0);
 
             skillsElementsPanel.Add(costText);
@@ -171,7 +171,7 @@ namespace Infinitum.UI
 
 
                 cost.Top.Set(marginTop, 0f);
-                cost.Left.Set(marginLeft + 105, 0f);
+                cost.Left.Set(marginLeft + 110, 0f);
                 cost.Height.Set(20f, 0);
                 cost.Width.Set(35, 0);
                 cost.OverflowHidden = false;

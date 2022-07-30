@@ -34,7 +34,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.74";//Only used in case need for all players in next update.
+        private string version = "0.75";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -317,7 +317,6 @@ namespace Infinitum
                     s.ApplyStatToPlayer();
             }
 
-
             getAdditionalsExp();
             base.PostUpdateEquips();
 
@@ -412,8 +411,8 @@ namespace Infinitum
         }
         public override void ModifyCaughtFish(Item fish)
         {
-            float xp = (((fish.rare * 5) + 1) * 2 + (fish.value / 750)) * fish.stack;
-
+            float xp = (((fish.rare * 5) + 1) * 3.5f + (fish.value / 500)) * fish.stack;
+            
             if (Main.netMode == NetmodeID.SinglePlayer)
                 AddXp(xp);
             else if (Main.netMode == NetmodeID.MultiplayerClient)

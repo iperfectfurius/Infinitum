@@ -19,7 +19,7 @@ namespace Infinitum.WorldBuilding
         private bool haveXPAccumulated = false;
         private Task timer;
         private bool notUnloadedTiles = true;
-        private const int CHANCE_BASE = 125;
+        private const int CHANCE_BASE = 175;
         private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267 };
         public HashSet<string> bannedTiles = new HashSet<string>();
 
@@ -50,11 +50,12 @@ namespace Infinitum.WorldBuilding
 
                 xp = (tile.MinPick * baseXP);
 
+                //test
                 if (xp == 0)
                     xp = 1;
 
                 if (tile.GetType().Name == "SanjacobosMineralTile")
-                    xp += 55f;
+                    xp += 35f;
 
 
                 if (Main.netMode != NetmodeID.Server)
