@@ -8,6 +8,7 @@ namespace Infinitum.Skills
 {
     internal class AmmoConsumption : Skill
     {
+        public static string saveName = "RangedAmmoConsumption";
         public AmmoConsumption(int level) : base(level)
         {
         }
@@ -63,7 +64,7 @@ namespace Infinitum.Skills
 
         public override void OnInitialize()
         {
-            Name = "RangedAmmoConsumption";
+            Name = saveName;
             DisplayName = "Ammo Consumption";
             StatName = "CanConsumeAmmo";
             Cost = 125;

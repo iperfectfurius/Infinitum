@@ -4,7 +4,9 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
@@ -32,7 +34,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.70";//Only used in case need for all players in next update.
+        private string version = "0.74";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -146,6 +148,7 @@ namespace Infinitum
 
             try
             {
+                //probably save all character_data is more efficient?
                 string tempVer;
                 tag.TryGet("Version", out tempVer);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
@@ -162,25 +165,10 @@ namespace Infinitum
                     resetCurrentSkills();
                     return;
                 }
-
-                Skills = new Skill[SkillEnums.GetNumberOfSkills];
-                Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(tag.GetInt("Defense"));
-                Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(tag.GetInt("LifeRegen"));
-                Skills[(int)SkillEnums.SkillOrder.MeleeDamage] = new MeleeDamage(tag.GetInt("MeleeDamage"));
-                Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed] = new MeleeAttackSpeed(tag.GetInt("MeleeAttackSpeed"));
-                Skills[(int)SkillEnums.SkillOrder.MagicDamage] = new MagicDamage(tag.GetInt("MagicDamage"));
-                Skills[(int)SkillEnums.SkillOrder.ManaConsumption] = new ReducedManaConsumption(tag.GetInt("ManaConsumption"));
-                Skills[(int)SkillEnums.SkillOrder.RangedDamage] = new RangedDamage(tag.GetInt("RangedDamage"));
-                Skills[(int)SkillEnums.SkillOrder.SummonDamage] = new SummonDamage(tag.GetInt("SummonDamage"));
-                Skills[(int)SkillEnums.SkillOrder.MinionCapacity] = new SummonCapacity(tag.GetInt("MinionCapacity"));
-                Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = new PickaxeSpeed(tag.GetInt("PickaxeSpeed"));
-                Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(tag.GetInt("MovementSpeed"));
-                Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(tag.GetInt("GlobalCriticalChance"));
-
-
-                Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(tag.GetInt("LifeSteal"));
-                Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(tag.GetInt("RangedAmmoConsumption"));
+                loadSkills(tag);
+                //save in dictionaries for future Sets            
                 recentChanged = true;
+
             }
             catch
             {
@@ -188,6 +176,88 @@ namespace Infinitum
                 recentChanged = true;
             }
 
+        }
+
+        private void loadSkills(TagCompound tag)
+        {
+
+            TagCompound savedSkills = tag.GetCompound("Skills");
+            TagCompound skill;
+            skills = new Skill[SkillEnums.GetNumberOfSkills];
+
+            skill = savedSkills.GetCompound(typeof(Defense).ToString());
+            Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.Defense].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(LifeRegen).ToString());
+            Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.LifeRegen].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(MeleeDamage).ToString());
+            Skills[(int)SkillEnums.SkillOrder.MeleeDamage] = new MeleeDamage(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.MeleeDamage].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(MeleeAttackSpeed).ToString());
+            Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed] = new MeleeAttackSpeed(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(MagicDamage).ToString());
+            Skills[(int)SkillEnums.SkillOrder.MagicDamage] = new MagicDamage(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.MagicDamage].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(ReducedManaConsumption).ToString());
+            Skills[(int)SkillEnums.SkillOrder.ManaConsumption] = new ReducedManaConsumption(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.ManaConsumption].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(RangedDamage).ToString());
+            Skills[(int)SkillEnums.SkillOrder.RangedDamage] = new RangedDamage(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.RangedDamage].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(SummonDamage).ToString());
+            Skills[(int)SkillEnums.SkillOrder.SummonDamage] = new SummonDamage(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.SummonDamage].AutomaticMode = skill.GetBool("automaticMode");
+
+
+            skill = savedSkills.GetCompound(typeof(SummonCapacity).ToString());
+            Skills[(int)SkillEnums.SkillOrder.MinionCapacity] = new SummonCapacity(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.MinionCapacity].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(PickaxeSpeed).ToString());
+            Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = new PickaxeSpeed(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(MovementSpeed).ToString());
+            Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.MovementSpeed].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(GlobalCriticalChance).ToString());
+            Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(LifeSteal).ToString());
+            Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.LifeSteal].AutomaticMode = skill.GetBool("automaticMode");
+
+            skill = savedSkills.GetCompound(typeof(AmmoConsumption).ToString());
+            Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(skill.GetInt("level"));
+            Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].AutomaticMode = skill.GetBool("automaticMode");
+
+            //Skills[(int)SkillEnums.SkillOrder.Defense] = tag.Get<Defense>("Defense");
+            //Skills[(int)SkillEnums.SkillOrder.LifeRegen] = tag.Get<LifeRegen>("LifeRegen");
+            //Skills[(int)SkillEnums.SkillOrder.MeleeDamage] = tag.Get<MeleeDamage>("MeleeDamage");
+            //Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed] = tag.Get<MeleeAttackSpeed>("MeleeAttackSpeed");
+            //Skills[(int)SkillEnums.SkillOrder.MagicDamage] = tag.Get<MagicDamage>("MagicDamage");
+            //Skills[(int)SkillEnums.SkillOrder.ManaConsumption] = tag.Get<ReducedManaConsumption>("ManaConsumption");
+            //Skills[(int)SkillEnums.SkillOrder.RangedDamage] = tag.Get<RangedDamage>("RangedDamage");
+            //Skills[(int)SkillEnums.SkillOrder.SummonDamage] = tag.Get<SummonDamage>("SummonDamage");
+            //Skills[(int)SkillEnums.SkillOrder.MinionCapacity] = tag.Get<SummonCapacity>("MinionCapacity");
+            //Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = tag.Get<PickaxeSpeed>("PickaxeSpeed");
+            //Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = tag.Get<MovementSpeed>("MovementSpeed");
+            //Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = tag.Get<GlobalCriticalChance>("GlobalCriticalChance");
+
+
+            //Skills[(int)SkillEnums.SkillOrder.LifeSteal] = tag.Get<LifeSteal>("LifeSteal");
+            //Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = tag.Get<AmmoConsumption>("RangedAmmoConsumption");
         }
 
         public override void SaveData(TagCompound tag)
@@ -201,10 +271,17 @@ namespace Infinitum
             tag.Add("DisplayNumbers", displayNumbers);
             tag.Add("Version", version);
 
+            TagCompound dataSkill = new();
+
             foreach (Skill s in Skills)
             {
-                tag.Add(s.Name, s.Level);
+                TagCompound skill = new TagCompound();
+                skill.Add("level", s.Level);
+                skill.Add("automaticMode", s.AutomaticMode);
+                dataSkill.Add(s.GetType().ToString(), skill);
             }
+
+            tag.Add("Skills",dataSkill);
 
         }
         public override void ProcessTriggers(TriggersSet triggersSet)

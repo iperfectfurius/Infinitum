@@ -41,11 +41,9 @@ namespace Infinitum.Skills
         {
             this.maxLevel = 9999;
             this.level = level;
+            this.multiplierCost = 1f;
             OnInitialize();
-            calculateBuff();
-            //recalculate()
-            //calcCost();
-
+            Recalculate();
         }
         public abstract void OnInitialize();
         public bool ApplyStat(int action, ref int Levels)
@@ -68,6 +66,11 @@ namespace Infinitum.Skills
             }
             //CalcCost();
             return succes;
+        }
+        public virtual void Recalculate()
+        {
+            calculateBuff();
+            CalcCost();
         }
         public virtual void calculateBuff()
         {
@@ -113,7 +116,7 @@ namespace Infinitum.Skills
         }
         private void CalcCost()
         {
-            cost += (int)(cost * multiplierCost);
+            //cost += (int)(cost * multiplierCost);
         }
         public virtual void ApplyStatToPlayer() { return; }
         public virtual void ApplyStatToPlayer(int arg) { return; }
