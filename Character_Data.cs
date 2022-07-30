@@ -241,23 +241,6 @@ namespace Infinitum
             skill = savedSkills.GetCompound(typeof(AmmoConsumption).ToString());
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(skill.GetInt("level"));
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].AutomaticMode = skill.GetBool("automaticMode");
-
-            //Skills[(int)SkillEnums.SkillOrder.Defense] = tag.Get<Defense>("Defense");
-            //Skills[(int)SkillEnums.SkillOrder.LifeRegen] = tag.Get<LifeRegen>("LifeRegen");
-            //Skills[(int)SkillEnums.SkillOrder.MeleeDamage] = tag.Get<MeleeDamage>("MeleeDamage");
-            //Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed] = tag.Get<MeleeAttackSpeed>("MeleeAttackSpeed");
-            //Skills[(int)SkillEnums.SkillOrder.MagicDamage] = tag.Get<MagicDamage>("MagicDamage");
-            //Skills[(int)SkillEnums.SkillOrder.ManaConsumption] = tag.Get<ReducedManaConsumption>("ManaConsumption");
-            //Skills[(int)SkillEnums.SkillOrder.RangedDamage] = tag.Get<RangedDamage>("RangedDamage");
-            //Skills[(int)SkillEnums.SkillOrder.SummonDamage] = tag.Get<SummonDamage>("SummonDamage");
-            //Skills[(int)SkillEnums.SkillOrder.MinionCapacity] = tag.Get<SummonCapacity>("MinionCapacity");
-            //Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = tag.Get<PickaxeSpeed>("PickaxeSpeed");
-            //Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = tag.Get<MovementSpeed>("MovementSpeed");
-            //Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = tag.Get<GlobalCriticalChance>("GlobalCriticalChance");
-
-
-            //Skills[(int)SkillEnums.SkillOrder.LifeSteal] = tag.Get<LifeSteal>("LifeSteal");
-            //Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = tag.Get<AmmoConsumption>("RangedAmmoConsumption");
         }
 
         public override void SaveData(TagCompound tag)
@@ -426,7 +409,6 @@ namespace Infinitum
 
             recentChanged = true;
 
-            //show text here?
         }
         public override void ModifyCaughtFish(Item fish)
         {

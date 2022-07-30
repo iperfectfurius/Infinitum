@@ -102,7 +102,7 @@ namespace Infinitum.UI
             activateStatsButton.ChangeColor(Color.Pink);
             activateStatsButton.changeOnMouse = false;
 
-            
+
 
 
             marginTop = 3;
@@ -140,8 +140,7 @@ namespace Infinitum.UI
                 UIButton sumStat = new UIButton("+", ModifyStat);
                 UIButton subStat = new UIButton("-", ModifyStat);
                 UIButton allStat = new UIButton("All", ModifyStat);
-                UIButton automatic = new ("×", ModifyStat);
-                //☓ ✓
+
                 UIText cost = new UIText("test");
 
 
@@ -151,7 +150,7 @@ namespace Infinitum.UI
                 sumStat.Width.Set(18f, 0);
                 sumStat.OwnStat = i;
                 sumStat.OverflowHidden = false;
-                
+
 
 
                 subStat.Top.Set(marginTop, 0f);
@@ -169,14 +168,7 @@ namespace Infinitum.UI
                 allStat.OwnStat = i;
                 allStat.OverflowHidden = false;
 
-                automatic.Top.Set(marginTop, 0f);
-                automatic.Left.Set(marginLeft + 82, 0f);
-                automatic.Height.Set(18f, 0);
-                automatic.Width.Set(18f, 0);
-                automatic.OwnStat = i;
-                automatic.OverflowHidden = false;
-                automatic.ChangeColor(new Color(229, 38, 0) * 0.7f);
-                automatic.changeOnMouse = false;
+
 
                 cost.Top.Set(marginTop, 0f);
                 cost.Left.Set(marginLeft + 105, 0f);
@@ -188,11 +180,34 @@ namespace Infinitum.UI
                 skillsElementsPanel.Add(sumStat);
                 skillsElementsPanel.Add(subStat);
                 skillsElementsPanel.Add(allStat);
-                skillsElementsPanel.Add(automatic);
                 skillsElementsPanel.Add(cost);
 
                 Array.Resize(ref skillTexts, skillTexts.Length + 1);
                 skillTexts[skillTexts.GetUpperBound(0)] = cost.UniqueId;
+
+                marginTop += 20f;
+            }
+
+            marginTop = 0;
+            marginLeft = 225;
+
+            for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
+            {
+                UIButton automatic = new("×", ModifyStat);
+                //☓ ✓
+                automatic.Top.Set(marginTop, 0f);
+                automatic.Left.Set(marginLeft + 82, 0f);
+                automatic.Height.Set(18f, 0);
+                automatic.Width.Set(18f, 0);
+                automatic.OwnStat = i;
+                automatic.OverflowHidden = false;
+                automatic.ChangeColor(new Color(229, 38, 0) * 0.7f);
+                automatic.changeOnMouse = false;
+
+                skillsElementsPanel.Add(automatic);
+
+                Array.Resize(ref skillTexts, skillTexts.Length + 1);
+                skillTexts[skillTexts.GetUpperBound(0)] = automatic.UniqueId;
 
                 marginTop += 20f;
             }
@@ -207,7 +222,7 @@ namespace Infinitum.UI
             close.Left.Set(maxWidth - 25, 0f);
             close.Height.Set(22, 0);
             close.Width.Set(22, 0);
-            close.OnClick += (e,i) => Visible = false;
+            close.OnClick += (e, i) => Visible = false;
 
             foreach (UIText text in statsTexts)
                 InfinitumPanel.Append(text);
@@ -237,7 +252,7 @@ namespace Infinitum.UI
             foreach (UIElement el in skillsElementsPanel)
                 skillsPanel.Append(el);
 
-           // skillsPanel.Append(skillScrollbar);
+            // skillsPanel.Append(skillScrollbar);
 
 
             InfinitumPanel.Append(skillsPanel);
@@ -253,7 +268,7 @@ namespace Infinitum.UI
 
                 uiel.Top.Set(uiel.Top.Pixels + (evt.ScrollWheelValue < 0 ? -40 : 40), 0);
             }
-                
+
 
             Recalculate();
 
@@ -292,13 +307,13 @@ namespace Infinitum.UI
                     break;
                 case "×":
                     stats.Skills[me.OwnStat].AutomaticMode = true;
-                    me.Text = "✓";
-                    me.ChangeColor(new Color(18,223,52));
-                    break; 
+                    me.ChangeBackgroundFromValue(true);
+                    SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    break;
                 case "✓":
                     stats.Skills[me.OwnStat].AutomaticMode = false;
-                    me.Text = "×";
-                    me.ChangeColor(new Color(229, 38, 0) * 0.7f);                  
+                    me.ChangeBackgroundFromValue(false);
+                    SoundEngine.PlaySound(SoundID.AchievementComplete);
                     break;
                 default:
                     break;
@@ -334,13 +349,19 @@ namespace Infinitum.UI
             activateStatsButton.Text = stats.Activate ? "Disable Stats" : "Enable Stats";
             numbers.Text = stats.DisplayNumbers ? "Disable Numbers" : "Enable Numbers";
 
-            for(int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
+            for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
             {
+
+
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i])).SetText($"{stats.Skills[i].DisplayName}: {stats.Skills[i].GetStatText()}");
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + SkillEnums.GetNumberOfSkills])).SetText($"{stats.Skills[i].Cost}");
+                ((UIButton)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + (SkillEnums.GetNumberOfSkills * 2)])).ChangeBackgroundFromValue(stats.Skills[i].AutomaticMode);
+
+
             }
 
-            
+
+
             stats.RecentChanged = false;
         }
 
