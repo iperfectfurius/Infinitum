@@ -18,7 +18,6 @@ namespace Infinitum.Skills
             DisplayName = "Summon Damage";
             StatName = "GetDamage";
             Cost = 60;
-            MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 0.01f;
             Type = (int)SkillEnums.Type.PostUpdateEquips;

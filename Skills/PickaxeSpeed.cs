@@ -18,7 +18,7 @@ namespace Infinitum.Skills
             DisplayName = "Picking Speed";
             StatName = "pickSpeed";
             Cost = 10;
-            MultiplierCost = 0;//after 1.0v
+            MultiplierCost = 0.02f;
             EffectBuff = 0;
             MultiplierEffect = 0.01f;
             Type = (int)SkillEnums.Type.PostUpdateEquips;

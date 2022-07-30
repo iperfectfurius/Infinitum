@@ -95,12 +95,14 @@ namespace Infinitum.UI
             {
                 _uiText.SetText("✓");
 				ChangeColor(Green);
+			
 			}
             else
             {
 				_uiText.SetText("×");
 				ChangeColor(Red);
 			}
+			_uiText.Recalculate();
         }
 		
        

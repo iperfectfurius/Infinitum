@@ -13,6 +13,19 @@ namespace Infinitum.Skills
         {
         }
 
+        public override void OnInitialize()
+        {
+            Name = saveName;
+            DisplayName = "Ammo Consumption";
+            StatName = "CanConsumeAmmo";
+            Cost = 125;//after 1.0v
+            EffectBuff = 101;
+            MultiplierEffect = 1;
+            MaxLevel = 99;
+
+            Type = (int)SkillEnums.Type.CanConsumeAmmo;
+            PreText = '-';
+        }
         public override void calculateBuff()
         {
             EffectBuff -= Level;
@@ -23,6 +36,7 @@ namespace Infinitum.Skills
             {
                 Levels -= Cost;
                 Level++;
+                CalcCost();
                 EffectBuff -= MultiplierEffect;
                 return true;
             }
@@ -32,8 +46,9 @@ namespace Infinitum.Skills
         {
             if (Level > 0)
             {
-                Levels += Cost;
                 Level--;
+                CalcCost();
+                Levels += Cost;         
                 EffectBuff += MultiplierEffect;
                 return true;
             }
@@ -41,15 +56,11 @@ namespace Infinitum.Skills
         }
         public override bool LevelUpAll(ref int Levels)
         {
-            if (Levels > Cost)
-            {
-                int maxLevels = Levels / Cost;
-                Levels -= Cost * maxLevels;
-                Level += maxLevels;
-                EffectBuff -= maxLevels * MultiplierEffect;
-                return true;
-            }
-            return false;
+            bool canLevelUp = Levels > Cost;
+
+            while (LevelUp(ref Levels)) ;
+
+            return canLevelUp;
         }
         public override void ApplyStatToPlayer(out bool arg)
         {
@@ -60,22 +71,6 @@ namespace Infinitum.Skills
             }
             arg = true;
         }
-
-
-        public override void OnInitialize()
-        {
-            Name = saveName;
-            DisplayName = "Ammo Consumption";
-            StatName = "CanConsumeAmmo";
-            Cost = 125;
-            MultiplierCost = 0;//after 1.0v
-            EffectBuff = 101;
-            MultiplierEffect = 1;
-            MaxLevel = 99;
-            Type = (int)SkillEnums.Type.CanConsumeAmmo;
-            PreText = '-';
-        }
-
         public override string GetStatText()
         {
             return $"{(int)EffectBuff-101}%";

@@ -18,6 +18,7 @@ namespace Infinitum.Skills
         private int level;
         private dynamic effectBuff;
         private float multiplierEffect;
+        private int baseCost;
         private int cost;
         private float multiplierCost;
         private int maxLevel;
@@ -36,13 +37,16 @@ namespace Infinitum.Skills
         public char PreText { get => preText; set => preText = value; }
         public int Type { get => type; set => type = value; }
         public bool AutomaticMode { get => automaticMode; set => automaticMode = value; }
+        public int BaseCost { get => baseCost; set => baseCost = value; }
 
         public Skill(int level)
         {
             this.maxLevel = 9999;
             this.level = level;
-            this.multiplierCost = 1f;
+            this.multiplierCost = 0.05f;
             OnInitialize();
+            baseCost = cost;
+
             Recalculate();
         }
         public abstract void OnInitialize();
@@ -64,7 +68,6 @@ namespace Infinitum.Skills
                 default:
                     break;
             }
-            //CalcCost();
             return succes;
         }
         public virtual void Recalculate()
@@ -83,6 +86,7 @@ namespace Infinitum.Skills
                 Levels -= cost;
                 level++;
                 effectBuff += multiplierEffect;
+                CalcCost();
                 return true;
             }
             return false;
@@ -91,8 +95,9 @@ namespace Infinitum.Skills
         {
             if (level > 0)
             {
-                Levels += cost;
                 level--;
+                CalcCost();
+                Levels += cost;             
                 effectBuff -= multiplierEffect;
                 return true;
             }
@@ -100,23 +105,19 @@ namespace Infinitum.Skills
         }
         public virtual bool LevelUpAll(ref int Levels)
         {
-            if (Levels > cost)
-            {
-                int maxLevels = Levels / cost;
-                Levels -= cost * maxLevels;
-                level += maxLevels;
-                effectBuff += maxLevels * multiplierEffect;
-                return true;
-            }
-            return false;
+            bool canLevelUp = Levels > cost;
+
+            while (LevelUp(ref Levels));
+
+            return canLevelUp;
         }
         public virtual string GetStatText()
         {
             return $"{preText} {(effectBuff * 100):n2}%";
         }
-        private void CalcCost()
+        public virtual void CalcCost()
         {
-            //cost += (int)(cost * multiplierCost);
+            cost = (int)(baseCost + (baseCost * (multiplierCost)) * level);
         }
         public virtual void ApplyStatToPlayer() { return; }
         public virtual void ApplyStatToPlayer(int arg) { return; }
@@ -141,6 +142,7 @@ namespace Infinitum.Skills
 
             if (skillId > skills.Length) return false;
 
+            //while here?
             if (skills[skillId].ApplyStat((int)SkillEnums.Actions.LevelUp, ref levels))
             {
                 player.GetModPlayer<Character_Data>().showDamageText(0, $"{skills[skillId].displayName} {skills[skillId].GetStatText()}", Color.Purple, 120, true, false);

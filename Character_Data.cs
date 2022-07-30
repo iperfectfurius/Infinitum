@@ -34,7 +34,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.74";//Only used in case need for all players in next update.
+        private string version = "0.75";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -316,7 +316,6 @@ namespace Infinitum
                 if (s.Type == (int)SkillEnums.Type.PostUpdateEquips)
                     s.ApplyStatToPlayer();
             }
-
 
             getAdditionalsExp();
             base.PostUpdateEquips();

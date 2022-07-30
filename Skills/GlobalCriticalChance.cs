@@ -27,7 +27,6 @@ namespace Infinitum.Skills
             DisplayName = "Critical Chance";
             StatName = "GetCritChance";
             Cost = 250;
-            MultiplierCost = 0;//after 1.0v
             EffectBuff = 0;
             MultiplierEffect = 1;
             Type = (int)SkillEnums.Type.PostUpdateEquips;
