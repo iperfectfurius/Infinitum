@@ -16,7 +16,8 @@ namespace Infinitum
 	{
 		private static Mod myMod = Infinitum.myMod;
 
-		private float GetXpFromNPC(NPC target) => (float)target.defense + 0.5f * (float)(target.lifeMax / 4.5);
+		private float GetXpFromNPC(NPC target) => GetDefense(target.defense) + 0.5f * (float)(target.lifeMax / 4.5);
+		private float GetDefense(int defense) => defense > 100 ? 100 : defense;
 
 		public override void OnKill(NPC npc)
 		{
