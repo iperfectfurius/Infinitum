@@ -102,9 +102,6 @@ namespace Infinitum.UI
             activateStatsButton.ChangeColor(Color.Pink);
             activateStatsButton.changeOnMouse = false;
 
-
-
-
             marginTop = 3;
             marginLeft = 0;
 
