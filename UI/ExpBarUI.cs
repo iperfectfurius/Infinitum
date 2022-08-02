@@ -91,7 +91,7 @@ namespace Infinitum.UI
         
         private void UpdateAllStats()
         {
-            float percentExp = (float)stats.Exp / stats._EXPTOLEVEL;
+            float percentExp = (float)stats.Exp / stats.ExpToLevel;
             ExpBar.Width.Set(((percentExp * maxWidth) / 100) * 100, 0);
             level.SetText($"{stats.Level}  ({(percentExp * 100):n1}%)");
             RecalculateChildren();

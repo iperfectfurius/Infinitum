@@ -41,7 +41,9 @@ namespace Infinitum
         private int totalLevel = 0;
         private float expMultiplier = 1.0f;
         private float moreExpMultiplier = 1.0f;
-        private const int EXPTOLEVEL = 60000;
+        private const int BASE_EXP = 60000;
+        private int expToLevel = 60000;
+        private const float EXPPERLEVEL = 0.0001f;
         private long totalNpcsKilled = 0;
         private bool activate = true;
         private bool displayNumbers = true;
@@ -52,7 +54,7 @@ namespace Infinitum
         public int Level { get => level; }
         public int TotalLevel { get => totalLevel; }
         public float ExpMultiplier { get => expMultiplier; set => expMultiplier = value; }
-        public int _EXPTOLEVEL => EXPTOLEVEL;
+        public int ExpToLevel => expToLevel;
         public bool RecentChanged { get => recentChanged; set => recentChanged = value; }
         //dont need?
         public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
@@ -64,8 +66,15 @@ namespace Infinitum
         public override void Initialize()
         {
             base.Initialize();
-
+            CalcXPPerLvel();
+            
         }
+
+        private void CalcXPPerLvel()
+        {
+            expToLevel = BASE_EXP + (int)((totalLevel * BASE_EXP) * EXPPERLEVEL);
+        }
+
         public override void OnEnterWorld(Player currentPLayer)
         {
             player = currentPLayer;
@@ -119,14 +128,15 @@ namespace Infinitum
         }
         private void UpdateLevel()
         {
-            if (exp < EXPTOLEVEL) return;
+            if (exp < ExpToLevel) return;
 
-            int LevelsUp = (int)exp / EXPTOLEVEL;
-            exp -= EXPTOLEVEL * LevelsUp;
-            level += LevelsUp;
-            totalLevel += LevelsUp;
+            int levelsUp = 0;
+            while (CanLevelUp())
+            {
+                levelsUp++;
+            }
 
-            showDamageText((int)CombatTextPos.AddedLevels, $"+ {LevelsUp} Levels!", CombatText.DamagedFriendlyCrit);
+            showDamageText((int)CombatTextPos.AddedLevels, $"+ {levelsUp} Levels!", CombatText.DamagedFriendlyCrit);
             showDamageText((int)CombatTextPos.CurrentLevels, $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
 
             Skill.AutoLevelUpSkills(ref skills, ref level);
@@ -135,7 +145,17 @@ namespace Infinitum
             SoundEngine.PlaySound(SoundID.Chat);
 
         }
+        private bool CanLevelUp()
+        {
+            if (exp < ExpToLevel) return false;
+            level++;
+            totalLevel++;
+            exp -= ExpToLevel;
+            
+            CalcXPPerLvel();
+            return true;
 
+        }
         public void AddXpMultiplier(float multiplier)
         {
             expMultiplier += multiplier;
@@ -165,6 +185,7 @@ namespace Infinitum
                     resetCurrentSkills();
                     return;
                 }
+                CalcXPPerLvel();
                 loadSkills(tag);
                 //save in dictionaries for future Sets            
                 recentChanged = true;
@@ -386,7 +407,7 @@ namespace Infinitum
         {
 
             level = totalLevel;
-
+            CalcXPPerLvel();
             skills = new Skill[SkillEnums.GetNumberOfSkills];
 
             Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(0);

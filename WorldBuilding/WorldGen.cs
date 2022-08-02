@@ -9,6 +9,8 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using Infinitum.Items;
+
 namespace Infinitum.WorldBuilding
 {
     internal class WorldGen : GlobalTile
@@ -19,7 +21,6 @@ namespace Infinitum.WorldBuilding
         private bool haveXPAccumulated = false;
         private Task timer;
         private bool notUnloadedTiles = true;
-        private const int CHANCE_BASE = 175;
         private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267 };
         public HashSet<string> bannedTiles = new HashSet<string>();
 
@@ -41,7 +42,7 @@ namespace Infinitum.WorldBuilding
                 //provisional, calamity dont register ores to main.
                 if (!TileID.Sets.Ore[type] && !Main.tileSpelunker[type])
                 {
-                    if (Main.rand.NextBool(CHANCE_BASE * 25))
+                    if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromBlocks))
                         Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
 
                     return base.Drop(i, j, type);
@@ -67,7 +68,7 @@ namespace Infinitum.WorldBuilding
                     sendXPToPlayers(xp);
 
                 }
-                if (Main.rand.NextBool(CHANCE_BASE))
+                if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
 
@@ -77,45 +78,33 @@ namespace Infinitum.WorldBuilding
             if (!isOre(type))
             {
                 //Special and global Tiles.
-                int specificChance = 25;
-
-
-
                 switch (type)
                 {
                     case (int)TileIDEnum.PineTree:
                     case (int)TileIDEnum.PalmTree:
                     case (int)TileIDEnum.Trees:
                         sendAccumulatedXPFromTrees(1.5f);
-                        specificChance -= 23;
                         break;
                     case TileID.TreeAmber:
                         sendAccumulatedXPFromTrees(50.0f);
-                        specificChance -= 23;
                         break;
                     case TileID.TreeDiamond:
                         sendAccumulatedXPFromTrees(50.0f);
-                        specificChance -= 23;
                         break;
                     case TileID.TreeRuby:
                         sendAccumulatedXPFromTrees(42.5f);
-                        specificChance -= 23;
                         break;
                     case TileID.TreeEmerald:
                         sendAccumulatedXPFromTrees(40.0f);
-                        specificChance -= 23;
                         break;
                     case TileID.TreeAmethyst:
                         sendAccumulatedXPFromTrees(35.0f);
-                        specificChance -= 23;
                         break;
                     case TileID.TreeTopaz:
                         sendAccumulatedXPFromTrees(37.5f);
-                        specificChance -= 23;
                         break;
                     case TileID.TreeSapphire:
                         sendAccumulatedXPFromTrees(38.5f);
-                        specificChance -= 23;
                         break;
 
                     default:
@@ -125,7 +114,7 @@ namespace Infinitum.WorldBuilding
                         break;
                 }
 
-                if (Main.rand.NextBool(CHANCE_BASE * specificChance))
+                if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromTrees))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
 
@@ -230,7 +219,7 @@ namespace Infinitum.WorldBuilding
                 sendXPToPlayers(xp);
             }
 
-            if (Main.rand.NextBool(CHANCE_BASE))
+            if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
                 Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
 
             //Infinitum.instance.ChatMessage("Vanilla");
