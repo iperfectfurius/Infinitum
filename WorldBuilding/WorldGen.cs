@@ -137,7 +137,7 @@ namespace Infinitum.WorldBuilding
 
 
             switch (type)
-            {
+            {//need a buff for early
                 case (int)TileIDEnum.Copper:
                     xp = 12.5f;
                     break;
