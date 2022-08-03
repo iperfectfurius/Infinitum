@@ -77,44 +77,58 @@ namespace Infinitum.WorldBuilding
 
             if (!isOre(type))
             {
+                bool isTree = false;
                 //Special and global Tiles.
                 switch (type)
                 {
+                    
                     case (int)TileIDEnum.PineTree:
                     case (int)TileIDEnum.PalmTree:
                     case (int)TileIDEnum.Trees:
                         sendAccumulatedXPFromTrees(1.5f);
+                        isTree = true;
                         break;
                     case TileID.TreeAmber:
                         sendAccumulatedXPFromTrees(50.0f);
+                        isTree = true;
                         break;
                     case TileID.TreeDiamond:
                         sendAccumulatedXPFromTrees(50.0f);
+                        isTree = true;
                         break;
                     case TileID.TreeRuby:
                         sendAccumulatedXPFromTrees(42.5f);
+                        isTree = true;
                         break;
                     case TileID.TreeEmerald:
                         sendAccumulatedXPFromTrees(40.0f);
+                        isTree = true;
                         break;
                     case TileID.TreeAmethyst:
                         sendAccumulatedXPFromTrees(35.0f);
+                        isTree = true;
                         break;
                     case TileID.TreeTopaz:
                         sendAccumulatedXPFromTrees(37.5f);
+                        isTree = true;
                         break;
                     case TileID.TreeSapphire:
                         sendAccumulatedXPFromTrees(38.5f);
+                        isTree = true;
                         break;
 
                     default:
                         if (TileID.Sets.IsATreeTrunk[type])
+                        {
                             sendAccumulatedXPFromTrees(0.5f);
+                            isTree = true;
+                        }
+                            
 
                         break;
                 }
 
-                if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromTrees))
+                if (Main.rand.NextBool(isTree ?  MultiplierStarNoItem.ChanceFromTrees : MultiplierStarNoItem.ChanceFromBlocks))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
 
@@ -223,7 +237,7 @@ namespace Infinitum.WorldBuilding
             }
 
             if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
-                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
 
             //Infinitum.instance.ChatMessage("Vanilla");
             return base.Drop(i, j, type);
