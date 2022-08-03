@@ -21,7 +21,7 @@ namespace Infinitum.WorldBuilding
         private bool haveXPAccumulated = false;
         private Task timer;
         private bool notUnloadedTiles = true;
-        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267 };
+        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267 , 408 };
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
@@ -180,6 +180,9 @@ namespace Infinitum.WorldBuilding
                     break;
                 case (int)TileIDEnum.Chlorophyte:
                     xp = 52.5f;
+                    break;
+                case (int)TileID.LunarOre:
+                    xp = 55.0f;
                     break;
                 case (int)TileIDEnum.AmethystGemspark:
                 case (int)TileIDEnum.Amethyst:

@@ -79,9 +79,7 @@ namespace Infinitum
 			Infinitum.instance.AddXPToPlayer(xp);
 		}
         public override void OnSpawn(NPC npc, IEntitySource source)
-        {
-			
-			
+        {			
 			//base.OnSpawn(npc, source);
         }
         public override void SetDefaults(NPC npc)

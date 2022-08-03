@@ -37,8 +37,7 @@ namespace Infinitum.Items
 			
 		}
 		public override bool? UseItem(Player player)
-		{
-			
+		{			
 			return false;
 		}
 		public override bool CanPickup(Player player)
