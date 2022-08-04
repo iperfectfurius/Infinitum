@@ -37,17 +37,24 @@ namespace Infinitum.UI
             bar.SetPadding(0);
             bar.OnMouseOver += Bar_OnMouseOver;
             bar.OnMiddleClick += openStatsTab;
+            bar.OnMouseUp += setPos;
             bar.continueStuff = true;
 
             addUIElementsToPanel();
+            //not consistent
             bar.Left.Set(Main.screenWidth - 270, 0f);
-            bar.Top.Set(71f, 0f);
+            bar.Top.Set(71, 0f);
+
             Append(bar);
+        }
+
+        private void setPos(UIMouseEvent evt, UIElement listeningElement)
+        {
         }
 
         private void Bar_OnMouseOver(UIMouseEvent evt, UIElement listeningElement)
         {
-            
+            //show exp
         }
 
         private void openStatsTab(UIMouseEvent evt, UIElement listeningElement)
@@ -88,7 +95,7 @@ namespace Infinitum.UI
 
             base.Update(gameTime);
         }
-        
+
         private void UpdateAllStats()
         {
             float percentExp = (float)stats.Exp / stats.ExpToLevel;
@@ -97,5 +104,14 @@ namespace Infinitum.UI
             RecalculateChildren();
         }
 
+        public void SetLastPos(Vector2 pos)
+        {
+            bar.Left.Pixels = pos.X;
+            bar.Top.Pixels = pos.Y;
+        }
+        public Vector2 GetCurrentPos()
+        {
+            return new Vector2(bar.Left.Pixels,bar.Top.Pixels);
+        }
     }
 }

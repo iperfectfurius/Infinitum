@@ -24,6 +24,7 @@ namespace Infinitum
     {
         private Player player = Main.CurrentPlayer;
         private static Mod myMod = ModLoader.GetMod("Infinitum");
+        private UISettings playerSettings = new();
         private bool recentChanged = false;
         private string lastHeldItem;
         private List<float> avgXP = new List<float>() { 0 };
@@ -79,6 +80,7 @@ namespace Infinitum
         {
             player = currentPLayer;
 
+            playerSettings.SetSettings();
             showDamageText((int)CombatTextPos.CurrentLevels, $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
 
             InfinitumUI.Instance.stats = this;
@@ -187,7 +189,16 @@ namespace Infinitum
                 }
                 CalcXPPerLvel();
                 loadSkills(tag);
-                //save in dictionaries for future Sets            
+                //save in dictionaries for future Sets
+
+                var UI = tag.Get<TagCompound>("UI");
+                if(UI != null)
+                {
+                    TagCompound expBar = UI.GetCompound("ExpBar");
+
+                    playerSettings.ExpBarPos = new Vector2(expBar.GetFloat("X"), expBar.GetFloat("Y"));
+                }
+
                 recentChanged = true;
 
             }
@@ -199,6 +210,41 @@ namespace Infinitum
 
         }
 
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add("Level", level);
+            tag.Add("ExpMultiplier", expMultiplier);
+            tag.Add("Exp", exp);
+            tag.Add("TotalLevel", totalLevel);
+            tag.Add("TotalNpcsKilled", totalNpcsKilled);
+            tag.Add("Activate", activate);
+            tag.Add("DisplayNumbers", displayNumbers);
+            tag.Add("Version", version);
+
+            TagCompound dataSkill = new();
+
+            foreach (Skill s in Skills)
+            {
+                TagCompound skill = new TagCompound();
+                skill.Add("level", s.Level);
+                skill.Add("automaticMode", s.AutomaticMode);
+                dataSkill.Add(s.GetType().ToString(), skill);
+            }
+
+            tag.Add("Skills", dataSkill);
+
+            TagCompound UI = new();
+            TagCompound expBar = new();
+
+            Vector2 expBarPos = ExpBarUI.Instance.GetCurrentPos();
+
+            expBar.Add("X", expBarPos.X);
+            expBar.Add("Y", expBarPos.Y);
+
+            UI.Add("ExpBar", expBar);
+            tag.Add("UI", UI);
+
+        }
         private void loadSkills(TagCompound tag)
         {
 
@@ -262,31 +308,6 @@ namespace Infinitum
             skill = savedSkills.GetCompound(typeof(AmmoConsumption).ToString());
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(skill.GetInt("level"));
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].AutomaticMode = skill.GetBool("automaticMode");
-        }
-
-        public override void SaveData(TagCompound tag)
-        {
-            tag.Add("Level", level);
-            tag.Add("ExpMultiplier", expMultiplier);
-            tag.Add("Exp", exp);
-            tag.Add("TotalLevel", totalLevel);
-            tag.Add("TotalNpcsKilled", totalNpcsKilled);
-            tag.Add("Activate", activate);
-            tag.Add("DisplayNumbers", displayNumbers);
-            tag.Add("Version", version);
-
-            TagCompound dataSkill = new();
-
-            foreach (Skill s in Skills)
-            {
-                TagCompound skill = new TagCompound();
-                skill.Add("level", s.Level);
-                skill.Add("automaticMode", s.AutomaticMode);
-                dataSkill.Add(s.GetType().ToString(), skill);
-            }
-
-            tag.Add("Skills",dataSkill);
-
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
