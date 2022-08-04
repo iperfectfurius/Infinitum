@@ -8,6 +8,7 @@ namespace Infinitum.Items
 {
     internal class SuperiorMultiplierStar : ModItem
     {
+		public static readonly int ChanceFromNPCS = 500;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Superior Multiplier EXP");
@@ -36,8 +37,7 @@ namespace Infinitum.Items
 			
 		}
 		public override bool? UseItem(Player player)
-		{
-			
+		{			
 			return false;
 		}
 		public override bool CanPickup(Player player)

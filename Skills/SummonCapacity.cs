@@ -20,7 +20,7 @@ namespace Infinitum.Skills
             Cost = 1250;
             EffectBuff = 0;
             MultiplierEffect = 1;
-            MultiplierCost = 0.25f;
+            MultiplierCost = 1f;
             Type = (int)SkillEnums.Type.PostUpdateEquips;
         }
         public override void ApplyStatToPlayer()

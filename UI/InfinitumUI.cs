@@ -338,7 +338,7 @@ namespace Infinitum.UI
         private void UpdateAllStats()
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
-            statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/{stats._EXPTOLEVEL} ({((float)stats.Exp / stats._EXPTOLEVEL) * 100:n1}%)");
+            statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/{stats.ExpToLevel} ({((float)stats.Exp / stats.ExpToLevel) * 100:n1}%)");
             statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {(stats.ExpMultiplier * stats.MoreExpMultiplier) * 100:n1}%");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             statsTexts[(int)statsOrder.TotalKills].SetText("Total Kills: " + stats.TotalNpcsKilled);
@@ -349,11 +349,9 @@ namespace Infinitum.UI
             for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
             {
 
-
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i])).SetText($"{stats.Skills[i].DisplayName}: {stats.Skills[i].GetStatText()}");
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + SkillEnums.GetNumberOfSkills])).SetText($"{stats.Skills[i].Cost}");
                 ((UIButton)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + (SkillEnums.GetNumberOfSkills * 2)])).ChangeBackgroundFromValue(stats.Skills[i].AutomaticMode);
-
 
             }
 

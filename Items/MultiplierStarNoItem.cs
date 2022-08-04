@@ -10,7 +10,9 @@ namespace Infinitum.Items
 
     internal class MultiplierStarNoItem : ModItem
     {
-        
+        public static readonly int ChanceFromOres = 175;      
+        public static readonly int ChanceFromBlocks = ChanceFromOres * 25;
+        public static readonly int ChanceFromTrees = ChanceFromOres * 2;
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Star Multiplier EXP(No item)");

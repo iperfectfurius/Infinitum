@@ -20,8 +20,7 @@ namespace Infinitum
 		private float GetDefense(int defense) => defense > 100 ? 100 : defense;
 
 		public override void OnKill(NPC npc)
-		{
-
+		{			
 			float xp = GetXpFromNPC(npc);
 
 			if (Main.netMode == NetmodeID.Server)
@@ -64,8 +63,10 @@ namespace Infinitum
 			
 			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
 			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500, 1), new CommonDrop(ModContent.ItemType<ExpStar>(), 1250, 1)));
-			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<MultiplierStar>(), 250, 1, 3), new CommonDrop(ModContent.ItemType<MultiplierStar>(), 175, 1, 3)));
-			items.Add(new ItemDropWithConditionRule(ModContent.ItemType<SuperiorMultiplierStar>(), 500, 1, 1, new Conditions.IsHardmode()));
+			items.Add(new DropBasedOnExpertMode(
+				new CommonDrop(ModContent.ItemType<MultiplierStar>(),MultiplierStar.NormalChanceFromNPCS, 1, 3),
+				new CommonDrop(ModContent.ItemType<MultiplierStar>(), MultiplierStar.ExpertChanceFromNPCS, 1, 3)));
+			items.Add(new ItemDropWithConditionRule(ModContent.ItemType<SuperiorMultiplierStar>(), SuperiorMultiplierStar.ChanceFromNPCS, 1, 1, new Conditions.IsHardmode()));
 
 			items.ForEach(e => globalLoot.Add(e));
 		}
@@ -78,9 +79,7 @@ namespace Infinitum
 			Infinitum.instance.AddXPToPlayer(xp);
 		}
         public override void OnSpawn(NPC npc, IEntitySource source)
-        {
-			
-			
+        {			
 			//base.OnSpawn(npc, source);
         }
         public override void SetDefaults(NPC npc)
