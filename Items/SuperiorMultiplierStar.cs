@@ -8,7 +8,7 @@ namespace Infinitum.Items
 {
     internal class SuperiorMultiplierStar : ModItem
     {
-		public static readonly int ChanceFromNPCS = 500;
+		public const int ChanceFromNPCS = 500;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Superior Multiplier EXP");
