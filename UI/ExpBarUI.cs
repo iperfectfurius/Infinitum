@@ -10,6 +10,7 @@ namespace Infinitum.UI
     internal class ExpBarUI : UIState
     {
         public static ExpBarUI Instance;
+        public static Vector2 DefaultPos = new Vector2(Main.screenWidth - 270,71);
         public DragableUIPanel bar;
         public UIPanel ExpBar;
         public UIText level;
@@ -42,8 +43,8 @@ namespace Infinitum.UI
 
             addUIElementsToPanel();
             //not consistent
-            bar.Left.Set(Main.screenWidth - 270, 0f);
-            bar.Top.Set(71, 0f);
+            bar.Left.Set(DefaultPos.X, 0f);
+            bar.Top.Set(DefaultPos.Y, 0f);
 
             Append(bar);
         }
@@ -104,7 +105,7 @@ namespace Infinitum.UI
             RecalculateChildren();
         }
 
-        public void SetLastPos(Vector2 pos)
+        public void ChangeOwnPos(Vector2 pos)
         {
             bar.Left.Pixels = pos.X;
             bar.Top.Pixels = pos.Y;

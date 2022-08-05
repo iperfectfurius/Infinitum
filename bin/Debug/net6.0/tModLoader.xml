@@ -9215,6 +9215,11 @@
             <param name="shadow"></param>
             <returns></returns>
         </member>
+        <member name="F:Terraria.ModLoader.ModNet.IncompatiblePatchVersion">
+            <summary>
+            Update every time a change is pushed to stable which is incompatible between server and clients. Ignored if not updated each month.
+            </summary>
+        </member>
         <member name="T:Terraria.ModLoader.ModNPC">
             <summary>
             This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
