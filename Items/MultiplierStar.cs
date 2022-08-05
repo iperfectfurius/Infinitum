@@ -9,8 +9,8 @@ namespace Infinitum.Items
 {
 	internal class MultiplierStar : ModItem
 	{
-		public static readonly int ExpertChanceFromNPCS = 175;
-		public static readonly int NormalChanceFromNPCS = 250;
+		public const int ExpertChanceFromNPCS = 175;
+		public const int NormalChanceFromNPCS = 250;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star Multiplier XP");

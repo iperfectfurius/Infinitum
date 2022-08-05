@@ -67,11 +67,11 @@ namespace Infinitum
         public override void Initialize()
         {
             base.Initialize();
-            CalcXPPerLvel();
-            
+            CalcXPPerLevel();
+
         }
 
-        private void CalcXPPerLvel()
+        private void CalcXPPerLevel()
         {
             expToLevel = BASE_EXP + (int)((totalLevel * BASE_EXP) * EXPPERLEVEL);
         }
@@ -153,8 +153,8 @@ namespace Infinitum
             level++;
             totalLevel++;
             exp -= ExpToLevel;
-            
-            CalcXPPerLvel();
+
+            CalcXPPerLevel();
             return true;
 
         }
@@ -187,17 +187,10 @@ namespace Infinitum
                     resetCurrentSkills();
                     return;
                 }
-                CalcXPPerLvel();
-                loadSkills(tag);
-                //save in dictionaries for future Sets
+                CalcXPPerLevel();
+                loadSkills(tag);//save in dictionaries for future Sets
 
-                var UI = tag.Get<TagCompound>("UI");
-                if(UI != null)
-                {
-                    TagCompound expBar = UI.GetCompound("ExpBar");
-
-                    playerSettings.ExpBarPos = new Vector2(expBar.GetFloat("X"), expBar.GetFloat("Y"));
-                }
+                playerSettings.loadMyData(tag.Get<TagCompound>("UI"));
 
                 recentChanged = true;
 
@@ -233,16 +226,8 @@ namespace Infinitum
 
             tag.Add("Skills", dataSkill);
 
-            TagCompound UI = new();
-            TagCompound expBar = new();
+            tag.Add("UI", playerSettings.SaveMyData());
 
-            Vector2 expBarPos = ExpBarUI.Instance.GetCurrentPos();
-
-            expBar.Add("X", expBarPos.X);
-            expBar.Add("Y", expBarPos.Y);
-
-            UI.Add("ExpBar", expBar);
-            tag.Add("UI", UI);
 
         }
         private void loadSkills(TagCompound tag)
@@ -428,7 +413,7 @@ namespace Infinitum
         {
 
             level = totalLevel;
-            CalcXPPerLvel();
+            CalcXPPerLevel();
             skills = new Skill[SkillEnums.GetNumberOfSkills];
 
             Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(0);
@@ -454,7 +439,7 @@ namespace Infinitum
         public override void ModifyCaughtFish(Item fish)
         {
             float xp = (((fish.rare * 5) + 1) * 3.5f + (fish.value / 500)) * fish.stack;
-            
+
             if (Main.netMode == NetmodeID.SinglePlayer)
                 AddXp(xp);
             else if (Main.netMode == NetmodeID.MultiplayerClient)

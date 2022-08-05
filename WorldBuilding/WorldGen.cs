@@ -21,7 +21,16 @@ namespace Infinitum.WorldBuilding
         private bool haveXPAccumulated = false;
         private Task timer;
         private bool notUnloadedTiles = true;
-        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267 , 408 };
+        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, 408 };
+        enum BlockTypeChances : ushort {
+        Ore = MultiplierStarNoItem.ChanceFromOres,
+        Tree = MultiplierStarNoItem.ChanceFromTrees,
+        Block = MultiplierStarNoItem.ChanceFromBlocks,
+        Heart = MultiplierStarNoItem.ChanceFromHearts,
+        Altar = MultiplierStarNoItem.ChanceFromAltars,
+        Orbs = MultiplierStarNoItem.ChanceFromOrbs,
+        Pots = MultiplierStarNoItem.ChanceFromPots
+        };
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
@@ -43,7 +52,7 @@ namespace Infinitum.WorldBuilding
                 if (!TileID.Sets.Ore[type] && !Main.tileSpelunker[type])
                 {
                     if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromBlocks))
-                        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+                        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
 
                     return base.Drop(i, j, type);
                 }
@@ -58,7 +67,7 @@ namespace Infinitum.WorldBuilding
                 if (tile.GetType().Name == "SanjacobosMineralTile")
                     xp += 35f;
 
-
+                //if tile is more big than 1 tile better to sendAccumulated XP for less traffic
                 if (Main.netMode != NetmodeID.Server)
                 {
                     Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
@@ -69,7 +78,7 @@ namespace Infinitum.WorldBuilding
 
                 }
                 if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
-                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
 
             }
@@ -77,59 +86,75 @@ namespace Infinitum.WorldBuilding
 
             if (!isOre(type))
             {
-                bool isTree = false;
+                int Tiletype = (int)BlockTypeChances.Block;
                 //Special and global Tiles.
                 switch (type)
                 {
-                    
+
                     case (int)TileIDEnum.PineTree:
                     case (int)TileIDEnum.PalmTree:
                     case (int)TileIDEnum.Trees:
-                        sendAccumulatedXPFromTrees(1.5f);
-                        isTree = true;
+                        sendAccumulatedXPFromTile(1.5f);
+                        Tiletype = (int)BlockTypeChances.Tree;
                         break;
                     case TileID.TreeAmber:
-                        sendAccumulatedXPFromTrees(50.0f);
-                        isTree = true;
+                        sendAccumulatedXPFromTile(50.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
                         break;
                     case TileID.TreeDiamond:
-                        sendAccumulatedXPFromTrees(50.0f);
-                        isTree = true;
+                        sendAccumulatedXPFromTile(50.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
                         break;
                     case TileID.TreeRuby:
-                        sendAccumulatedXPFromTrees(42.5f);
-                        isTree = true;
+                        sendAccumulatedXPFromTile(42.5f);
+                        Tiletype = (int)BlockTypeChances.Tree;
                         break;
                     case TileID.TreeEmerald:
-                        sendAccumulatedXPFromTrees(40.0f);
-                        isTree = true;
+                        sendAccumulatedXPFromTile(40.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
                         break;
                     case TileID.TreeAmethyst:
-                        sendAccumulatedXPFromTrees(35.0f);
-                        isTree = true;
+                        sendAccumulatedXPFromTile(35.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
                         break;
                     case TileID.TreeTopaz:
-                        sendAccumulatedXPFromTrees(37.5f);
-                        isTree = true;
+                        sendAccumulatedXPFromTile(37.5f);
+                        Tiletype = (int)BlockTypeChances.Tree;
                         break;
                     case TileID.TreeSapphire:
-                        sendAccumulatedXPFromTrees(38.5f);
-                        isTree = true;
+                        sendAccumulatedXPFromTile(38.5f);
+                        Tiletype = (int)BlockTypeChances.Tree;
                         break;
-
+                    case TileID.Heart:
+                    case TileID.LifeFruit:
+                        sendAccumulatedXPFromTile(500f);
+                        Tiletype = (int)BlockTypeChances.Heart;
+                        break;
+                    case TileID.DemonAltar:
+                        sendAccumulatedXPFromTile(500f);
+                        Tiletype = (int)BlockTypeChances.Altar;
+                        break;
+                    case TileID.ShadowOrbs:
+                        sendAccumulatedXPFromTile(250f);
+                        Tiletype = (int)BlockTypeChances.Orbs;
+                        break;
+                    case TileID.Pots:                  
+                        sendAccumulatedXPFromTile(7.5f);
+                        Tiletype = (int)BlockTypeChances.Pots;
+                        break;                   
                     default:
                         if (TileID.Sets.IsATreeTrunk[type])
                         {
-                            sendAccumulatedXPFromTrees(0.5f);
-                            isTree = true;
+                            sendAccumulatedXPFromTile(0.5f);
+                            Tiletype = (int)BlockTypeChances.Tree;
                         }
-                            
+
 
                         break;
                 }
 
-                if (Main.rand.NextBool(isTree ?  MultiplierStarNoItem.ChanceFromTrees : MultiplierStarNoItem.ChanceFromBlocks))
-                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+                if (Main.rand.NextBool(Tiletype))
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
                 return base.Drop(i, j, type);
 
             }
@@ -236,7 +261,7 @@ namespace Infinitum.WorldBuilding
                 sendXPToPlayers(xp);
             }
 
-            if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
+            if (Main.rand.NextBool((int)BlockTypeChances.Ore))
                 Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
 
             //Infinitum.instance.ChatMessage("Vanilla");
@@ -287,7 +312,7 @@ namespace Infinitum.WorldBuilding
                 myPacket.Send();
             });
         }
-        private void sendAccumulatedXPFromTrees(float xp)
+        private void sendAccumulatedXPFromTile(float xp)
         {
             //This method can prevent a lot of traffic
             accumulatedXP += xp;
