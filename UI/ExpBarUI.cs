@@ -10,7 +10,7 @@ namespace Infinitum.UI
     internal class ExpBarUI : UIState
     {
         public static ExpBarUI Instance;
-        public static Vector2 DefaultPos = new Vector2(Main.screenWidth - 270,71);
+        public static Vector2 DefaultPos = new Vector2(Main.screenWidth - maxWidth - 50, 71);
         public DragableUIPanel bar;
         public UIPanel ExpBar;
         public UIText level;

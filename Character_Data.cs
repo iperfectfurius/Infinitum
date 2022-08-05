@@ -67,11 +67,11 @@ namespace Infinitum
         public override void Initialize()
         {
             base.Initialize();
-            CalcXPPerLvel();
+            CalcXPPerLevel();
 
         }
 
-        private void CalcXPPerLvel()
+        private void CalcXPPerLevel()
         {
             expToLevel = BASE_EXP + (int)((totalLevel * BASE_EXP) * EXPPERLEVEL);
         }
@@ -154,7 +154,7 @@ namespace Infinitum
             totalLevel++;
             exp -= ExpToLevel;
 
-            CalcXPPerLvel();
+            CalcXPPerLevel();
             return true;
 
         }
@@ -187,7 +187,7 @@ namespace Infinitum
                     resetCurrentSkills();
                     return;
                 }
-                CalcXPPerLvel();
+                CalcXPPerLevel();
                 loadSkills(tag);//save in dictionaries for future Sets
 
                 playerSettings.loadMyData(tag.Get<TagCompound>("UI"));
@@ -413,7 +413,7 @@ namespace Infinitum
         {
 
             level = totalLevel;
-            CalcXPPerLvel();
+            CalcXPPerLevel();
             skills = new Skill[SkillEnums.GetNumberOfSkills];
 
             Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(0);
