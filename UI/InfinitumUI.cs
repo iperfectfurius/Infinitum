@@ -319,7 +319,7 @@ namespace Infinitum.UI
         }
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
         {
-            stats.resetCurrentSkills();
+            stats.ResetCurrentSkills();
             SoundEngine.PlaySound(SoundID.Camera);
         }
         private void activateStats(UIMouseEvent evt, UIElement listeningElement)

@@ -12,6 +12,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -35,7 +36,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.75";//Only used in case need for all players in next update.
+        private string version = "0.78";//Only used in case need for all players in next update.
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -43,14 +44,14 @@ namespace Infinitum
         private float expMultiplier = 1.0f;
         private float moreExpMultiplier = 1.0f;
         private const int BASE_EXP = 60000;
-        private int expToLevel = 60000;
+        private int expToLevel = BASE_EXP;
         private const float EXPPERLEVEL = 0.0001f;
         private long totalNpcsKilled = 0;
         private bool activate = true;
         private bool displayNumbers = true;
-        //to do
-        private Skill[] skills = new Skill[0];
 
+        private Dictionary<string, Skill[]> skillsSets = new Dictionary<string, Skill[]>();
+        private string setSelected = "0";
         public float Exp { get => exp; }
         public int Level { get => level; }
         public int TotalLevel { get => totalLevel; }
@@ -62,7 +63,8 @@ namespace Infinitum
         public bool Activate { get => activate; set => activate = value; }
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
-        internal Skill[] Skills { get => skills; set => skills = value; }
+
+        internal Skill[]? Skills { get => skillsSets[setSelected]; set => skillsSets[setSelected] = value; }
 
         public override void Initialize()
         {
@@ -141,7 +143,8 @@ namespace Infinitum
             showDamageText((int)CombatTextPos.AddedLevels, $"+ {levelsUp} Levels!", CombatText.DamagedFriendlyCrit);
             showDamageText((int)CombatTextPos.CurrentLevels, $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
 
-            Skill.AutoLevelUpSkills(ref skills, ref level);
+            Skill.AutoLevelUpSkills(Skills, ref level);
+            //Skill.AutoLevelUpSkills(skillsSets[setSelected], ref level);
 
 
             SoundEngine.PlaySound(SoundID.Chat);
@@ -181,23 +184,28 @@ namespace Infinitum
                 tag.TryGet("TotalNpcsKilled", out totalNpcsKilled);
                 tag.TryGet("Activate", out activate);
 
+                playerSettings.loadMyData(tag.Get<TagCompound>("UI"));
+
                 if (tempVer != version)
                 {
                     messageReset = true;
-                    resetCurrentSkills();
+                    int savedSets = tag.GetCompound("SkillData").Count;
+                    ResetAllSkills(savedSets);
                     return;
                 }
                 CalcXPPerLevel();
                 loadSkills(tag);//save in dictionaries for future Sets
+                setSelected = "0";
 
-                playerSettings.loadMyData(tag.Get<TagCompound>("UI"));
+                
 
                 recentChanged = true;
 
             }
             catch
             {
-                resetCurrentSkills();
+                int savedSets = tag.GetCompound("SkillData").Count;
+                ResetAllSkills(savedSets);
                 recentChanged = true;
             }
 
@@ -214,85 +222,97 @@ namespace Infinitum
             tag.Add("DisplayNumbers", displayNumbers);
             tag.Add("Version", version);
 
-            TagCompound dataSkill = new();
+            TagCompound skillData = new();
 
-            foreach (Skill s in Skills)
+            foreach (KeyValuePair<string, Skill[]> entry in skillsSets)
             {
-                TagCompound skill = new TagCompound();
-                skill.Add("level", s.Level);
-                skill.Add("automaticMode", s.AutomaticMode);
-                dataSkill.Add(s.GetType().ToString(), skill);
+                TagCompound set = new TagCompound();
+
+                foreach (Skill skill in entry.Value)
+                {
+                    TagCompound dataSkill = new TagCompound();
+                    dataSkill.Add("level", skill.Level);
+                    dataSkill.Add("automaticMode", skill.AutomaticMode);
+                    set.Add(skill.GetType().ToString(), dataSkill);
+                }
+                skillData.Add(entry.Key, set);
             }
 
-            tag.Add("Skills", dataSkill);
-
+            tag.Add("SkillData", skillData);
             tag.Add("UI", playerSettings.SaveMyData());
 
 
         }
         private void loadSkills(TagCompound tag)
         {
+            //get names
+            for (int i = 0; i < tag.GetCompound("SkillData").Count; i++)
+            {
+                setSelected = i.ToString();
+                TagCompound skillSet = (TagCompound)tag.GetCompound("SkillData")[i.ToString()];
 
-            TagCompound savedSkills = tag.GetCompound("Skills");
-            TagCompound skill;
-            skills = new Skill[SkillEnums.GetNumberOfSkills];
+                TagCompound skill;
 
-            skill = savedSkills.GetCompound(typeof(Defense).ToString());
-            Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.Defense].AutomaticMode = skill.GetBool("automaticMode");
+                skillsSets.Add(setSelected, new Skill[SkillEnums.GetNumberOfSkills]);
 
-            skill = savedSkills.GetCompound(typeof(LifeRegen).ToString());
-            Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.LifeRegen].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(Defense).ToString());
+                Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.Defense].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(MeleeDamage).ToString());
-            Skills[(int)SkillEnums.SkillOrder.MeleeDamage] = new MeleeDamage(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.MeleeDamage].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(LifeRegen).ToString());
+                Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.LifeRegen].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(MeleeAttackSpeed).ToString());
-            Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed] = new MeleeAttackSpeed(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(MeleeDamage).ToString());
+                Skills[(int)SkillEnums.SkillOrder.MeleeDamage] = new MeleeDamage(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.MeleeDamage].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(MagicDamage).ToString());
-            Skills[(int)SkillEnums.SkillOrder.MagicDamage] = new MagicDamage(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.MagicDamage].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(MeleeAttackSpeed).ToString());
+                Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed] = new MeleeAttackSpeed(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.MeleeAttackSpeed].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(ReducedManaConsumption).ToString());
-            Skills[(int)SkillEnums.SkillOrder.ManaConsumption] = new ReducedManaConsumption(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.ManaConsumption].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(MagicDamage).ToString());
+                Skills[(int)SkillEnums.SkillOrder.MagicDamage] = new MagicDamage(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.MagicDamage].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(RangedDamage).ToString());
-            Skills[(int)SkillEnums.SkillOrder.RangedDamage] = new RangedDamage(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.RangedDamage].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(ReducedManaConsumption).ToString());
+                Skills[(int)SkillEnums.SkillOrder.ManaConsumption] = new ReducedManaConsumption(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.ManaConsumption].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(SummonDamage).ToString());
-            Skills[(int)SkillEnums.SkillOrder.SummonDamage] = new SummonDamage(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.SummonDamage].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(RangedDamage).ToString());
+                Skills[(int)SkillEnums.SkillOrder.RangedDamage] = new RangedDamage(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.RangedDamage].AutomaticMode = skill.GetBool("automaticMode");
+
+                skill = skillSet.GetCompound(typeof(SummonDamage).ToString());
+                Skills[(int)SkillEnums.SkillOrder.SummonDamage] = new SummonDamage(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.SummonDamage].AutomaticMode = skill.GetBool("automaticMode");
 
 
-            skill = savedSkills.GetCompound(typeof(SummonCapacity).ToString());
-            Skills[(int)SkillEnums.SkillOrder.MinionCapacity] = new SummonCapacity(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.MinionCapacity].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(SummonCapacity).ToString());
+                Skills[(int)SkillEnums.SkillOrder.MinionCapacity] = new SummonCapacity(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.MinionCapacity].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(PickaxeSpeed).ToString());
-            Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = new PickaxeSpeed(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(PickaxeSpeed).ToString());
+                Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = new PickaxeSpeed(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(MovementSpeed).ToString());
-            Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.MovementSpeed].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(MovementSpeed).ToString());
+                Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.MovementSpeed].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(GlobalCriticalChance).ToString());
-            Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(GlobalCriticalChance).ToString());
+                Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(LifeSteal).ToString());
-            Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.LifeSteal].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(LifeSteal).ToString());
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].AutomaticMode = skill.GetBool("automaticMode");
 
-            skill = savedSkills.GetCompound(typeof(AmmoConsumption).ToString());
-            Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(skill.GetInt("level"));
-            Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].AutomaticMode = skill.GetBool("automaticMode");
+                skill = skillSet.GetCompound(typeof(AmmoConsumption).ToString());
+                Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].AutomaticMode = skill.GetBool("automaticMode");
+            }
+
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
@@ -314,10 +334,10 @@ namespace Infinitum
         {
             base.Unload();
         }
-        public bool ApplyStats(int stat, int apply)
+        public bool ApplyStats(int skill, int apply)
         {
-            //implement skill class     
-            if (skills[stat].ApplyStat(apply, ref level))
+
+            if (Skills[skill].ApplyStat(apply, ref level))
             {
                 recentChanged = true;
                 return true;
@@ -338,7 +358,9 @@ namespace Infinitum
                 return;
             }
 
-            foreach (Skill s in skills)
+
+            //sets
+            foreach (Skill s in Skills)
             {
                 if (s.Type == (int)SkillEnums.Type.PostUpdateEquips)
                     s.ApplyStatToPlayer();
@@ -374,7 +396,7 @@ namespace Infinitum
         {
             int damage2 = damage;
             if (activate && target.netID != 488)
-                skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(damage2);
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(damage2);
 
             base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
 
@@ -384,14 +406,14 @@ namespace Infinitum
         {
             int damage2 = damage;
             if (activate && target.netID != 488)
-                skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(damage2);
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(damage2);
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 
         }
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
 
-            skills[(int)SkillEnums.SkillOrder.AmmoConsumption].ApplyStatToPlayer(out bool canConsumeAmmo);
+            Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].ApplyStatToPlayer(out bool canConsumeAmmo);
 
             return canConsumeAmmo;
 
@@ -409,12 +431,20 @@ namespace Infinitum
             }
         }
 
-        public void resetCurrentSkills()
+        public void ResetCurrentSkills()
         {
 
             level = totalLevel;
             CalcXPPerLevel();
-            skills = new Skill[SkillEnums.GetNumberOfSkills];
+
+            InitializeSkills();
+
+        }
+        private void InitializeSkills()
+        {
+            if(!skillsSets.ContainsKey(setSelected))
+                skillsSets.Add(setSelected, new Skill[SkillEnums.GetNumberOfSkills]);
+
 
             Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(0);
             Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(0);
@@ -429,12 +459,22 @@ namespace Infinitum
             Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(0);
             Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(0);
 
-
             Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(0);
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(0);
 
             recentChanged = true;
-
+        }
+        public void ResetAllSkills(int currentSets)
+        {
+            level = totalLevel;
+            CalcXPPerLevel();
+            currentSets = currentSets == 0 ? 1 : currentSets;//minimum 1 set
+            for (int i = 0; i < currentSets; i++)
+            {
+                setSelected = i.ToString();
+                InitializeSkills();
+            }
+            setSelected = "0";
         }
         public override void ModifyCaughtFish(Item fish)
         {

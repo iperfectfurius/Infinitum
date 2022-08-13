@@ -102,6 +102,7 @@ namespace Infinitum
         {
             public SanjacobosOrePass(string name, float loadWeight) : base(name, loadWeight)
             {
+                
             }
 
             protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
@@ -109,7 +110,7 @@ namespace Infinitum
                 // progress.Message is the message shown to the user while the following code is running.
                 // Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes.
                 progress.Message = "Sanjacobo things";
-
+                
                 // Ores are quite simple, we simply use a for loop and the WorldGen.TileRunner to place splotches of the specified Tile in the world.
                 // "6E-05" is "scientific notation". It simply means 0.00006 but in some ways is easier to read.
                 for (int k = 0; k < (int)(Main.maxTilesX * Main.maxTilesY * 0.00008); k++)

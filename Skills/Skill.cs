@@ -124,7 +124,7 @@ namespace Infinitum.Skills
 
         public virtual void ApplyStatToPlayer(out bool arg) { arg = false; }
 
-        public static bool AutoLevelUpSkills(ref Skill[] skills, ref int levels)
+        public static bool AutoLevelUpSkills(Skill[] skills, ref int levels)
         {
             //this need to wokr in recursive
             int minimumLevel = int.MaxValue;
