@@ -65,6 +65,7 @@ namespace Infinitum
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
 
         internal Skill[]? Skills { get => skillsSets[setSelected]; set => skillsSets[setSelected] = value; }
+        public string SetSelected { get => setSelected; set => setSelected = value; }
 
         public override void Initialize()
         {
@@ -189,23 +190,19 @@ namespace Infinitum
                 if (tempVer != version)
                 {
                     messageReset = true;
-                    int savedSets = tag.GetCompound("SkillData").Count;
-                    ResetAllSkills(savedSets);
+                    ResetAllSkills(tag.GetCompound("SkillData").Count);
                     return;
                 }
                 CalcXPPerLevel();
                 loadSkills(tag);//save in dictionaries for future Sets
                 setSelected = "0";
-
-                
-
+           
                 recentChanged = true;
 
             }
             catch
             {
-                int savedSets = tag.GetCompound("SkillData").Count;
-                ResetAllSkills(savedSets);
+                ResetAllSkills(tag.GetCompound("SkillData").Count);
                 recentChanged = true;
             }
 
@@ -437,10 +434,10 @@ namespace Infinitum
             level = totalLevel;
             CalcXPPerLevel();
 
-            InitializeSkills();
+            InitializeSkillsOfCurrentSet();
 
         }
-        private void InitializeSkills()
+        private void InitializeSkillsOfCurrentSet()
         {
             if(!skillsSets.ContainsKey(setSelected))
                 skillsSets.Add(setSelected, new Skill[SkillEnums.GetNumberOfSkills]);
@@ -472,9 +469,24 @@ namespace Infinitum
             for (int i = 0; i < currentSets; i++)
             {
                 setSelected = i.ToString();
-                InitializeSkills();
+                InitializeSkillsOfCurrentSet();
             }
             setSelected = "0";
+        }
+
+        public void SetActions(int action)
+        {
+            switch (action)
+            {
+                case (int)UIElementsEnum.SetsActions.ChangeSet:
+                    //rework
+                    if(int.Parse(setSelected) + 1 == skillsSets.Count)
+                        setSelected = "0";
+                    else
+                       setSelected =  (int.Parse(setSelected)+ 1).ToString();
+                    break;
+            }
+            recentChanged = true;
         }
         public override void ModifyCaughtFish(Item fish)
         {
