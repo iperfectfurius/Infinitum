@@ -1,7 +1,17 @@
 *.js
+<<<<<<< HEAD
 .vs
 notes.txt
 /image-edits
 *.png
 notes.txt
 obj
+=======
+.vs/
+notes.txt
+image-edits/
+*.png
+notes.txt
+obj/
+bin/
+>>>>>>> 026d77d3e53f080c83c70bd181e8f4c5906e17ab
