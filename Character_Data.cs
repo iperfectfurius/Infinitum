@@ -111,24 +111,17 @@ namespace Infinitum
         public void AddXp(float xp)
         {
             if (Main.gameMenu) return;//This can be triggered by calamity first time in the world?
-            try
-            {
-                float experienceObtained = xp * (expMultiplier * moreExpMultiplier);
-                exp += experienceObtained;
-                UpdateLevel();
-                showDamageText((int)CombatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);
-                totalNpcsKilled++;
 
-                if (avgXP.Count > 100)
-                    avgXP.RemoveRange(0, 50);
-                avgXP.Add(experienceObtained);
-                recentChanged = true;
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Infinitum.instance.ChatMessage("Error addXp");
+            float experienceObtained = xp * (expMultiplier * moreExpMultiplier);
+            exp += experienceObtained;
+            UpdateLevel();
+            showDamageText((int)CombatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);
+            totalNpcsKilled++;
 
-            }
+            if (avgXP.Count > 100)
+                avgXP.RemoveRange(0, 50);
+            avgXP.Add(experienceObtained);
+            recentChanged = true;
 
         }
         private void UpdateLevel()
@@ -145,8 +138,6 @@ namespace Infinitum
             showDamageText((int)CombatTextPos.CurrentLevels, $"Level {level}", CombatText.DamagedFriendlyCrit, 120, true);
 
             Skill.AutoLevelUpSkills(Skills, ref level);
-            //Skill.AutoLevelUpSkills(skillsSets[setSelected], ref level);
-
 
             SoundEngine.PlaySound(SoundID.Chat);
 
@@ -194,9 +185,10 @@ namespace Infinitum
                     return;
                 }
                 CalcXPPerLevel();
-                loadSkills(tag);//save in dictionaries for future Sets
-                setSelected = "0";
-           
+                loadSkills(tag);
+
+                string? lastSet = tag.GetString("CurrentSet");
+                setSelected = string.IsNullOrEmpty(lastSet) ? "0" : lastSet;
                 recentChanged = true;
 
             }
@@ -234,8 +226,9 @@ namespace Infinitum
                 }
                 skillData.Add(entry.Key, set);
             }
-
+            tag.Add("CurrentSet",setSelected);
             tag.Add("SkillData", skillData);
+
             tag.Add("UI", playerSettings.SaveMyData());
 
 
@@ -439,7 +432,7 @@ namespace Infinitum
         }
         private void InitializeSkillsOfCurrentSet()
         {
-            if(!skillsSets.ContainsKey(setSelected))
+            if (!skillsSets.ContainsKey(setSelected))
                 skillsSets.Add(setSelected, new Skill[SkillEnums.GetNumberOfSkills]);
 
 
@@ -480,10 +473,24 @@ namespace Infinitum
             {
                 case (int)UIElementsEnum.SetsActions.ChangeSet:
                     //rework
-                    if(int.Parse(setSelected) + 1 == skillsSets.Count)
+                    if (int.Parse(setSelected) + 1 == skillsSets.Count)
                         setSelected = "0";
                     else
-                       setSelected = (int.Parse(setSelected)+ 1).ToString();
+                        setSelected = (int.Parse(setSelected) + 1).ToString();
+                    break;
+
+                case (int)UIElementsEnum.SetsActions.AddSet:
+                    skillsSets.Add(skillsSets.Count.ToString(), new Skill[SkillEnums.GetNumberOfSkills]);
+                    setSelected = (int.Parse(setSelected) + 1).ToString();
+                    InitializeSkillsOfCurrentSet();
+                    break;
+                case (int)UIElementsEnum.SetsActions.DeleteSet:
+
+                    int currentSet = int.Parse(setSelected);
+                    if (currentSet == 0) return;
+
+                    setSelected = (currentSet-1).ToString();
+                    skillsSets.Remove(currentSet.ToString());
                     break;
             }
             recentChanged = true;
