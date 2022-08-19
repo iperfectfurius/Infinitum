@@ -22,10 +22,11 @@ namespace Infinitum.UI
         public bool Visible;
         public Character_Data stats = null;
         private const float maxWidth = 610f;
-        private const float maxHeigth = 200f;
+        private const float maxHeigth = 222f;
         private UIButton reset;
         private UIButton activateStatsButton;
         private UIButton numbers;
+        private UIButton[] SetsButtons = new UIButton[Enum.GetNames(typeof(UIElementsEnum.ButtonsSets)).Length];
         UIText[] statsTexts = new UIText[6];
         private int[] skillTexts = new int[0];//Stats and cost
         UIList skillsElementsPanel = new();
@@ -77,7 +78,7 @@ namespace Infinitum.UI
 
                 marginTop += 20f;
             }
-
+            //refactor with 1 method?
             reset = new UIButton("Reset Skills", restartProgress);
             reset.Top.Set(marginTop, 0f);
             reset.Left.Set(marginLeft, 0f);
@@ -101,6 +102,39 @@ namespace Infinitum.UI
             activateStatsButton.Width.Set(180, 0);
             activateStatsButton.ChangeColor(Color.Pink);
             activateStatsButton.changeOnMouse = false;
+
+            UIButton buttonChangeSet = new UIButton("Change Set (0)", ApplySet);
+            buttonChangeSet.Top.Set(marginTop + 66, 0f);
+            buttonChangeSet.Left.Set(marginLeft, 0f);
+            buttonChangeSet.Height.Set(20f, 0);
+            buttonChangeSet.Width.Set(130, 0);
+            buttonChangeSet.ChangeColor(Color.Green);
+            buttonChangeSet.OwnStat = (int)UIElementsEnum.SetsActions.ChangeSet;
+            buttonChangeSet.changeOnMouse = false;
+
+            UIButton buttonAddSet = new UIButton("+", ApplySet);
+
+            buttonAddSet.Top.Set(marginTop + 66f, 0f);
+            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 10f, 0);
+            buttonAddSet.Height.Set(18f, 0);
+            buttonAddSet.Width.Set(18f, 0);
+            buttonAddSet.ChangeColor(Color.Green);
+            buttonAddSet.OwnStat = (int)UIElementsEnum.SetsActions.AddSet;
+            buttonAddSet.changeOnMouse = false;
+
+            UIButton buttonDelSet = new UIButton("-", ApplySet);
+
+            buttonDelSet.Top.Set(marginTop + 66f, 0f);
+            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + 32f, 0);
+            buttonDelSet.Height.Set(18f, 0);
+            buttonDelSet.Width.Set(18f, 0);
+            buttonDelSet.ChangeColor(Color.Green);
+            buttonDelSet.OwnStat = (int)UIElementsEnum.SetsActions.DeleteSet;
+            buttonDelSet.changeOnMouse = false;
+
+            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet] = buttonChangeSet;
+            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonAddSet] = buttonAddSet;
+            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonDeleteSet] = buttonDelSet;
 
             marginTop = 3;
             marginLeft = 0;
@@ -228,6 +262,9 @@ namespace Infinitum.UI
             InfinitumPanel.Append(activateStatsButton);
             InfinitumPanel.Append(numbers);
 
+            foreach (UIButton button in SetsButtons)
+                InfinitumPanel.Append(button);
+
             UIPanel skillsPanel = new();
             skillsPanel.Top.Set(0f, 0f);
             skillsPanel.Left.Set(210f, 0f);
@@ -319,9 +356,10 @@ namespace Infinitum.UI
         }
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
         {
-            stats.resetCurrentSkills();
+            stats.ResetCurrentSkills();
             SoundEngine.PlaySound(SoundID.Camera);
         }
+		
         private void activateStats(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.Activate = !stats.Activate;
@@ -335,6 +373,13 @@ namespace Infinitum.UI
             SoundEngine.PlaySound(SoundID.AchievementComplete);
 
         }
+		
+        private void ApplySet(UIMouseEvent evt, UIElement listeningElement)
+        {
+            stats.SetActions(((UIButton)listeningElement.Parent).OwnStat);
+            SoundEngine.PlaySound(SoundID.ChesterOpen);
+        }
+		
         private void UpdateAllStats()
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
@@ -345,6 +390,8 @@ namespace Infinitum.UI
             statsTexts[(int)statsOrder.AverageXP].SetText($"Average XP: {stats.getAvgXP():n2}");
             activateStatsButton.Text = stats.Activate ? "Disable Stats" : "Enable Stats";
             numbers.Text = stats.DisplayNumbers ? "Disable Numbers" : "Enable Numbers";
+
+            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet].Text = $"Change Set ({stats.SetSelected})";
 
             for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
             {

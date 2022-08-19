@@ -38,6 +38,7 @@ namespace Infinitum.Skills
         public int Type { get => type; set => type = value; }
         public bool AutomaticMode { get => automaticMode; set => automaticMode = value; }
         public int BaseCost { get => baseCost; set => baseCost = value; }
+        public int TotalSpend { get => baseCost * Level + ((int)(multiplierCost * baseCost) * level);}
 
         public Skill(int level)
         {
@@ -124,7 +125,7 @@ namespace Infinitum.Skills
 
         public virtual void ApplyStatToPlayer(out bool arg) { arg = false; }
 
-        public static bool AutoLevelUpSkills(ref Skill[] skills, ref int levels)
+        public static bool AutoLevelUpSkills(Skill[] skills, ref int levels)
         {
             //this need to wokr in recursive
             int minimumLevel = int.MaxValue;
@@ -152,6 +153,5 @@ namespace Infinitum.Skills
             return false;
 
         }
-
     }
 }
