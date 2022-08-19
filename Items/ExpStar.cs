@@ -1,17 +1,18 @@
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+
 
 namespace Infinitum.Items
 {
 	internal class ExpStar : ModItem
 	{
-		//public override string Texture => "Terraria/Item_12";
-		//private Infinitum infinitumMod = (Infinitum)ModLoader.GetMod("Infinitum");
+
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Star Exp");
-			Tooltip.SetDefault("What you expect?");
+			DisplayName.SetDefault("Star XP");
+			Tooltip.SetDefault("What you expect?(XP)");
 		}
 
 		public override void SetDefaults()
@@ -19,13 +20,13 @@ namespace Infinitum.Items
 			Item.maxStack = 999;
 			Item.width = 25;
 			Item.height = 25;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Lime;
 			Item.consumable = true;
-			Item.UseSound = SoundID.DD2_BallistaTowerShot;
+			Item.UseSound = SoundID.Item2;
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.autoReuse = true;
-			Item.useTime = 15;
-			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useAnimation = 10;
 			Item.reuseDelay = 0;
 			Item.useTurn = true;
 
@@ -37,9 +38,14 @@ namespace Infinitum.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			//Infinitum.PlayerModded.AddXp(Main.rand.Next(300000));
-			Character_Data.AddXp(Main.rand.Next(300000));
+			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
+				player.GetModPlayer<Character_Data>().AddXp(Main.rand.Next(30000));
 			return true;
+		}
+		public override void GrabRange(Player player, ref int grabRange)
+		{
+			grabRange += 35;
+			base.GrabRange(player, ref grabRange);
 		}
 	}
 }

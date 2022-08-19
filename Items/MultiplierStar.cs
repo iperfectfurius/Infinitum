@@ -2,32 +2,36 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Infinitum;
+using Terraria.Audio;
+using Infinitum.Items.Ores;
+
 namespace Infinitum.Items
 {
 	internal class MultiplierStar : ModItem
 	{
-		//private Infinitum infinitumMod = (Infinitum)ModLoader.GetMod("Infinitum");
-		//public override string Texture => "Terraria/Item_12";
+		public const int ExpertChanceFromNPCS = 175;
+		public const int NormalChanceFromNPCS = 250;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Star Multiplier EXP");
-			Tooltip.SetDefault("LOL");
+			DisplayName.SetDefault("Star Multiplier XP");
+			Tooltip.SetDefault("LOL +(2.5%) XP!");
 		}
 
 		public override void SetDefaults()
 		{
-			Item.maxStack = 999;
+			Item.maxStack = 99999;
 			Item.width = 25;
 			Item.height = 25;
-			Item.rare = 3;
+			Item.rare = ItemRarityID.Orange;
 			Item.consumable = true;
-			Item.UseSound = SoundID.DD2_BallistaTowerShot;
+			Item.UseSound = SoundID.Item129;
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.autoReuse = true;
-			Item.useTime = 15;
-			Item.useAnimation = 15;
+			Item.useTime = 1;
+			Item.useAnimation = 1;
 			Item.reuseDelay = 0;
 			Item.useTurn = true;
+			
 
 		}
 
@@ -37,16 +41,28 @@ namespace Infinitum.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			//Infinitum.PlayerModded.AddXpMultiplier(0.025f);
-			Character_Data.AddXpMultiplier(0.025f);
-			//Character_Data.ModPlayer(player);
-			//Character_Data modPlayer = Character_Data.Get(player);
+			if(Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
+				player.GetModPlayer<Character_Data>().AddXpMultiplier(0.025f);
 			
-			//modPlayer.AddXpMultiplier(0.025f);
-			
-			
-
 			return true;
 		}
-	}
+		public override void GrabRange(Player player, ref int grabRange)
+		{
+			grabRange += 55;
+			base.GrabRange(player, ref grabRange);
+		}
+        public override void AddRecipes()
+        {
+			Recipe recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<SanjacobosOre>(), 25);
+			recipe.Register();
+
+			recipe = CreateRecipe();
+			recipe.AddIngredient(ModContent.ItemType<SanjacobosBar>(), 6);
+			recipe.Register();
+
+			base.AddRecipes();
+        }
+		
+    }
 }
