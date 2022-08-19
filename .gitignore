@@ -1,7 +1,8 @@
 *.js
-.vs
+.vs/
 notes.txt
-/image-edits
+image-edits/
 *.png
 notes.txt
-obj
+obj/
+bin/
