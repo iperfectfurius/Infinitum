@@ -38,6 +38,7 @@ namespace Infinitum.Skills
         public int Type { get => type; set => type = value; }
         public bool AutomaticMode { get => automaticMode; set => automaticMode = value; }
         public int BaseCost { get => baseCost; set => baseCost = value; }
+        public int TotalSpend { get => baseCost * Level + ((int)(multiplierCost * baseCost) * level);}
 
         public Skill(int level)
         {
@@ -152,6 +153,7 @@ namespace Infinitum.Skills
             return false;
 
         }
+
 
     }
 }

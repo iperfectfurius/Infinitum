@@ -493,8 +493,16 @@ namespace Infinitum
                     skillsSets.Remove(currentSet.ToString());
                     break;
             }
+            RecalcLevel();
             recentChanged = true;
         }
+
+        private void RecalcLevel()
+        {
+            level = totalLevel;
+            foreach(Skill skill in Skills) level -= skill.TotalSpend;
+        }
+
         public override void ModifyCaughtFish(Item fish)
         {
             float xp = (((fish.rare * 5) + 1) * 3.5f + (fish.value / 500)) * fish.stack;
