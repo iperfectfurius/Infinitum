@@ -76,7 +76,7 @@ namespace Infinitum
 
         private void CalcXPPerLevel()
         {
-            expToLevel = BASE_EXP + (int)((totalLevel * BASE_EXP) * EXPPERLEVEL);
+            expToLevel = BASE_EXP + (int)((BASE_EXP * EXPPERLEVEL) * totalLevel);
         }
 
         public override void OnEnterWorld(Player currentPLayer)
