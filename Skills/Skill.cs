@@ -153,7 +153,5 @@ namespace Infinitum.Skills
             return false;
 
         }
-
-
     }
 }

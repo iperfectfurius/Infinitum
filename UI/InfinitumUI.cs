@@ -246,7 +246,6 @@ namespace Infinitum.UI
             skillsElementsPanel.SetPadding(0);
         }
 
-
         private void addUIElementsToPanel()
         {
             UIImageButton close = new(ModContent.Request<Texture2D>("Infinitum/UI/Textures/close"));
@@ -360,7 +359,7 @@ namespace Infinitum.UI
             stats.ResetCurrentSkills();
             SoundEngine.PlaySound(SoundID.Camera);
         }
-
+		
         private void activateStats(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.Activate = !stats.Activate;
@@ -374,11 +373,13 @@ namespace Infinitum.UI
             SoundEngine.PlaySound(SoundID.AchievementComplete);
 
         }
+		
         private void ApplySet(UIMouseEvent evt, UIElement listeningElement)
         {
             stats.SetActions(((UIButton)listeningElement.Parent).OwnStat);
             SoundEngine.PlaySound(SoundID.ChesterOpen);
         }
+		
         private void UpdateAllStats()
         {
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
@@ -389,6 +390,7 @@ namespace Infinitum.UI
             statsTexts[(int)statsOrder.AverageXP].SetText($"Average XP: {stats.getAvgXP():n2}");
             activateStatsButton.Text = stats.Activate ? "Disable Stats" : "Enable Stats";
             numbers.Text = stats.DisplayNumbers ? "Disable Numbers" : "Enable Numbers";
+
             SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet].Text = $"Change Set ({stats.SetSelected})";
 
             for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)

@@ -13,6 +13,7 @@ using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
+
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -49,7 +50,7 @@ namespace Infinitum
         private long totalNpcsKilled = 0;
         private bool activate = true;
         private bool displayNumbers = true;
-
+		
         private Dictionary<string, Skill[]> skillsSets = new Dictionary<string, Skill[]>();
         private string setSelected = "0";
         public float Exp { get => exp; }
@@ -63,6 +64,7 @@ namespace Infinitum
         public bool Activate { get => activate; set => activate = value; }
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
+
 
         internal Skill[]? Skills { get => skillsSets[setSelected]; set => skillsSets[setSelected] = value; }
         public string SetSelected { get => setSelected; set => setSelected = value; }
@@ -302,7 +304,6 @@ namespace Infinitum
                 Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(skill.GetInt("level"));
                 Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].AutomaticMode = skill.GetBool("automaticMode");
             }
-
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
@@ -324,9 +325,9 @@ namespace Infinitum
         {
             base.Unload();
         }
+		
         public bool ApplyStats(int skill, int apply)
         {
-
             if (Skills[skill].ApplyStat(apply, ref level))
             {
                 recentChanged = true;
@@ -347,7 +348,6 @@ namespace Infinitum
                 base.PostUpdateEquips();
                 return;
             }
-
 
             //sets
             foreach (Skill s in Skills)
@@ -402,11 +402,9 @@ namespace Infinitum
         }
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
-
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].ApplyStatToPlayer(out bool canConsumeAmmo);
 
             return canConsumeAmmo;
-
         }
 
         public static void ChatMessage(string text = "")
@@ -434,7 +432,6 @@ namespace Infinitum
         {
             if (!skillsSets.ContainsKey(setSelected))
                 skillsSets.Add(setSelected, new Skill[SkillEnums.GetNumberOfSkills]);
-
 
             Skills[(int)SkillEnums.SkillOrder.Defense] = new Defense(0);
             Skills[(int)SkillEnums.SkillOrder.LifeRegen] = new LifeRegen(0);
