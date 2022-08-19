@@ -483,7 +483,7 @@ namespace Infinitum
                     if(int.Parse(setSelected) + 1 == skillsSets.Count)
                         setSelected = "0";
                     else
-                       setSelected =  (int.Parse(setSelected)+ 1).ToString();
+                       setSelected = (int.Parse(setSelected)+ 1).ToString();
                     break;
             }
             recentChanged = true;
