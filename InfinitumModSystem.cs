@@ -27,6 +27,7 @@ namespace Infinitum
         private GameTime _lastUpdateUiGameTime;
         public static ModKeybind UIKey;
         public static ModKeybind NumbersDisplay;
+        public static ModKeybind ChangeSet;
         public override void Load()
         {
             // base.Load();
@@ -35,6 +36,8 @@ namespace Infinitum
             {
                 UIKey = KeybindLoader.RegisterKeybind(Mod, "Show UI", Keys.L);
                 NumbersDisplay = KeybindLoader.RegisterKeybind(Mod, "Hide Numbers", Keys.P);
+                ChangeSet = KeybindLoader.RegisterKeybind(Mod, "Change Set", Keys.C);
+
                 customUI = new UserInterface();
                 customUIBar = new UserInterface();
 

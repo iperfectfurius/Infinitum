@@ -115,7 +115,7 @@ namespace Infinitum.UI
             UIButton buttonAddSet = new UIButton("+", ApplySet);
 
             buttonAddSet.Top.Set(marginTop + 66f, 0f);
-            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 10f, 0);
+            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 12f, 0);
             buttonAddSet.Height.Set(18f, 0);
             buttonAddSet.Width.Set(18f, 0);
             buttonAddSet.ChangeColor(Color.Green);
@@ -125,7 +125,7 @@ namespace Infinitum.UI
             UIButton buttonDelSet = new UIButton("-", ApplySet);
 
             buttonDelSet.Top.Set(marginTop + 66f, 0f);
-            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + 32f, 0);
+            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + 40f, 0);
             buttonDelSet.Height.Set(18f, 0);
             buttonDelSet.Width.Set(18f, 0);
             buttonDelSet.ChangeColor(Color.Green);

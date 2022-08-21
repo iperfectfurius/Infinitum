@@ -29,7 +29,7 @@ namespace Infinitum
         private UISettings playerSettings = new();
         private bool recentChanged = false;
         private string lastHeldItem;
-        private List<float> avgXP = new List<float>() { 0 };
+        private List<float> avgXP = new List<float>() { 0 };// TODO: avg XP base on time
         public float getAvgXP() => (float)Queryable.Average(avgXP.AsQueryable());
         public enum CombatTextPos : int
         {
@@ -37,7 +37,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.78";//Only used in case need for all players in next update.
+        private string version = "0.78";// TODO: search for assembly version?
         private bool messageReset = false;
         private float exp = 0.0f;
         private int level = 0;
@@ -307,6 +307,7 @@ namespace Infinitum
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
+            
             if (InfinitumModSystem.UIKey.JustPressed)
             {
                 recentChanged = true;
@@ -316,6 +317,11 @@ namespace Infinitum
             {
                 displayNumbers = !displayNumbers;
                 CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red, displayNumbers ? "Numbers Activated!" : "Numbers Disabled!", true, false);
+            }
+            else if (InfinitumModSystem.ChangeSet.JustPressed)
+            {
+                SetActions((int)UIElementsEnum.SetsActions.ChangeSet);
+                CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red, $"Set {setSelected}", true, false);
             }
 
             base.ProcessTriggers(triggersSet);
