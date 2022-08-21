@@ -30,12 +30,14 @@ namespace Infinitum.Skills
         {
             EffectBuff -= Level;
         }
+        // TODO: Refactor all ApplyStat (Ammo Consumption)
         public override bool LevelUp(ref int Levels)
         {
             if (Levels > Cost)
             {
                 Levels -= Cost;
                 Level++;
+                TotalSpend += Cost;
                 CalcCost();
                 EffectBuff -= MultiplierEffect;
                 return true;
@@ -50,6 +52,7 @@ namespace Infinitum.Skills
                 CalcCost();
                 Levels += Cost;         
                 EffectBuff += MultiplierEffect;
+                TotalSpend -= Cost;
                 return true;
             }
             return false;
