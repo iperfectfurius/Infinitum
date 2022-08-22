@@ -389,6 +389,7 @@ namespace Infinitum.UI
             numbers.Text = stats.DisplayNumbers ? "Disable Numbers" : "Enable Numbers";
 
             SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet].Text = $"Change Set ({stats.SetSelected})";
+            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet].hoverText = $"Set {stats.SetSelected} of {stats.SetCount-1}";
 
             for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
             {
