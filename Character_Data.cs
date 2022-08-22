@@ -422,7 +422,7 @@ namespace Infinitum
             {
                 ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), c);
             }
-            else if (Main.netMode == NetmodeID.SinglePlayer)
+            else
             {
                 Main.NewText(text, c);
             }
