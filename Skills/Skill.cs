@@ -24,6 +24,7 @@ namespace Infinitum.Skills
         private int maxLevel;
         private bool automaticMode = false;
         private int type;
+        private int totalSpend;
 
         public string Name { get => name; set => name = value; }
         public string StatName { get => statName; set => statName = value; }
@@ -38,7 +39,7 @@ namespace Infinitum.Skills
         public int Type { get => type; set => type = value; }
         public bool AutomaticMode { get => automaticMode; set => automaticMode = value; }
         public int BaseCost { get => baseCost; set => baseCost = value; }
-        public int TotalSpend { get => baseCost * Level + ((int)(multiplierCost * baseCost) * level);}
+        public int TotalSpend { get => totalSpend; set => totalSpend = value; }
 
         public Skill(int level)
         {
@@ -75,6 +76,7 @@ namespace Infinitum.Skills
         {
             calculateBuff();
             CalcCost();
+            TotalPointsSpend();
         }
         public virtual void calculateBuff()
         {
@@ -87,6 +89,7 @@ namespace Infinitum.Skills
                 Levels -= cost;
                 level++;
                 effectBuff += multiplierEffect;
+                totalSpend += cost;
                 CalcCost();
                 return true;
             }
@@ -100,6 +103,7 @@ namespace Infinitum.Skills
                 CalcCost();
                 Levels += cost;             
                 effectBuff -= multiplierEffect;
+                totalSpend -= cost;
                 return true;
             }
             return false;
@@ -152,6 +156,15 @@ namespace Infinitum.Skills
             }
             return false;
 
+        }
+        private void TotalPointsSpend()
+        {
+            int cost = level * baseCost;
+            float costPerLevel = baseCost * multiplierCost;
+
+            for (int i = 1; i < level; i++) cost += (int)( i * costPerLevel);
+
+            totalSpend = cost;
         }
     }
 }

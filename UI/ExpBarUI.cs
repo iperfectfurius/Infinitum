@@ -96,10 +96,16 @@ namespace Infinitum.UI
 
             base.Update(gameTime);
         }
-
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            if (bar.IsMouseHovering)
+                Main.hoverItemName = $"{stats.Exp}/{stats.ExpToLevel} Exp";
+        }
         private void UpdateAllStats()
         {
             float percentExp = (float)stats.Exp / stats.ExpToLevel;
+
             ExpBar.Width.Set(((percentExp * maxWidth) / 100) * 100, 0);
             level.SetText($"{stats.Level}  ({(percentExp * 100):n1}%)");
             RecalculateChildren();

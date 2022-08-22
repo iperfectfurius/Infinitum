@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,9 @@ namespace Infinitum.UI
         private UIText _uiText;
 		private int ownStat;
 		private Color color;
+		public string hoverText;
 		public bool changeOnMouse = true;
+		
 
 		public static Color Green = new Color(18, 223, 52);
 		public static Color Red = new Color(229, 38, 0) * 0.7f;
@@ -82,6 +85,12 @@ namespace Infinitum.UI
 				base.MinHeight = _uiText.MinHeight; 
 			}
 		}
+		protected override void DrawSelf(SpriteBatch spriteBatch)
+		{
+			base.DrawSelf(spriteBatch);
+			if(base.IsMouseHovering && !string.IsNullOrEmpty(hoverText))
+				Main.hoverItemName = hoverText;
+		}
 		public void ChangeColor(Color c)
         {
 			this.color = c;
@@ -94,8 +103,7 @@ namespace Infinitum.UI
             if (auto)
             {
                 _uiText.SetText("✓");
-				ChangeColor(Green);
-			
+				ChangeColor(Green);				
 			}
             else
             {

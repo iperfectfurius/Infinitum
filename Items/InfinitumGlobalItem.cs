@@ -32,7 +32,7 @@ namespace Infinitum.Items
             }
 
         }
-        [Obsolete]
+        [Obsolete]// TODO: update item bags
         public override void OpenVanillaBag(string context, Player player, int arg)
         {
             player.QuickSpawnItem(player.GetSource_OpenItem(arg), ModContent.ItemType<MiniExpStar>(),1);
