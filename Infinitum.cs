@@ -43,7 +43,6 @@ namespace Infinitum
 
         public void ChatMessage(string text)
         {
-
             if (Main.netMode == NetmodeID.Server)
             {
                 ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text + " Desde Server"), Color.Red);
@@ -53,5 +52,6 @@ namespace Infinitum
                 Main.NewText(text + " Desde single");
             }
         }
+        
     }
 }

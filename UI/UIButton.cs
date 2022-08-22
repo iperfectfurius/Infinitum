@@ -94,8 +94,7 @@ namespace Infinitum.UI
             if (auto)
             {
                 _uiText.SetText("✓");
-				ChangeColor(Green);
-			
+				ChangeColor(Green);				
 			}
             else
             {

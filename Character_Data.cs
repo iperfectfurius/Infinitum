@@ -22,6 +22,7 @@ using Terraria.ModLoader.IO;
 
 namespace Infinitum
 {
+    //TODO: Use name for sets not numbers
     public class Character_Data : ModPlayer
     {
         private Player player = Main.CurrentPlayer;
@@ -50,8 +51,8 @@ namespace Infinitum
         private long totalNpcsKilled = 0;
         private bool activate = true;
         private bool displayNumbers = true;
-		
-        private Dictionary<string, Skill[]> skillsSets = new Dictionary<string, Skill[]>();
+
+        private Dictionary<string, Skill[]> skillsSets = new Dictionary<string, Skill[]>(); 
         private string setSelected = "0";
         public float Exp { get => exp; }
         public int Level { get => level; }
@@ -228,7 +229,7 @@ namespace Infinitum
                 }
                 skillData.Add(entry.Key, set);
             }
-            tag.Add("CurrentSet",setSelected);
+            tag.Add("CurrentSet", setSelected);
             tag.Add("SkillData", skillData);
 
             tag.Add("UI", playerSettings.SaveMyData());
@@ -307,7 +308,7 @@ namespace Infinitum
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
-            
+
             if (InfinitumModSystem.UIKey.JustPressed)
             {
                 recentChanged = true;
@@ -320,8 +321,8 @@ namespace Infinitum
             }
             else if (InfinitumModSystem.ChangeSet.JustPressed)
             {
-                SetActions((int)UIElementsEnum.SetsActions.ChangeSet);
-                CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red, $"Set {setSelected}", true, false);
+                if (SetActions((int)UIElementsEnum.SetsActions.ChangeSet)) CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red, $"Set {setSelected}", true, false);
+
             }
 
             base.ProcessTriggers(triggersSet);
@@ -331,7 +332,7 @@ namespace Infinitum
         {
             base.Unload();
         }
-		
+
         public bool ApplyStats(int skill, int apply)
         {
             if (Skills[skill].ApplyStat(apply, ref level))
@@ -412,16 +413,15 @@ namespace Infinitum
 
             return canConsumeAmmo;
         }
-
-        public static void ChatMessage(string text = "")
+        public void ChatMessage(string text, Color c)
         {
             if (Main.netMode == NetmodeID.Server)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text + " Desde Server"), Color.Red);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), c);
             }
-            else
+            else if (Main.netMode == NetmodeID.SinglePlayer)
             {
-                Main.NewText(text + " Desde single");
+                Main.NewText(text, c);
             }
         }
 
@@ -470,44 +470,75 @@ namespace Infinitum
             setSelected = "0";
         }
 
-        public void SetActions(int action)
+        public bool SetActions(int action)
         {
             switch (action)
             {
                 case (int)UIElementsEnum.SetsActions.ChangeSet:
                     //rework
+                    if (skillsSets.Count == 1)
+                    {
+                        ChatMessage("Infinitum: Only one set is created!", Color.Red);
+                        return false;
+                    }
+
                     if (int.Parse(setSelected) + 1 == skillsSets.Count)
                         setSelected = "0";
                     else
                         setSelected = (int.Parse(setSelected) + 1).ToString();
+
+                    SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    ChatMessage($"Infinitum: Set {setSelected}", Color.Green);
                     break;
 
+
                 case (int)UIElementsEnum.SetsActions.AddSet:
-                    skillsSets.Add(skillsSets.Count.ToString(), new Skill[SkillEnums.GetNumberOfSkills]);
-                    setSelected = (int.Parse(setSelected) + 1).ToString();
+                    int setsCount = skillsSets.Count;
+                    skillsSets.Add(setsCount.ToString(), new Skill[SkillEnums.GetNumberOfSkills]);
+                    setSelected = setsCount.ToString();
                     InitializeSkillsOfCurrentSet();
+                    SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    ChatMessage($"Infinitum: New Set {setSelected}", Color.Green);
                     break;
                 case (int)UIElementsEnum.SetsActions.DeleteSet:
 
                     int currentSet = int.Parse(setSelected);
-                    if (currentSet == 0) return;
+                    Dictionary<string, Skill[]> newSets = new Dictionary<string, Skill[]>();
+                    if (currentSet == 0)
+                    {
+                        ChatMessage("Infinitum: Set 0 cannot be deleted!", Color.Red);
+                        return false;
+                    }
 
-                    setSelected = (currentSet-1).ToString();
+                    setSelected = (currentSet - 1).ToString();
                     skillsSets.Remove(currentSet.ToString());
+
+                    ChatMessage($"Infinitum: Set {setSelected} replaced with {int.Parse(setSelected) + 1}", Color.Green);
+
+                    int iterator = 0;
+                    foreach (KeyValuePair<string, Skill[]> entry in skillsSets)
+                    {
+                        newSets.Add(iterator.ToString(), entry.Value);
+                        iterator++;
+                    }
+                    skillsSets = newSets;
+                    SoundEngine.PlaySound(SoundID.AchievementComplete);
                     break;
             }
             RecalcLevel();
             recentChanged = true;
+            return true;
         }
 
         private void RecalcLevel()
         {
             level = totalLevel;
-            foreach(Skill skill in Skills) level -= skill.TotalSpend;
+            foreach (Skill skill in Skills) level -= skill.TotalSpend;
         }
 
         public override void ModifyCaughtFish(Item fish)
         {
+            // TODO: Add stars to pool fishing
             float xp = (((fish.rare * 5) + 1) * 3.5f + (fish.value / 500)) * fish.stack;
 
             if (Main.netMode == NetmodeID.SinglePlayer)
@@ -522,7 +553,6 @@ namespace Infinitum
                     myPacket.Send();
                 });
             }
-
 
             base.ModifyCaughtFish(fish);
         }

@@ -107,7 +107,7 @@ namespace Infinitum.UI
             buttonChangeSet.Top.Set(marginTop + 66, 0f);
             buttonChangeSet.Left.Set(marginLeft, 0f);
             buttonChangeSet.Height.Set(20f, 0);
-            buttonChangeSet.Width.Set(130, 0);
+            buttonChangeSet.Width.Set(140, 0);
             buttonChangeSet.ChangeColor(Color.Green);
             buttonChangeSet.OwnStat = (int)UIElementsEnum.SetsActions.ChangeSet;
             buttonChangeSet.changeOnMouse = false;
@@ -115,7 +115,7 @@ namespace Infinitum.UI
             UIButton buttonAddSet = new UIButton("+", ApplySet);
 
             buttonAddSet.Top.Set(marginTop + 66f, 0f);
-            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 12f, 0);
+            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 16f, 0);
             buttonAddSet.Height.Set(18f, 0);
             buttonAddSet.Width.Set(18f, 0);
             buttonAddSet.ChangeColor(Color.Green);
@@ -341,12 +341,12 @@ namespace Infinitum.UI
                     break;
                 case "×":
                     stats.Skills[me.OwnStat].AutomaticMode = true;
-                    me.ChangeBackgroundFromValue(true);
+                    stats.RecentChanged = true;
                     SoundEngine.PlaySound(SoundID.AchievementComplete);
                     break;
                 case "✓":
                     stats.Skills[me.OwnStat].AutomaticMode = false;
-                    me.ChangeBackgroundFromValue(false);
+                    stats.RecentChanged = true;
                     SoundEngine.PlaySound(SoundID.AchievementComplete);
                     break;
                 default:
@@ -398,12 +398,10 @@ namespace Infinitum.UI
 
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i])).SetText($"{stats.Skills[i].DisplayName}: {stats.Skills[i].GetStatText()}");
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + SkillEnums.GetNumberOfSkills])).SetText($"{stats.Skills[i].Cost}");
+                UIButton xd = ((UIButton)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + (SkillEnums.GetNumberOfSkills * 2)]));
                 ((UIButton)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + (SkillEnums.GetNumberOfSkills * 2)])).ChangeBackgroundFromValue(stats.Skills[i].AutomaticMode);
-                // TODO: First load refresh color of automatic button.
+                // TODO: First load refresh text of automatic button. (Bug tmodloader?)
             }
-
-
-
             stats.RecentChanged = false;
         }
 
