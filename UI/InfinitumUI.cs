@@ -75,9 +75,43 @@ namespace Infinitum.UI
                 text.Left.Set(marginLeft, 0f);
                 statsTexts[i] = text;
 
-
                 marginTop += 20f;
             }
+
+            UIButton buttonChangeSet = new UIButton("Change Set (0)", ApplySet);
+            buttonChangeSet.Top.Set(marginTop, 0f);
+            buttonChangeSet.Left.Set(marginLeft, 0f);
+            buttonChangeSet.Height.Set(20f, 0);
+            buttonChangeSet.Width.Set(135, 0);
+            buttonChangeSet.ChangeColor(Color.Green);
+            buttonChangeSet.OwnStat = (int)UIElementsEnum.SetsActions.ChangeSet;
+            buttonChangeSet.changeOnMouse = false;
+
+            UIButton buttonAddSet = new UIButton("+", ApplySet);
+
+            buttonAddSet.Top.Set(marginTop, 0f);
+            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 12f, 0);
+            buttonAddSet.Height.Set(18f, 0);
+            buttonAddSet.Width.Set(18f, 0);
+            buttonAddSet.ChangeColor(Color.Green);
+            buttonAddSet.OwnStat = (int)UIElementsEnum.SetsActions.AddSet;
+            buttonAddSet.changeOnMouse = false;
+
+            UIButton buttonDelSet = new UIButton("-", ApplySet);
+
+            buttonDelSet.Top.Set(marginTop, 0f);
+            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + 34f, 0);
+            buttonDelSet.Height.Set(18f, 0);
+            buttonDelSet.Width.Set(18f, 0);
+            buttonDelSet.ChangeColor(Color.Red);
+            buttonDelSet.OwnStat = (int)UIElementsEnum.SetsActions.DeleteSet;
+            buttonDelSet.changeOnMouse = false;
+
+            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet] = buttonChangeSet;
+            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonAddSet] = buttonAddSet;
+            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonDeleteSet] = buttonDelSet;
+
+            marginTop += 22f;
             //refactor with 1 method?
             reset = new UIButton("Reset Skills", restartProgress);
             reset.Top.Set(marginTop, 0f);
@@ -102,39 +136,6 @@ namespace Infinitum.UI
             activateStatsButton.Width.Set(180, 0);
             activateStatsButton.ChangeColor(Color.Pink);
             activateStatsButton.changeOnMouse = false;
-
-            UIButton buttonChangeSet = new UIButton("Change Set (0)", ApplySet);
-            buttonChangeSet.Top.Set(marginTop + 66, 0f);
-            buttonChangeSet.Left.Set(marginLeft, 0f);
-            buttonChangeSet.Height.Set(20f, 0);
-            buttonChangeSet.Width.Set(140, 0);
-            buttonChangeSet.ChangeColor(Color.Green);
-            buttonChangeSet.OwnStat = (int)UIElementsEnum.SetsActions.ChangeSet;
-            buttonChangeSet.changeOnMouse = false;
-
-            UIButton buttonAddSet = new UIButton("+", ApplySet);
-
-            buttonAddSet.Top.Set(marginTop + 66f, 0f);
-            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 16f, 0);
-            buttonAddSet.Height.Set(18f, 0);
-            buttonAddSet.Width.Set(18f, 0);
-            buttonAddSet.ChangeColor(Color.Green);
-            buttonAddSet.OwnStat = (int)UIElementsEnum.SetsActions.AddSet;
-            buttonAddSet.changeOnMouse = false;
-
-            UIButton buttonDelSet = new UIButton("-", ApplySet);
-
-            buttonDelSet.Top.Set(marginTop + 66f, 0f);
-            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + 40f, 0);
-            buttonDelSet.Height.Set(18f, 0);
-            buttonDelSet.Width.Set(18f, 0);
-            buttonDelSet.ChangeColor(Color.Green);
-            buttonDelSet.OwnStat = (int)UIElementsEnum.SetsActions.DeleteSet;
-            buttonDelSet.changeOnMouse = false;
-
-            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet] = buttonChangeSet;
-            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonAddSet] = buttonAddSet;
-            SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonDeleteSet] = buttonDelSet;
 
             marginTop = 3;
             marginLeft = 0;
@@ -182,8 +183,6 @@ namespace Infinitum.UI
                 sumStat.OwnStat = i;
                 sumStat.OverflowHidden = false;
 
-
-
                 subStat.Top.Set(marginTop, 0f);
                 subStat.Left.Set(marginLeft + 25, 0f);
                 subStat.Height.Set(18f, 0);
@@ -198,8 +197,6 @@ namespace Infinitum.UI
                 allStat.Width.Set(30f, 0);
                 allStat.OwnStat = i;
                 allStat.OverflowHidden = false;
-
-
 
                 cost.Top.Set(marginTop, 0f);
                 cost.Left.Set(marginLeft + 110, 0f);
@@ -255,15 +252,15 @@ namespace Infinitum.UI
             close.Width.Set(22, 0);
             close.OnClick += (e, i) => Visible = false;
 
+            foreach (UIButton button in SetsButtons)
+                InfinitumPanel.Append(button);
+
             foreach (UIText text in statsTexts)
                 InfinitumPanel.Append(text);
 
             InfinitumPanel.Append(reset);
             InfinitumPanel.Append(activateStatsButton);
             InfinitumPanel.Append(numbers);
-
-            foreach (UIButton button in SetsButtons)
-                InfinitumPanel.Append(button);
 
             UIPanel skillsPanel = new();
             skillsPanel.Top.Set(0f, 0f);

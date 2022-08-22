@@ -23,6 +23,8 @@ using Terraria.ModLoader.IO;
 namespace Infinitum
 {
     //TODO: Use name for sets not numbers
+    //TODO: Report what set changed have spended
+    //TODO: Check automatic skills when change set
     public class Character_Data : ModPlayer
     {
         private Player player = Main.CurrentPlayer;
