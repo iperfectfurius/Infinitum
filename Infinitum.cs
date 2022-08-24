@@ -22,7 +22,7 @@ namespace Infinitum
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
-        {//Rework with ids and stuff
+        {//TODO: Rework with ids and stuff
             if (Main.netMode == NetmodeID.Server)
             {
                 ModPacket myPacket = myMod.GetPacket();
