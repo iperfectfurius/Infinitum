@@ -105,6 +105,7 @@ namespace Infinitum
             if (Main.netMode == NetmodeID.Server || !displayNumbers) return;
 
             int i = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
+            
             if (i < 100)//haha meme (out of index???)
                 Main.combatText[i].lifeTime = duration;
 
@@ -347,6 +348,11 @@ namespace Infinitum
         }
         public override void PostUpdateEquips()
         {
+            if(Main.netMode == NetmodeID.Server)
+            {             
+                base.PostUpdateEquips();
+                return;
+            }
             if (player.HeldItem.Name != lastHeldItem)
             {
                 lastHeldItem = player.HeldItem.Name;

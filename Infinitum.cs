@@ -18,9 +18,9 @@ namespace Infinitum
         public override void Load()
         {
             base.Load();
-            instance = this;
-            
+            instance = this;          
         }
+
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {//Rework with ids and stuff
             if (Main.netMode == NetmodeID.Server)
@@ -33,9 +33,8 @@ namespace Infinitum
                 AddXPToPlayer(reader.ReadSingle());
 
             base.HandlePacket(reader, whoAmI);
-        
-
         }
+
         public void AddXPToPlayer(float xp)
         {//test myplayer
             Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
