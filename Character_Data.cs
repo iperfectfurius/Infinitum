@@ -54,7 +54,7 @@ namespace Infinitum
         private bool activate = true;
         private bool displayNumbers = true;
 
-        private Dictionary<string, Skill[]> skillsSets = new Dictionary<string, Skill[]>(); 
+        private Dictionary<string, Skill[]> skillsSets = new Dictionary<string, Skill[]>();
         private string setSelected = "0";
         public float Exp { get => exp; }
         public int Level { get => level; }
@@ -105,6 +105,7 @@ namespace Infinitum
             if (Main.netMode == NetmodeID.Server || !displayNumbers) return;
 
             int i = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + yPos), 25, 25), c, text, dramatic, dot);
+
             if (i < 100)//haha meme (out of index???)
                 Main.combatText[i].lifeTime = duration;
 
@@ -347,6 +348,13 @@ namespace Infinitum
         }
         public override void PostUpdateEquips()
         {
+            // TODO: When in multiplayer a default character_data call this???
+
+            if (Main.netMode == NetmodeID.Server || SetCount == 0)
+            {
+                base.PostUpdateEquips();
+                return;
+            }
             if (player.HeldItem.Name != lastHeldItem)
             {
                 lastHeldItem = player.HeldItem.Name;
@@ -368,7 +376,6 @@ namespace Infinitum
 
             getAdditionalsExp();
             base.PostUpdateEquips();
-
         }
 
         private void getAdditionalsExp()
@@ -422,7 +429,7 @@ namespace Infinitum
             {
                 ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), c);
             }
-            else if (Main.netMode == NetmodeID.SinglePlayer)
+            else
             {
                 Main.NewText(text, c);
             }
