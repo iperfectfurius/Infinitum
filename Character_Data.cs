@@ -18,6 +18,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 using Terraria.ModLoader.IO;
 
 namespace Infinitum
@@ -169,7 +170,6 @@ namespace Infinitum
 
         public override void LoadData(TagCompound tag)
         {
-
             try
             {
                 //probably save all character_data is more efficient?
@@ -194,6 +194,7 @@ namespace Infinitum
                 CalcXPPerLevel();
                 loadSkills(tag);
 
+                
                 string? lastSet = tag.GetString("CurrentSet");
                 setSelected = string.IsNullOrEmpty(lastSet) ? "0" : lastSet;
                 recentChanged = true;
@@ -348,7 +349,7 @@ namespace Infinitum
         }
         public override void PostUpdateEquips()
         {
-            // TODO: When in multiplayer a default character_data call this???
+            // TODO: When in multiplayer a default character_data with no loads call this???
 
             if (Main.netMode == NetmodeID.Server || SetCount == 0)
             {
@@ -498,7 +499,7 @@ namespace Infinitum
                         setSelected = (int.Parse(setSelected) + 1).ToString();
 
                     SoundEngine.PlaySound(SoundID.AchievementComplete);
-                    ChatMessage($"Infinitum: Set {setSelected}", Color.Green);
+                    ChatMessage($"Infinitum: Set {setSelected}({Skill.GetBuffs(Skills)})", Color.Green);
                     break;
 
 
