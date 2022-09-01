@@ -9,7 +9,7 @@
         {
         }
         // TODO: LifeSteal based on damage done not raw.
-        public override void ApplyStatToPlayer(NPC target,int damage)
+        public override void ApplyStatToPlayer(dynamic obj)
         {          
             if(Level==0) return;
             if(difficulty == 0)
@@ -30,9 +30,9 @@
                         break;
                 }
             }
-            int finalDamage = (int)(damage - (target.defense * difficulty));
+            int damageAfterArmor = (int)(obj.damage - (obj.defense * difficulty));
             
-            GetLifeSteal(finalDamage);
+            GetLifeSteal(damageAfterArmor);
         }
         public override void OnInitialize()
         {
@@ -49,8 +49,7 @@
         {
             int toHeal = (int)(damage * (float)EffectBuff);
             stackedLifeSteal += (damage * (float)EffectBuff) - (float)Math.Truncate(damage * (float)EffectBuff);
-            float temp = (damage * (float)EffectBuff);
-            //Infinitum.instance.GameMessage(temp.ToString());
+
             //rework
             if (stackedLifeSteal > 1)
             {

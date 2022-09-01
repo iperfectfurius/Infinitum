@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -401,25 +402,21 @@ namespace Infinitum
         }
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
-            int damage2 = damage;
-
-            //dynamic hit = new object();
-            //hit.damage = damage;
+            dynamic hit = new { damage = damage, defense = target.defense };
 
             if (activate && target.netID != 488)
-                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(target,damage2);
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
 
             base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
-
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            int damage2 = damage;
-            if (activate && target.netID != 488)
-                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(target,damage2);
-            base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
+            dynamic hit = new { damage = damage, defense = target.defense };
 
+            if (activate && target.netID != 488)
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
+            base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
         }
         
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
@@ -447,7 +444,6 @@ namespace Infinitum
             CalcXPPerLevel();
 
             InitializeSkillsOfCurrentSet();
-
         }
         private void InitializeSkillsOfCurrentSet()
         {
