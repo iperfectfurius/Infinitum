@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -18,12 +19,12 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 using Terraria.ModLoader.IO;
 
 namespace Infinitum
 {
     //TODO: Use name for sets not numbers
-    //TODO: Report what set changed have spended
     //TODO: Check automatic skills when change set
     public class Character_Data : ModPlayer
     {
@@ -169,7 +170,6 @@ namespace Infinitum
 
         public override void LoadData(TagCompound tag)
         {
-
             try
             {
                 //probably save all character_data is more efficient?
@@ -194,6 +194,7 @@ namespace Infinitum
                 CalcXPPerLevel();
                 loadSkills(tag);
 
+                
                 string? lastSet = tag.GetString("CurrentSet");
                 setSelected = string.IsNullOrEmpty(lastSet) ? "0" : lastSet;
                 recentChanged = true;
@@ -348,7 +349,7 @@ namespace Infinitum
         }
         public override void PostUpdateEquips()
         {
-            // TODO: When in multiplayer a default character_data call this???
+            // TODO: When in multiplayer a default character_data with no loads call this???
 
             if (Main.netMode == NetmodeID.Server || SetCount == 0)
             {
@@ -401,22 +402,23 @@ namespace Infinitum
         }
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
-            int damage2 = damage;
+            dynamic hit = new { damage = damage, defense = target.defense };
+
             if (activate && target.netID != 488)
-                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(damage2);
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
 
             base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
-
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            int damage2 = damage;
-            if (activate && target.netID != 488)
-                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(damage2);
-            base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
+            dynamic hit = new { damage = damage, defense = target.defense };
 
+            if (activate && target.netID != 488)
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
+            base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
         }
+        
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].ApplyStatToPlayer(out bool canConsumeAmmo);
@@ -442,7 +444,6 @@ namespace Infinitum
             CalcXPPerLevel();
 
             InitializeSkillsOfCurrentSet();
-
         }
         private void InitializeSkillsOfCurrentSet()
         {
@@ -498,7 +499,7 @@ namespace Infinitum
                         setSelected = (int.Parse(setSelected) + 1).ToString();
 
                     SoundEngine.PlaySound(SoundID.AchievementComplete);
-                    ChatMessage($"Infinitum: Set {setSelected}", Color.Green);
+                    ChatMessage($"Infinitum: Set {setSelected}({Skill.GetBuffs(Skills)})", Color.Green);
                     break;
 
 

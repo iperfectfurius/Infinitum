@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Infinitum.Skills
 {
-    internal abstract class Skill 
+    internal abstract class Skill
     {
 
         public static Player player;
@@ -51,6 +51,48 @@ namespace Infinitum.Skills
 
             Recalculate();
         }
+        public static bool AutoLevelUpSkills(Skill[] skills, ref int levels)
+        {
+            //this need to wokr in recursive
+            int minimumLevel = int.MaxValue;
+            int skillId = skills.Length + 1;
+
+            for (int i = 0; i < skills.Length; i++)
+            {
+                if (!skills[i].automaticMode) continue;
+                if (skills[i].level < minimumLevel)
+                {
+                    minimumLevel = skills[i].level;
+                    skillId = i;
+                }
+            }
+
+            if (skillId > skills.Length) return false;
+
+            //while here?
+            if (skills[skillId].ApplyStat((int)SkillEnums.Actions.LevelUp, ref levels))
+            {
+                player.GetModPlayer<Character_Data>().showDamageText(0, $"{skills[skillId].displayName} {skills[skillId].GetStatText()}", Color.Purple, 120, true, false);
+
+                return true;
+            }
+            return false;
+
+        }
+        public static string GetBuffs(Skill[] skills)
+        {
+            string setBuffs = "";
+
+            foreach (Skill skill in skills)
+            {
+                if (skill.Level == 0) continue;
+
+                setBuffs += $"{skill.displayName} {skill.GetStatText()}, ";
+            }
+
+            return setBuffs.Length > 0 ? setBuffs.Remove(setBuffs.Length - 2) : "";
+        }
+
         public abstract void OnInitialize();
         public bool ApplyStat(int action, ref int Levels)
         {
@@ -101,7 +143,7 @@ namespace Infinitum.Skills
             {
                 level--;
                 CalcCost();
-                Levels += cost;             
+                Levels += cost;
                 effectBuff -= multiplierEffect;
                 totalSpend -= cost;
                 return true;
@@ -112,7 +154,7 @@ namespace Infinitum.Skills
         {
             bool canLevelUp = Levels > cost;
 
-            while (LevelUp(ref Levels));
+            while (LevelUp(ref Levels)) ;
 
             return canLevelUp;
         }
@@ -125,44 +167,16 @@ namespace Infinitum.Skills
             cost = (int)(baseCost + (baseCost * (multiplierCost)) * level);
         }
         public virtual void ApplyStatToPlayer() { return; }
-        public virtual void ApplyStatToPlayer(int arg) { return; }
+        public virtual void ApplyStatToPlayer(dynamic obj) { return; }
 
         public virtual void ApplyStatToPlayer(out bool arg) { arg = false; }
 
-        public static bool AutoLevelUpSkills(Skill[] skills, ref int levels)
-        {
-            //this need to wokr in recursive
-            int minimumLevel = int.MaxValue;
-            int skillId = skills.Length + 1;
-
-            for (int i = 0; i < skills.Length; i++)
-            {
-                if (!skills[i].automaticMode) continue;
-                if (skills[i].level < minimumLevel)
-                {
-                    minimumLevel = skills[i].level;
-                    skillId = i;
-                }
-            }
-
-            if (skillId > skills.Length) return false;
-
-            //while here?
-            if (skills[skillId].ApplyStat((int)SkillEnums.Actions.LevelUp, ref levels))
-            {
-                player.GetModPlayer<Character_Data>().showDamageText(0, $"{skills[skillId].displayName} {skills[skillId].GetStatText()}", Color.Purple, 120, true, false);
-
-                return true;
-            }
-            return false;
-
-        }
         private void TotalPointsSpend()
         {
             int cost = level * baseCost;
             float costPerLevel = baseCost * multiplierCost;
 
-            for (int i = 1; i < level; i++) cost += (int)( i * costPerLevel);
+            for (int i = 1; i < level; i++) cost += (int)(i * costPerLevel);
 
             totalSpend = cost;
         }

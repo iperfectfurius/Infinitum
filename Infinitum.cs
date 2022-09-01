@@ -51,6 +51,17 @@ namespace Infinitum
                 Main.NewText(text + " Desde single");
             }
         }
-        
+        public void GameMessage(string text)
+        {
+            if (Main.netMode == NetmodeID.Server)
+            {
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
+            }
+            else if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                Main.NewText(text);
+            }
+        }
+
     }
 }

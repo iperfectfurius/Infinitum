@@ -4,13 +4,35 @@
     {
         private bool activate;//temp
         private float stackedLifeSteal = 0;
+        private float difficulty = 0;
         public LifeSteal(int level) : base(level)
         {
         }
         // TODO: LifeSteal based on damage done not raw.
-        public override void ApplyStatToPlayer(int damage)
-        {
-            GetLifeSteal(damage);
+        public override void ApplyStatToPlayer(dynamic obj)
+        {          
+            if(Level==0) return;
+            if(difficulty == 0)
+            {
+                switch (Main.GameMode)
+                {
+                    case 0:
+                        difficulty = 0.5f;
+                        break;
+                    case 1:
+                        difficulty = 0.75f;
+                        break;
+                    case 2:
+                        difficulty = 1f;
+                        break;
+                    default:
+                        difficulty = 0.5f;
+                        break;
+                }
+            }
+            int damageAfterArmor = (int)(obj.damage - (obj.defense * difficulty));
+            
+            GetLifeSteal(damageAfterArmor);
         }
         public override void OnInitialize()
         {
