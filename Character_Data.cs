@@ -24,7 +24,6 @@ using Terraria.ModLoader.IO;
 namespace Infinitum
 {
     //TODO: Use name for sets not numbers
-    //TODO: Report what set changed have spended
     //TODO: Check automatic skills when change set
     public class Character_Data : ModPlayer
     {
@@ -403,8 +402,12 @@ namespace Infinitum
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
             int damage2 = damage;
+
+            //dynamic hit = new object();
+            //hit.damage = damage;
+
             if (activate && target.netID != 488)
-                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(damage2);
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(target,damage2);
 
             base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
 
@@ -414,10 +417,11 @@ namespace Infinitum
         {
             int damage2 = damage;
             if (activate && target.netID != 488)
-                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(damage2);
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(target,damage2);
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
 
         }
+        
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].ApplyStatToPlayer(out bool canConsumeAmmo);

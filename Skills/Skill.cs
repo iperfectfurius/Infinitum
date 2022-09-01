@@ -167,7 +167,7 @@ namespace Infinitum.Skills
             cost = (int)(baseCost + (baseCost * (multiplierCost)) * level);
         }
         public virtual void ApplyStatToPlayer() { return; }
-        public virtual void ApplyStatToPlayer(int arg) { return; }
+        public virtual void ApplyStatToPlayer(NPC target,int arg) { return; }
 
         public virtual void ApplyStatToPlayer(out bool arg) { arg = false; }
 
