@@ -203,19 +203,19 @@ namespace Infinitum.WorldBuilding
                     xp = 37.5f;
                     break;
                 case (int)TileIDEnum.Palladium:
-                    xp = 40f;
+                    xp = 37.5f;
                     break;
                 case (int)TileIDEnum.Mythril:
                     xp = 42.5f;
                     break;
                 case (int)TileIDEnum.Orichalcum:
-                    xp = 45f;
+                    xp = 42.5f;
                     break;
                 case (int)TileIDEnum.Adamantite:
                     xp = 47.5f;
                     break;
                 case (int)TileIDEnum.Titanium:
-                    xp = 50f;
+                    xp = 47.5f;
                     break;
                 case (int)TileIDEnum.Chlorophyte:
                     xp = 52.5f;
