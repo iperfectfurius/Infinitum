@@ -1,6 +1,5 @@
 *.js
 .vs
-.md
 notes.txt
 image-edits
 *.png
@@ -8,3 +7,5 @@ notes.txt
 obj
 bin
 logs
+*.md
+wiki
