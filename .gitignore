@@ -1,5 +1,6 @@
 *.js
 .vs
+.md
 notes.txt
 image-edits
 *.png
