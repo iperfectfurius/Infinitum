@@ -29,7 +29,7 @@ namespace Infinitum.Skills
             Cost = 250;
             EffectBuff = 0;
             MultiplierEffect = 1;
-            Type = (int)SkillEnums.Type.PostUpdateEquips;
+            Type = SkillEnums.Type.PostUpdateEquips;
         }
         public override string GetStatText()
         {
