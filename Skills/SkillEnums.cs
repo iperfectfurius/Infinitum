@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Infinitum.Skills
 {
-    internal class SkillEnums
+    public class SkillEnums
     {
         public static int GetNumberOfSkills = Enum.GetNames(typeof(SkillOrder)).Length;
         public static string[] FullSkillNames = new string[GetNumberOfSkills];
-        public enum Actions : ushort
+        public enum Actions
         {
-            LevelUp = 0,
-            LevelDown = 1,
-            LevelUpAll = 2
+            LevelUp,
+            LevelDown,
+            LevelUpAll
         }
         public enum SkillOrder : ushort
         {
@@ -33,11 +33,11 @@ namespace Infinitum.Skills
             MinionCapacity = 12,
             PickaxeSpeed = 13
         }     
-        public enum Type : ushort
+        public enum Type
         {
-            PostUpdateEquips = 0,
-            ModifyHitNPC = 1,
-            CanConsumeAmmo = 2
-        }     
+            PostUpdateEquips,
+            ModifyHitNPC,
+            CanConsumeAmmo
+        }
     }
 }

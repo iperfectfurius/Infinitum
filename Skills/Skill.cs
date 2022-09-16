@@ -23,7 +23,7 @@ namespace Infinitum.Skills
         private float multiplierCost;
         private int maxLevel;
         private bool automaticMode = false;
-        private int type;
+        private SkillEnums.Type type;
         private int totalSpend;
 
         public string Name { get => name; set => name = value; }
@@ -36,10 +36,11 @@ namespace Infinitum.Skills
         public string DisplayName { get => displayName; set => displayName = value; }
         public float MultiplierEffect { get => multiplierEffect; set => multiplierEffect = value; }
         public char PreText { get => preText; set => preText = value; }
-        public int Type { get => type; set => type = value; }
+        
         public bool AutomaticMode { get => automaticMode; set => automaticMode = value; }
         public int BaseCost { get => baseCost; set => baseCost = value; }
         public int TotalSpend { get => totalSpend; set => totalSpend = value; }
+        public SkillEnums.Type Type { get => type; set => type = value; }
 
         public Skill(int level)
         {

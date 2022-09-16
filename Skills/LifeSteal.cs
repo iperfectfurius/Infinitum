@@ -43,7 +43,7 @@
             MultiplierCost = 0.1f;
             EffectBuff = 0;
             MultiplierEffect = 0.00025f;
-            Type = (int)SkillEnums.Type.ModifyHitNPC;
+            Type = SkillEnums.Type.ModifyHitNPC;
         }
         private void GetLifeSteal(int damage)
         {

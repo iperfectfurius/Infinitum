@@ -373,7 +373,7 @@ namespace Infinitum.UI
 		
         private void ApplySet(UIMouseEvent evt, UIElement listeningElement)
         {
-            stats.SetActions(((UIButton)listeningElement.Parent).OwnStat);
+            stats.SetActions((UIElementsEnum.SetsActions)Enum.Parse(typeof(UIElementsEnum.SetsActions), ((UIButton)listeningElement.Parent).OwnStat.ToString()));
             SoundEngine.PlaySound(SoundID.ChesterOpen);
         }
 		

@@ -4,22 +4,14 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
-using Terraria.DataStructures;
-using Terraria.GameContent.Creative;
-
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 using Terraria.ModLoader.IO;
 
 namespace Infinitum
@@ -326,7 +318,7 @@ namespace Infinitum
             }
             else if (InfinitumModSystem.ChangeSet.JustPressed)
             {
-                if (SetActions((int)UIElementsEnum.SetsActions.ChangeSet)) CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red, $"Set {setSelected}", true, false);
+                if (SetActions(UIElementsEnum.SetsActions.ChangeSet)) CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25), Color.Red, $"Set {setSelected}", true, false);
 
             }
 
@@ -371,7 +363,7 @@ namespace Infinitum
             //sets
             foreach (Skill s in Skills)
             {
-                if (s.Type == (int)SkillEnums.Type.PostUpdateEquips)
+                if (s.Type == SkillEnums.Type.PostUpdateEquips)
                     s.ApplyStatToPlayer();
             }
 
@@ -481,11 +473,11 @@ namespace Infinitum
             setSelected = "0";
         }
 
-        public bool SetActions(int action)
+        public bool SetActions(UIElementsEnum.SetsActions action)
         {
             switch (action)
             {
-                case (int)UIElementsEnum.SetsActions.ChangeSet:
+                case UIElementsEnum.SetsActions.ChangeSet:
                     //rework
                     if (skillsSets.Count == 1)
                     {
@@ -503,7 +495,7 @@ namespace Infinitum
                     break;
 
 
-                case (int)UIElementsEnum.SetsActions.AddSet:
+                case UIElementsEnum.SetsActions.AddSet:
                     int setsCount = skillsSets.Count;
                     skillsSets.Add(setsCount.ToString(), new Skill[SkillEnums.GetNumberOfSkills]);
                     setSelected = setsCount.ToString();
@@ -511,7 +503,7 @@ namespace Infinitum
                     SoundEngine.PlaySound(SoundID.AchievementComplete);
                     ChatMessage($"Infinitum: New Set {setSelected}", Color.Green);
                     break;
-                case (int)UIElementsEnum.SetsActions.DeleteSet:
+                case UIElementsEnum.SetsActions.DeleteSet:
 
                     int currentSet = int.Parse(setSelected);
                     Dictionary<string, Skill[]> newSets = new Dictionary<string, Skill[]>();

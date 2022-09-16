@@ -148,9 +148,7 @@ namespace Infinitum.WorldBuilding
                             sendAccumulatedXPFromTile(0.5f);
                             Tiletype = (int)BlockTypeChances.Tree;
                         }
-
-
-                        break;
+                       break;
                 }
 
                 if (Main.rand.NextBool(Tiletype))
@@ -158,8 +156,6 @@ namespace Infinitum.WorldBuilding
                 return base.Drop(i, j, type);
 
             }
-
-
 
             switch (type)
             {//need a buff for early
