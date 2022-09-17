@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading.Tasks;
 using Terraria;
@@ -542,7 +543,8 @@ namespace Infinitum
         public override void ModifyCaughtFish(Item fish)
         {
             // TODO: Add stars to pool fishing
-            float xp = (((fish.rare * 5) + 1) * 3.5f + (fish.value / 500)) * fish.stack;
+            int rarity = fish.rare >= ItemRarityID.White ? fish.rare : 1;
+            float xp = (((rarity * 5) + 1) * 3.5f + (fish.value / 500)) * fish.stack;
 
             if (Main.netMode == NetmodeID.SinglePlayer)
                 AddXp(xp);
@@ -556,7 +558,7 @@ namespace Infinitum
                     myPacket.Send();
                 });
             }
-
+            ChatMessage($"{fish.Name}, {fish.stack} Quantity, {fish.rare} Rarity, {xp} XP", Color.White);
             base.ModifyCaughtFish(fish);
         }
     }

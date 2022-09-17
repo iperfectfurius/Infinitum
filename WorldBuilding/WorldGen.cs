@@ -97,22 +97,6 @@ namespace Infinitum.WorldBuilding
                         sendAccumulatedXPFromTile(1.5f);
                         Tiletype = (int)BlockTypeChances.Tree;
                         break;
-                    case TileID.TreeAmber:
-                        sendAccumulatedXPFromTile(50.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;
-                    case TileID.TreeDiamond:
-                        sendAccumulatedXPFromTile(50.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;
-                    case TileID.TreeRuby:
-                        sendAccumulatedXPFromTile(42.5f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;
-                    case TileID.TreeEmerald:
-                        sendAccumulatedXPFromTile(40.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;
                     case TileID.TreeAmethyst:
                         sendAccumulatedXPFromTile(35.0f);
                         Tiletype = (int)BlockTypeChances.Tree;
@@ -125,6 +109,22 @@ namespace Infinitum.WorldBuilding
                         sendAccumulatedXPFromTile(38.5f);
                         Tiletype = (int)BlockTypeChances.Tree;
                         break;
+                    case TileID.TreeEmerald:
+                        sendAccumulatedXPFromTile(40.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
+                        break;
+                    case TileID.TreeRuby:
+                        sendAccumulatedXPFromTile(42.5f);
+                        Tiletype = (int)BlockTypeChances.Tree;
+                        break;
+                    case TileID.TreeAmber:
+                        sendAccumulatedXPFromTile(50.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
+                        break;
+                    case TileID.TreeDiamond:
+                        sendAccumulatedXPFromTile(50.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
+                        break;                 
                     case TileID.Heart:
                     case TileID.LifeFruit:
                         sendAccumulatedXPFromTile(500f);
