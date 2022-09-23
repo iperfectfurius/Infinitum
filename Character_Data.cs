@@ -544,7 +544,7 @@ namespace Infinitum
         {
             // TODO: Add stars to pool fishing
             int rarity = fish.rare >= ItemRarityID.White ? fish.rare : 1;
-            float xp = (((rarity * 5) + 1) * 3.5f + (fish.value / 500)) * fish.stack;
+            float xp = (((rarity * 5) + 1) * 3.5f + (fish.value / 250)) * fish.stack;
 
             if (Main.netMode == NetmodeID.SinglePlayer)
                 AddXp(xp);
@@ -558,7 +558,6 @@ namespace Infinitum
                     myPacket.Send();
                 });
             }
-            ChatMessage($"{fish.Name}, {fish.stack} Quantity, {fish.rare} Rarity, {xp} XP", Color.White);
             base.ModifyCaughtFish(fish);
         }
     }
