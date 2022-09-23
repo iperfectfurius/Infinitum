@@ -25,7 +25,7 @@
             Cost = 125;
             EffectBuff = 0;
             MultiplierEffect = 0.25f;
-            Type = (int)SkillEnums.Type.PostUpdateEquips;
+            Type = SkillEnums.Type.PostUpdateEquips;
         }
 
         public override string GetStatText()

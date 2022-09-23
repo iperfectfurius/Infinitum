@@ -21,7 +21,7 @@ namespace Infinitum.Skills
             EffectBuff = 0;
             MultiplierEffect = 1;
             MultiplierCost = 1f;
-            Type = (int)SkillEnums.Type.PostUpdateEquips;
+            Type = SkillEnums.Type.PostUpdateEquips;
         }
         public override void ApplyStatToPlayer()
         {

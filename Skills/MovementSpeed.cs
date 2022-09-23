@@ -27,7 +27,7 @@ namespace Infinitum.Skills
             Cost = 185;
             EffectBuff = 0;
             MultiplierEffect = 0.01f;
-            Type = (int)SkillEnums.Type.PostUpdateEquips;
+            Type = SkillEnums.Type.PostUpdateEquips;
         }
     }
 }

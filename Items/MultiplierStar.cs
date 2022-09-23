@@ -31,8 +31,6 @@ namespace Infinitum.Items
 			Item.useAnimation = 1;
 			Item.reuseDelay = 0;
 			Item.useTurn = true;
-			
-
 		}
 
 		public override bool CanUseItem(Player player)

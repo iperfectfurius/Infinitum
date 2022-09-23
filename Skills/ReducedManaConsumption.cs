@@ -26,7 +26,8 @@ namespace Infinitum.Skills
             Cost = 60;
             EffectBuff = 0;
             MultiplierEffect = 0.01f;
-            Type = (int)SkillEnums.Type.PostUpdateEquips;
+            MaxLevel = 99;
+            Type = SkillEnums.Type.PostUpdateEquips;
             PreText = '-';
         }
     }

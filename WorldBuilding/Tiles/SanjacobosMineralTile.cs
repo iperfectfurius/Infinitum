@@ -11,7 +11,7 @@ namespace Infinitum.WorldBuilding.Tiles
 {
     internal class SanjacobosMineralTile : ModTile
     {
-        private int baseChance = 100;
+        private const int baseChance = 100;
         public override void SetStaticDefaults()
         {
             this.MinPick = 35;
@@ -28,9 +28,7 @@ namespace Infinitum.WorldBuilding.Tiles
             TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
             TileObjectData.addTile(Type);
             HitSound = SoundID.Tink;
-        }
-        
-        
+        }       
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
             
@@ -42,11 +40,12 @@ namespace Infinitum.WorldBuilding.Tiles
             base.KillMultiTile(i, j, frameX, frameY);
         }
         public override bool Drop(int i, int j)
-        {
-            
+        {       
             Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<SanjacobosOre>());
+
             if(Main.rand.NextBool(baseChance))
                 Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+
             return base.Drop(i, j);
         }
     }

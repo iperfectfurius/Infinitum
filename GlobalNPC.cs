@@ -15,9 +15,9 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = Infinitum.myMod;
-
-		private float GetXpFromNPC(NPC target) => GetDefense(target.defense) + 0.5f * (float)(target.lifeMax / 4.5);
-		private float GetDefense(int defense) => defense > 100 ? 100 : defense;
+		//TODO Rework xp scalate
+		private float GetXpFromNPC(NPC target) => ((GetDefense(target.defense) * 0.025f) + 0.5f) * (float)(target.lifeMax / 5.5);
+		private float GetDefense(int defense) => defense > 120 ? 120 : defense;
 
 		public override void OnKill(NPC npc)
 		{			
@@ -62,7 +62,9 @@ namespace Infinitum
 		{
 			
 			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
-			items.Add(new DropBasedOnExpertMode(new CommonDrop(ModContent.ItemType<ExpStar>(), 1500, 1), new CommonDrop(ModContent.ItemType<ExpStar>(), 1250, 1)));
+			items.Add(new DropBasedOnExpertMode(
+				new CommonDrop(ModContent.ItemType<ExpStar>(), 1500, 1), 
+				new CommonDrop(ModContent.ItemType<ExpStar>(), 1250, 1)));
 			items.Add(new DropBasedOnExpertMode(
 				new CommonDrop(ModContent.ItemType<MultiplierStar>(),MultiplierStar.NormalChanceFromNPCS, 1, 3),
 				new CommonDrop(ModContent.ItemType<MultiplierStar>(), MultiplierStar.ExpertChanceFromNPCS, 1, 3)));

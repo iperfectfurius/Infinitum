@@ -23,7 +23,7 @@ namespace Infinitum.Skills
             MultiplierEffect = 1;
             MaxLevel = 99;
 
-            Type = (int)SkillEnums.Type.CanConsumeAmmo;
+            Type = SkillEnums.Type.CanConsumeAmmo;
             PreText = '-';
         }
         public override void calculateBuff()

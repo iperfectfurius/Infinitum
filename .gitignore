@@ -7,3 +7,5 @@ notes.txt
 obj
 bin
 logs
+*.md
+wiki

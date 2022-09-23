@@ -97,22 +97,6 @@ namespace Infinitum.WorldBuilding
                         sendAccumulatedXPFromTile(1.5f);
                         Tiletype = (int)BlockTypeChances.Tree;
                         break;
-                    case TileID.TreeAmber:
-                        sendAccumulatedXPFromTile(50.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;
-                    case TileID.TreeDiamond:
-                        sendAccumulatedXPFromTile(50.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;
-                    case TileID.TreeRuby:
-                        sendAccumulatedXPFromTile(42.5f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;
-                    case TileID.TreeEmerald:
-                        sendAccumulatedXPFromTile(40.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;
                     case TileID.TreeAmethyst:
                         sendAccumulatedXPFromTile(35.0f);
                         Tiletype = (int)BlockTypeChances.Tree;
@@ -125,6 +109,22 @@ namespace Infinitum.WorldBuilding
                         sendAccumulatedXPFromTile(38.5f);
                         Tiletype = (int)BlockTypeChances.Tree;
                         break;
+                    case TileID.TreeEmerald:
+                        sendAccumulatedXPFromTile(40.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
+                        break;
+                    case TileID.TreeRuby:
+                        sendAccumulatedXPFromTile(42.5f);
+                        Tiletype = (int)BlockTypeChances.Tree;
+                        break;
+                    case TileID.TreeAmber:
+                        sendAccumulatedXPFromTile(50.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
+                        break;
+                    case TileID.TreeDiamond:
+                        sendAccumulatedXPFromTile(50.0f);
+                        Tiletype = (int)BlockTypeChances.Tree;
+                        break;                 
                     case TileID.Heart:
                     case TileID.LifeFruit:
                         sendAccumulatedXPFromTile(500f);
@@ -148,9 +148,7 @@ namespace Infinitum.WorldBuilding
                             sendAccumulatedXPFromTile(0.5f);
                             Tiletype = (int)BlockTypeChances.Tree;
                         }
-
-
-                        break;
+                       break;
                 }
 
                 if (Main.rand.NextBool(Tiletype))
@@ -158,8 +156,6 @@ namespace Infinitum.WorldBuilding
                 return base.Drop(i, j, type);
 
             }
-
-
 
             switch (type)
             {//need a buff for early
@@ -203,19 +199,19 @@ namespace Infinitum.WorldBuilding
                     xp = 37.5f;
                     break;
                 case (int)TileIDEnum.Palladium:
-                    xp = 40f;
+                    xp = 37.5f;
                     break;
                 case (int)TileIDEnum.Mythril:
                     xp = 42.5f;
                     break;
                 case (int)TileIDEnum.Orichalcum:
-                    xp = 45f;
+                    xp = 42.5f;
                     break;
                 case (int)TileIDEnum.Adamantite:
                     xp = 47.5f;
                     break;
                 case (int)TileIDEnum.Titanium:
-                    xp = 50f;
+                    xp = 47.5f;
                     break;
                 case (int)TileIDEnum.Chlorophyte:
                     xp = 52.5f;

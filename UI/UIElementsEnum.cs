@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace Infinitum.UI
 {
-    internal class UIElementsEnum
+    public class UIElementsEnum
     {
-        public enum ButtonsSets : ushort
+        public enum ButtonsSets
         {
-            ButtonChangeSet = 0,
-            ButtonAddSet = 1,
-            ButtonDeleteSet = 2
+            ButtonChangeSet,
+            ButtonAddSet,
+            ButtonDeleteSet
         }
 
-        public enum SetsActions : ushort
+        public enum SetsActions
         {
-            ChangeSet = 0,
-            AddSet = 1,
-            DeleteSet = 2
+            ChangeSet,
+            AddSet,
+            DeleteSet
         }
 
     }
