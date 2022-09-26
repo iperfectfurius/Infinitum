@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
 
 namespace Infinitum.Items
@@ -32,12 +33,10 @@ namespace Infinitum.Items
             }
 
         }
-        [Obsolete]// TODO: update item bags
-        public override void OpenVanillaBag(string context, Player player, int arg)
+        public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {
-            player.QuickSpawnItem(player.GetSource_OpenItem(arg), ModContent.ItemType<MiniExpStar>(),1);
-            base.OpenVanillaBag(context, player, arg);
-
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MultiplierStar>(), 1));
+            base.ModifyItemLoot(item, itemLoot);
         }
     }
 }

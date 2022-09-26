@@ -34,7 +34,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.78";// TODO: search for assembly version?
+        private string version = "0.80";// TODO: search for assembly version?
         private bool messageReset = false;
         private double exp = 0;
         private int level = 0;
@@ -148,7 +148,7 @@ namespace Infinitum
             if (exp < ExpToLevel) return false;
             level++;
             totalLevel++;
-            exp -= (ulong)ExpToLevel;
+            exp -= ExpToLevel;
 
             CalcXPPerLevel();
             return true;
