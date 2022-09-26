@@ -34,15 +34,15 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.78";// TODO: search for assembly version?
+        private string version = "0.80";// TODO: search for assembly version?
         private bool messageReset = false;
-        private float exp = 0.0f;
+        private double exp = 0;
         private int level = 0;
         private int totalLevel = 0;
         private float expMultiplier = 1.0f;
         private float moreExpMultiplier = 1.0f;
         private const int BASE_EXP = 30000;
-        private int expToLevel = BASE_EXP;
+        private ulong expToLevel = BASE_EXP;
         private const float EXPPERLEVEL = 0.0004f;
         private long totalNpcsKilled = 0;
         private bool activate = true;
@@ -50,11 +50,11 @@ namespace Infinitum
 
         private Dictionary<string, Skill[]> skillsSets = new Dictionary<string, Skill[]>();
         private string setSelected = "0";
-        public float Exp { get => exp; }
+        public double Exp { get => exp; }
         public int Level { get => level; }
         public int TotalLevel { get => totalLevel; }
         public float ExpMultiplier { get => expMultiplier; set => expMultiplier = value; }
-        public int ExpToLevel => expToLevel;
+        public ulong ExpToLevel => expToLevel;
         public bool RecentChanged { get => recentChanged; set => recentChanged = value; }
         //dont need?
         public long TotalNpcsKilled { get => totalNpcsKilled; set => totalNpcsKilled = value; }
@@ -76,7 +76,7 @@ namespace Infinitum
 
         private void CalcXPPerLevel()
         {
-            expToLevel = BASE_EXP + (int)((BASE_EXP * EXPPERLEVEL) * totalLevel);
+            expToLevel = BASE_EXP + (ulong)((BASE_EXP * EXPPERLEVEL) * totalLevel);
         }
 
         public override void OnEnterWorld(Player currentPLayer)
@@ -113,7 +113,7 @@ namespace Infinitum
         {
             if (Main.gameMenu) return;//This can be triggered by calamity first time in the world?
 
-            float experienceObtained = xp * (expMultiplier * moreExpMultiplier);
+            double experienceObtained = (double)xp * ((double)expMultiplier * moreExpMultiplier);
             exp += experienceObtained;
             UpdateLevel();
             showDamageText((int)CombatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);
@@ -121,7 +121,7 @@ namespace Infinitum
 
             if (avgXP.Count > 100)
                 avgXP.RemoveRange(0, 50);
-            avgXP.Add(experienceObtained);
+            avgXP.Add((float)experienceObtained);
             recentChanged = true;
 
         }

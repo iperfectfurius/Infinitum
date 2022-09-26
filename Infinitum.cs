@@ -15,6 +15,12 @@ namespace Infinitum
         public static Mod myMod = ModLoader.GetMod("Infinitum");
 
         public Infinitum() { }
+
+        public enum MessageType : byte
+        {
+            XP,
+            XPMultiplier
+        }
         public override void Load()
         {
             base.Load();

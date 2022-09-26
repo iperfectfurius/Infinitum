@@ -15,10 +15,10 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = Infinitum.myMod;
-		//TODO Rework xp scalate
-		private float GetXpFromNPC(NPC target) => ((GetDefense(target.defense) * 0.025f) + 0.5f) * (float)(target.lifeMax / 5.5);
-		private float GetDefense(int defense) => defense > 120 ? 120 : defense;
-
+        //TODO Rework xp scalate
+        private float GetDefense(int defense) => defense > 120 ? 120 : defense;
+        private float GetXpFromNPC(NPC target) => ((GetDefense(target.defense) * 0.025f) + 0.5f) * (float)(target.lifeMax / 5.5);
+		
 		public override void OnKill(NPC npc)
 		{			
 			float xp = GetXpFromNPC(npc);

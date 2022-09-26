@@ -1,2 +1,29 @@
-Levels.
-This mod its all about levels
+[i:75][c/00B7E4:Infinitum][i:75][ALPHA]
+Infinitum is a RPG mod that adds an XP System for infinite grinding to be more powerfull.
+
+It is designed to play as if it were a normal playthrough but if you want to tryhard you can do it in several ways.
+Infinitum balance a little all Npcs and enemies to integrate more with terraria and not be cheaty at first.
+
+[c/00B7E4:Currently Adds:]
+
+[i:-28] XP System and skills.
+[i:4096] 3 New Modifiers.
+[i:1195] 6 New Items
+[i:9] 2 Crafting Materials
+[i:13] 1 New Ore.
+
+For now Infinitum supports Sets of skills/buffs and automatic leveling if want.
+
+For more information go to official Wiki!
+https://github.com/iperfectfurius/Infinitum/wiki
+
+[c/47EB3C:Future content:]
+
+New Difficulties.
+New Potions.
+Life Skills.
+Balance of Mobs/NPCs in multiplayer exclusively.
+More Tiers of Stars.
+New endless Endgame.
+Full stats of everything.
+Modifiers on Armors.

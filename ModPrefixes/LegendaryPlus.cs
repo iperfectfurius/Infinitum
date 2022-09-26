@@ -36,14 +36,10 @@ namespace Infinitum.ModPrefixes
             knockbackMult += (float)(knockbackMult * 0.15f);
             scaleMult += (float)(scaleMult * 0.10f);
 
-
-
-
             base.SetStats(ref damageMult, ref knockbackMult, ref useTimeMult, ref scaleMult, ref shootSpeedMult, ref manaMult, ref critBonus);
         }
         public override void ModifyValue(ref float valueMult)
-        {
-            
+        {         
             float multiplier = 1f + 0.05f * _power;
             valueMult *= multiplier;
         }
