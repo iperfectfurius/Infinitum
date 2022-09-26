@@ -35,7 +35,7 @@ namespace Infinitum.Items
         }
         public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MultiplierStar>(), 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MiniExpStar>(), 1));
             base.ModifyItemLoot(item, itemLoot);
         }
     }
