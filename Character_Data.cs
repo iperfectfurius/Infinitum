@@ -214,6 +214,8 @@ namespace Infinitum
 
             TagCompound skillData = new();
 
+            if(!skillsSets.ContainsKey(setSelected)) InitializeSkillsOfCurrentSet();//for new players
+
             foreach (KeyValuePair<string, Skill[]> entry in skillsSets)
             {
                 TagCompound set = new TagCompound();
@@ -237,6 +239,12 @@ namespace Infinitum
         private void loadSkills(TagCompound tag)
         {
             //get names
+            if(tag.GetCompound("SkillData").Count == 0)
+            {
+                InitializeSkillsOfCurrentSet();
+                return;
+            }
+
             for (int i = 0; i < tag.GetCompound("SkillData").Count; i++)
             {
                 setSelected = i.ToString();
