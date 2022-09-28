@@ -91,7 +91,11 @@ namespace Infinitum
             Skill.player = currentPLayer;
 
             if (messageReset)
+            {
                 showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 180, true);
+                ChatMessage($"New Skills Version Detected. Check Your skills has beed reset.[Infinitum v{version}]",Color.Red);
+            }
+                
 
         }
         public void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)

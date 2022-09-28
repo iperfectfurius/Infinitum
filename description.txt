@@ -3,6 +3,7 @@ Infinitum is a RPG mod that adds an XP System for infinite grinding to be more p
 
 It is designed to play as if it were a normal playthrough but if you want to tryhard you can do it in several ways.
 Infinitum balance a little all Npcs and enemies to integrate more with terraria and not be cheaty at first.
+Note: UI can be opened via HotKey or middle mouse button on ExpBar.
 
 [c/00B7E4:Currently Adds:]
 
