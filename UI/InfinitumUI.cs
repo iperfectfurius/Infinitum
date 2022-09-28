@@ -182,6 +182,7 @@ namespace Infinitum.UI
                 sumStat.Width.Set(18f, 0);
                 sumStat.OwnStat = i;
                 sumStat.OverflowHidden = false;
+                
 
                 subStat.Top.Set(marginTop, 0f);
                 subStat.Left.Set(marginLeft + 25, 0f);
@@ -197,6 +198,7 @@ namespace Infinitum.UI
                 allStat.Width.Set(30f, 0);
                 allStat.OwnStat = i;
                 allStat.OverflowHidden = false;
+                allStat.hoverText = "Spend All Levels.";
 
                 cost.Top.Set(marginTop, 0f);
                 cost.Left.Set(marginLeft + 110, 0f);
@@ -231,6 +233,7 @@ namespace Infinitum.UI
                 automatic.OverflowHidden = false;
                 automatic.ChangeColor(new Color(229, 38, 0) * 0.7f);
                 automatic.changeOnMouse = false;
+                automatic.hoverText = "Enable/Disable Automatic leveling";
 
                 skillsElementsPanel.Add(automatic);
 
