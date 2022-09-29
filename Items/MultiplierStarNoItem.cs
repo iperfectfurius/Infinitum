@@ -11,7 +11,7 @@ namespace Infinitum.Items
     internal class MultiplierStarNoItem : ModItem
     {
         public const int ChanceFromOres = 175;
-        public const int ChanceFromTrees = ChanceFromOres * 2;
+        public const int ChanceFromTrees = 250;
         public const int ChanceFromBlocks = ChanceFromOres * 25;
         //count as 4 tiles each??
         public const int ChanceFromHearts = 8;

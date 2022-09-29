@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
+using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 
 namespace Infinitum
@@ -557,7 +559,7 @@ namespace Infinitum
         {
             // TODO: Add stars to pool fishing
             if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing)){
-
+                
             }
 
             int rarity = fish.rare >= ItemRarityID.White ? fish.rare : 1;
@@ -576,6 +578,15 @@ namespace Infinitum
                 });
             }
             base.ModifyCaughtFish(fish);
+        }
+        public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
+        {
+            if(Main.rand.NextBool(ExpStar.ChanceFromFishing))
+                itemDrop = ModContent.ItemType<ExpStar>();
+            else if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing))
+                itemDrop = ModContent.ItemType<MultiplierStar>();
+
+            base.CatchFish(attempt, ref itemDrop, ref npcSpawn, ref sonar, ref sonarPosition);
         }
     }
 
