@@ -33,12 +33,12 @@ namespace Infinitum.UI
 
         private enum statsOrder : ushort
         {
-            Level = 0,
-            Exp = 1,
-            ExpMultiplier = 2,
-            TotalLevel = 3,
-            TotalKills = 4,
-            AverageXP = 5
+            Level,
+            Exp,
+            ExpMultiplier,
+            TotalLevel,
+            TotalKills,
+            AverageXP
         }
         public InfinitumUI()
         {
@@ -150,7 +150,7 @@ namespace Infinitum.UI
             //Unify!
             for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
             {
-                UIText text = new("test" + ": 0", .9f);
+                UITextInfinitum text = new("test" + ": 0", .9f);
 
                 text.Top.Set(marginTop, 0f);
                 text.Left.Set(marginLeft, 0f);
@@ -280,22 +280,21 @@ namespace Infinitum.UI
             skillScrollbar.Height.Set(skillsPanel.Height.Pixels - 40, 0f);
             skillScrollbar.Width.Set(22f, 0f);
             skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 35f, 0f);
-
+            
             skillsElementsPanel.SetScrollbar(skillScrollbar);
 
             foreach (UIElement el in skillsElementsPanel)
                 skillsPanel.Append(el);
 
-            // skillsPanel.Append(skillScrollbar);
+            //skillsPanel.Append(skillScrollbar);
 
-
-            InfinitumPanel.Append(skillsPanel);
+            InfinitumPanel.Append(skillsPanel);           
             InfinitumPanel.Append(close);
         }
 
         private void ScrollWheelSkill(UIScrollWheelEvent evt, UIElement listeningElement)
         {
-            //provisional
+            //TODO Limit scroll
             foreach (UIElement uiel in skillsElementsPanel)
             {
                 if (uiel.GetType() == typeof(UIImageButton)) continue;
@@ -331,13 +330,17 @@ namespace Infinitum.UI
             switch (me.Text)
             {
                 case "+":
-                    if (stats.ApplyStats(me.OwnStat, (int)SkillEnums.Actions.LevelUp)) SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    if (stats.ApplyStats(me.OwnStat, SkillEnums.Actions.LevelUp))
+                    {
+                        SoundEngine.PlaySound(SoundID.AchievementComplete);
+                        //((UIButton)listeningElement.Parent).hoverText = $"Level: {stats.Skills[me.OwnStat].Level}";
+                    }
                     break;
                 case "-":
-                    if (stats.ApplyStats(me.OwnStat, (int)SkillEnums.Actions.LevelDown)) SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    if (stats.ApplyStats(me.OwnStat, SkillEnums.Actions.LevelDown)) SoundEngine.PlaySound(SoundID.AchievementComplete);
                     break;
                 case "All":
-                    if (stats.ApplyStats(me.OwnStat, (int)SkillEnums.Actions.LevelUpAll)) SoundEngine.PlaySound(SoundID.AchievementComplete);
+                    if (stats.ApplyStats(me.OwnStat, SkillEnums.Actions.LevelUpAll)) SoundEngine.PlaySound(SoundID.AchievementComplete);
                     break;
                 case "×":
                     stats.Skills[me.OwnStat].AutomaticMode = true;
@@ -396,8 +399,11 @@ namespace Infinitum.UI
 
             for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
             {
-
-                ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i])).SetText($"{stats.Skills[i].DisplayName}: {stats.Skills[i].GetStatText()}");
+                //TODO set level hover on names text??
+                UITextInfinitum skillText = (UITextInfinitum)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i]);
+                skillText.SetText($"{stats.Skills[i].DisplayName}: {stats.Skills[i].GetStatText()}");
+                skillText.hoverText = $"Level: {stats.Skills[i].Level}";
+                
                 ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + SkillEnums.GetNumberOfSkills])).SetText($"{stats.Skills[i].Cost}");
                 UIButton xd = ((UIButton)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + (SkillEnums.GetNumberOfSkills * 2)]));
                 ((UIButton)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + (SkillEnums.GetNumberOfSkills * 2)])).ChangeBackgroundFromValue(stats.Skills[i].AutomaticMode);

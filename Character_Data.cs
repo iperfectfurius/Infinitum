@@ -1,3 +1,4 @@
+using Infinitum.Items;
 using Infinitum.Skills;
 using Infinitum.UI;
 using Microsoft.Xna.Framework;
@@ -343,9 +344,9 @@ namespace Infinitum
             base.Unload();
         }
 
-        public bool ApplyStats(int skill, int apply)
+        public bool ApplyStats(int skill, SkillEnums.Actions action)
         {
-            if (Skills[skill].ApplyStat(apply, ref level))
+            if (Skills[skill].ApplyStat(action, ref level))
             {
                 recentChanged = true;
                 return true;
@@ -555,6 +556,10 @@ namespace Infinitum
         public override void ModifyCaughtFish(Item fish)
         {
             // TODO: Add stars to pool fishing
+            if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing)){
+
+            }
+
             int rarity = fish.rare >= ItemRarityID.White ? fish.rare : 1;
             float xp = (((rarity * 5) + 1) * 3.5f + (fish.value / 250)) * fish.stack;
 
