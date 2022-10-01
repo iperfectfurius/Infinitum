@@ -32,7 +32,6 @@ namespace Infinitum.UI
         private UIButton numbers;
         private UIButton[] SetsButtons = new UIButton[Enum.GetNames(typeof(UIElementsEnum.ButtonsSets)).Length];
         UIText[] statsTexts = new UIText[6];
-        private int[] skillTexts = new int[0];//Stats and cost
         UIList skillsElementsPanel = new();
 
         private enum statsOrder : ushort
@@ -51,7 +50,6 @@ namespace Infinitum.UI
         }
         public override void OnInitialize()
         {
-
             Visible = false;
             Instance = this;
             InfinitumPanel = new DragableUIPanel();
@@ -70,7 +68,6 @@ namespace Infinitum.UI
         }
         private void inicializeUIElements()
         {
-
             //need improve...
             float marginTop = 8;
             float marginLeft = 8;
@@ -156,8 +153,6 @@ namespace Infinitum.UI
             costText.Height.Set(20f, 0);
 
             skillsElementsPanel.Add(costText);
-            //This goes in other panel
-            //Unify!
 
             marginTop = 0;
             marginLeft = 0;
@@ -176,13 +171,12 @@ namespace Infinitum.UI
 
                 skill.Height.Set(20f, 0);
                 skill.Width.Set(maxWidth - 15, 0);
-                //text.Top.Set(marginTop, 0f);
+
                 text.Left.Set(0, 0f);
                 text.Height.Set(20f, 0);
 
                 marginLeft = 225;
 
-                //sumStat.Top.Set(marginTop, 0f);
                 sumStat.Left.Set(marginLeft, 0f);
                 sumStat.Height.Set(18f, 0);
                 sumStat.Width.Set(18f, 0);
@@ -191,9 +185,6 @@ namespace Infinitum.UI
                 sumStat.OwnStat = i;
                 sumStat.OverflowHidden = false;
 
-
-
-                //subStat.Top.Set(marginTop, 0f);
                 subStat.Left.Set(marginLeft + 25, 0f);
                 subStat.Height.Set(18f, 0);
                 subStat.Width.Set(18f, 0);
@@ -202,8 +193,6 @@ namespace Infinitum.UI
                 subStat.OwnStat = i;
                 subStat.OverflowHidden = false;
 
-
-                //allStat.Top.Set(marginTop, 0f);
                 allStat.Left.Set(marginLeft + 48, 0f);
                 allStat.Height.Set(18f, 0);
                 allStat.Width.Set(30f, 0);
@@ -213,16 +202,13 @@ namespace Infinitum.UI
                 allStat.OverflowHidden = false;
                 allStat.hoverText = "Spend All Levels.";
 
-
-                //cost.Top.Set(marginTop, 0f);
                 cost.Left.Set(marginLeft + 110, 0f);
                 cost.Height.Set(20f, 0);
                 cost.Width.Set(35, 0);
                 cost.MaxHeight.Set(20f, 0);
                 cost.MaxWidth.Set(35f, 0);
                 cost.OverflowHidden = false;
-
-                //automatic.Top.Set(marginTop, 0f);
+            
                 automatic.Left.Set(marginLeft + 82, 0f);
                 automatic.Height.Set(18f, 0);
                 automatic.Width.Set(18f, 0);
@@ -241,14 +227,8 @@ namespace Infinitum.UI
 
                 skillsElementsPanel.Add(skill);
 
-                Array.Resize(ref skillTexts, skillTexts.Length + 3);
-                skillTexts[^3] = text.UniqueId;
-                skillTexts[^2] = cost.UniqueId;
-                skillTexts[^1] = automatic.UniqueId;
-
                 marginTop += 20f;
-            }
-            //skillsElementsPanel.SetPadding(0);
+            }           
         }
 
         private void addUIElementsToPanel()
@@ -277,8 +257,6 @@ namespace Infinitum.UI
             skillsPanel.Width.Set(maxWidth - 209, 0f);
             skillsPanel.PaddingRight = 0f;
             skillsPanel.OverflowHidden = true;
-            //skillsPanel.OnScrollWheel += ScrollWheelSkill;
-
 
             UIScrollbar skillScrollbar = new();
             skillScrollbar.Top.Set(5, 0f);
@@ -289,31 +267,10 @@ namespace Infinitum.UI
             skillsElementsPanel.Append(skillScrollbar);
             skillsElementsPanel.SetScrollbar(skillScrollbar);
 
-            //foreach (UIElement el in skillsElementsPanel)
-            //    skillsPanel.Append(el);
-
             skillsPanel.Append(skillsElementsPanel);
-
-
 
             InfinitumPanel.Append(skillsPanel);
             InfinitumPanel.Append(close);
-        }
-
-        [Obsolete("Will be removed in future.")]
-        private void ScrollWheelSkill(UIScrollWheelEvent evt, UIElement listeningElement)
-        {
-            //TODO Limit scroll
-            foreach (UIElement uiel in skillsElementsPanel)
-            {
-                if (uiel.GetType() == typeof(UIImageButton)) continue;
-
-                uiel.Top.Set(uiel.Top.Pixels + (evt.ScrollWheelValue < 0 ? -40 : 40), 0);
-            }
-
-
-            Recalculate();
-
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -376,7 +333,6 @@ namespace Infinitum.UI
                 default:
                     break;
             }
-
         }
         private void restartProgress(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -395,7 +351,6 @@ namespace Infinitum.UI
             stats.DisplayNumbers = !stats.DisplayNumbers;
             stats.RecentChanged = true;
             SoundEngine.PlaySound(SoundID.AchievementComplete);
-
         }
 
         private void ApplySet(UIMouseEvent evt, UIElement listeningElement)
@@ -437,6 +392,5 @@ namespace Infinitum.UI
                 automaticButton.ChangeBackgroundFromValue(stats.Skills[skillNumber].AutomaticMode);
             }          
         }
-
     }
 }
