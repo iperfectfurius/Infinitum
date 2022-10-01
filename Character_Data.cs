@@ -1,3 +1,4 @@
+using Infinitum.Buffs;
 using Infinitum.Items;
 using Infinitum.Skills;
 using Infinitum.UI;
@@ -402,6 +403,10 @@ namespace Infinitum
                     default:
                         break;
                 }
+
+            if(player.HasBuff<XPBuff>()) moreExpMultiplier += .5f;
+
+            recentChanged = true;
         }
         public override void PreUpdate()
         {

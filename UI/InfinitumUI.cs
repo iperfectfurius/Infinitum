@@ -260,9 +260,10 @@ namespace Infinitum.UI
 
             UIScrollbar skillScrollbar = new();
             skillScrollbar.Top.Set(5, 0f);
-            skillScrollbar.Height.Set(skillsPanel.Height.Pixels - 40, 0f);
+            skillScrollbar.Height.Set(skillsPanel.Height.Pixels - 60, 0f);
             skillScrollbar.Width.Set(22f, 0f);
             skillScrollbar.Left.Set(skillsPanel.Width.Pixels - 35f, 0f);
+            skillScrollbar.MarginTop = 15f;
 
             skillsElementsPanel.Append(skillScrollbar);
             skillsElementsPanel.SetScrollbar(skillScrollbar);
