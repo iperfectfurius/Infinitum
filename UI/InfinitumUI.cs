@@ -343,7 +343,6 @@ namespace Infinitum.UI
                 stats.RecentChanged = false;
             }
 
-
             base.Update(gameTime);
         }
         private void ModifyStat(UIMouseEvent evt, UIElement listeningElement)
@@ -408,7 +407,7 @@ namespace Infinitum.UI
         private void UpdateAllStats()
         {
             List<UIElement> skills = skillsElementsPanel._items;
-            //Infinitum.instance.ChatMessage(skillsElementsPanel.ElementAt(1).GetType().ToString(), Color.White);
+
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
             statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/{stats.ExpToLevel} ({((float)stats.Exp / stats.ExpToLevel) * 100:n1}%)");
             statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {(stats.ExpMultiplier * stats.MoreExpMultiplier) * 100:n1}%");
@@ -421,19 +420,6 @@ namespace Infinitum.UI
             SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet].Text = $"Change Set ({stats.SetSelected})";
             SetsButtons[(int)UIElementsEnum.ButtonsSets.ButtonChangeSet].hoverText = $"Set {stats.SetSelected} of {stats.SetCount - 1}";
 
-            Infinitum.instance.ChatMessage($"{skillsElementsPanel.ListPadding}", Color.Red);
-            //for (int i = 0; i < SkillEnums.GetNumberOfSkills; i++)
-            //{
-            //    //TODO set level hover on names text??
-            //    UITextInfinitum skillText = (UITextInfinitum)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i]);
-            //    skillText.SetText($"{stats.Skills[i].DisplayName}: {stats.Skills[i].GetStatText()}");
-            //    skillText.hoverText = $"Level: {stats.Skills[i].Level}";
-
-            //   ((UIText)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + SkillEnums.GetNumberOfSkills])).SetText($"{stats.Skills[i].Cost}");
-            //    UIButton xd = ((UIButton)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + (SkillEnums.GetNumberOfSkills * 2)]));
-            //    ((UIButton)skillsElementsPanel._items.Find(x => x.UniqueId == skillTexts[i + (SkillEnums.GetNumberOfSkills * 2)])).ChangeBackgroundFromValue(stats.Skills[i].AutomaticMode);
-            //    // TODO: First load refresh text of automatic button. (Bug tmodloader?)
-            //}
             for (int i = 1; i < SkillEnums.GetNumberOfSkills + 1; i++)
             {
                 int skillNumber = i - 1;
@@ -443,16 +429,13 @@ namespace Infinitum.UI
                 UIText costText = (UIText)skill.Children.ElementAt(5);
                 UIButton automaticButton = (UIButton)skill.Children.ElementAt(6);
 
-
                 skillText.SetText($"{stats.Skills[skillNumber].DisplayName}: {stats.Skills[skillNumber].GetStatText()}");
                 skillText.hoverText = $"Level: {stats.Skills[skillNumber].Level}";
 
                 costText.SetText($"{stats.Skills[skillNumber].Cost}");
 
                 automaticButton.ChangeBackgroundFromValue(stats.Skills[skillNumber].AutomaticMode);
-
-            }
-            //stats.RecentChanged = false;
+            }          
         }
 
     }
