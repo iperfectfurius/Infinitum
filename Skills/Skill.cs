@@ -95,19 +95,19 @@ namespace Infinitum.Skills
         }
 
         public abstract void OnInitialize();
-        public bool ApplyStat(int action, ref int Levels)
+        public bool ApplyStat(SkillEnums.Actions action, ref int Levels)
         {
             bool succes = false;
 
             switch (action)
             {
-                case (int)SkillEnums.Actions.LevelUp:
+                case SkillEnums.Actions.LevelUp:
                     succes = LevelUp(ref Levels);
                     break;
-                case (int)SkillEnums.Actions.LevelDown:
+                case SkillEnums.Actions.LevelDown:
                     succes = LevelDown(ref Levels);
                     break;
-                case (int)SkillEnums.Actions.LevelUpAll:
+                case SkillEnums.Actions.LevelUpAll:
                     succes = LevelUpAll(ref Levels);
                     break;
                 default:

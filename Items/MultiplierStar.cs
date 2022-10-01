@@ -11,6 +11,7 @@ namespace Infinitum.Items
 	{
 		public const int ExpertChanceFromNPCS = 175;
 		public const int NormalChanceFromNPCS = 250;
+		public const int ChanceFromFishing = 25;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star Multiplier XP");

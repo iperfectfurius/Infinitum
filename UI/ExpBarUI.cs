@@ -73,14 +73,12 @@ namespace Infinitum.UI
             ExpBar.BackgroundColor = Color.Lime * 0.6f;
             ExpBar.BorderColor = new Color(0, 0, 0, 0);
 
-
             level = new UIText("0", 0.8f);
             level.Left.Set(0, 0);
             level.VAlign = level.HAlign = 0.5f;
 
             level.SetPadding(0);
             level.TextColor = Color.Coral;
-
 
             bar.Append(ExpBar);
             bar.Append(level);
@@ -100,7 +98,7 @@ namespace Infinitum.UI
         {
             base.DrawSelf(spriteBatch);
             if (bar.IsMouseHovering)
-                Main.hoverItemName = $"{stats.Exp}/{stats.ExpToLevel} Exp";
+                Main.hoverItemName = $"{stats.Exp:n1}/{stats.ExpToLevel} Exp";
         }
         private void UpdateAllStats()
         {

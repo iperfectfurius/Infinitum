@@ -8,8 +8,17 @@ namespace Infinitum.Items
 {
 	internal class ExpStar : ModItem
 	{
-
-		public override void SetStaticDefaults()
+		public const int NormalChanceFromNPCs = 1500;
+        public const int ExpertChanceFromNPCs = 1250;
+        public const int ChanceFromOres = 750;
+		public const int ChanceFromBlocks = 10000;
+		public const int ChanceFromTrees = 500;
+		public const int ChanceFromFishing = 125;
+        public const int ChanceFromHearts = 100;
+        public const int ChanceFromPots = 250;
+        public const int ChanceFromAltars = 200;
+        public const int ChanceFromOrbs = 150;
+        public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star XP");
 			Tooltip.SetDefault("What you expect?(XP)");

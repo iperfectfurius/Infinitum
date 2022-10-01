@@ -63,8 +63,8 @@ namespace Infinitum
 			
 			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
 			items.Add(new DropBasedOnExpertMode(
-				new CommonDrop(ModContent.ItemType<ExpStar>(), 1500, 1), 
-				new CommonDrop(ModContent.ItemType<ExpStar>(), 1250, 1)));
+				new CommonDrop(ModContent.ItemType<ExpStar>(), ExpStar.NormalChanceFromNPCs, 1), 
+				new CommonDrop(ModContent.ItemType<ExpStar>(), ExpStar.ExpertChanceFromNPCs, 1)));
 			items.Add(new DropBasedOnExpertMode(
 				new CommonDrop(ModContent.ItemType<MultiplierStar>(),MultiplierStar.NormalChanceFromNPCS, 1, 3),
 				new CommonDrop(ModContent.ItemType<MultiplierStar>(), MultiplierStar.ExpertChanceFromNPCS, 1, 3)));

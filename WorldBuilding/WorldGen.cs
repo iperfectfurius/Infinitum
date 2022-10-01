@@ -22,15 +22,6 @@ namespace Infinitum.WorldBuilding
         private Task timer;
         private bool notUnloadedTiles = true;
         private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, 408 };
-        enum BlockTypeChances : ushort {
-        Ore = MultiplierStarNoItem.ChanceFromOres,
-        Tree = MultiplierStarNoItem.ChanceFromTrees,
-        Block = MultiplierStarNoItem.ChanceFromBlocks,
-        Heart = MultiplierStarNoItem.ChanceFromHearts,
-        Altar = MultiplierStarNoItem.ChanceFromAltars,
-        Orbs = MultiplierStarNoItem.ChanceFromOrbs,
-        Pots = MultiplierStarNoItem.ChanceFromPots
-        };
         public HashSet<string> bannedTiles = new HashSet<string>();
 
         public override bool Drop(int i, int j, int type)
@@ -86,7 +77,9 @@ namespace Infinitum.WorldBuilding
 
             if (!isOre(type))
             {
-                int Tiletype = (int)BlockTypeChances.Block;
+                int multiplierStarChance = MultiplierStarNoItem.ChanceFromBlocks;
+                int expStarChance = ExpStar.ChanceFromBlocks;
+
                 //Special and global Tiles.
                 switch (type)
                 {
@@ -95,70 +88,85 @@ namespace Infinitum.WorldBuilding
                     case (int)TileIDEnum.PalmTree:
                     case (int)TileIDEnum.Trees:
                         sendAccumulatedXPFromTile(1.5f);
-                        Tiletype = (int)BlockTypeChances.Tree;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                        expStarChance = ExpStar.ChanceFromTrees;
                         break;
                     case TileID.TreeAmethyst:
                         sendAccumulatedXPFromTile(35.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                        expStarChance = ExpStar.ChanceFromTrees;
                         break;
                     case TileID.TreeTopaz:
                         sendAccumulatedXPFromTile(37.5f);
-                        Tiletype = (int)BlockTypeChances.Tree;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                        expStarChance = ExpStar.ChanceFromTrees;
                         break;
                     case TileID.TreeSapphire:
                         sendAccumulatedXPFromTile(38.5f);
-                        Tiletype = (int)BlockTypeChances.Tree;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                        expStarChance = ExpStar.ChanceFromTrees;
                         break;
                     case TileID.TreeEmerald:
                         sendAccumulatedXPFromTile(40.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                        expStarChance = ExpStar.ChanceFromTrees;
                         break;
                     case TileID.TreeRuby:
                         sendAccumulatedXPFromTile(42.5f);
-                        Tiletype = (int)BlockTypeChances.Tree;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                        expStarChance = ExpStar.ChanceFromTrees;
                         break;
                     case TileID.TreeAmber:
                         sendAccumulatedXPFromTile(50.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                        expStarChance = ExpStar.ChanceFromTrees;
                         break;
                     case TileID.TreeDiamond:
                         sendAccumulatedXPFromTile(50.0f);
-                        Tiletype = (int)BlockTypeChances.Tree;
-                        break;                 
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                        expStarChance = ExpStar.ChanceFromTrees;
+                        break;
                     case TileID.Heart:
                     case TileID.LifeFruit:
                         sendAccumulatedXPFromTile(500f);
-                        Tiletype = (int)BlockTypeChances.Heart;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromHearts;
+                        expStarChance = ExpStar.ChanceFromHearts;
                         break;
                     case TileID.DemonAltar:
                         sendAccumulatedXPFromTile(500f);
-                        Tiletype = (int)BlockTypeChances.Altar;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromAltars;
+                        expStarChance = ExpStar.ChanceFromAltars;
                         break;
                     case TileID.ShadowOrbs:
                         sendAccumulatedXPFromTile(250f);
-                        Tiletype = (int)BlockTypeChances.Orbs;
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromOrbs;
+                        expStarChance = ExpStar.ChanceFromOrbs;
                         break;
-                    case TileID.Pots:                  
+                    case TileID.Pots:
                         sendAccumulatedXPFromTile(7.5f);
-                        Tiletype = (int)BlockTypeChances.Pots;
-                        break;                   
+                        multiplierStarChance = MultiplierStarNoItem.ChanceFromPots;
+                        expStarChance = ExpStar.ChanceFromPots;
+                        break;
                     default:
                         if (TileID.Sets.IsATreeTrunk[type])
                         {
                             sendAccumulatedXPFromTile(0.5f);
-                            Tiletype = (int)BlockTypeChances.Tree;
+                            multiplierStarChance = MultiplierStarNoItem.ChanceFromTrees;
+                            expStarChance = ExpStar.ChanceFromTrees;
                         }
-                       break;
+                        break;
                 }
 
-                if (Main.rand.NextBool(Tiletype))
+                if (Main.rand.NextBool(multiplierStarChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+                if (Main.rand.NextBool(expStarChance))
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
                 return base.Drop(i, j, type);
 
             }
 
             switch (type)
-            {//need a buff for early
+            {
                 case (int)TileIDEnum.Copper:
                     xp = 12.5f;
                     break;
@@ -257,10 +265,11 @@ namespace Infinitum.WorldBuilding
                 sendXPToPlayers(xp);
             }
 
-            if (Main.rand.NextBool((int)BlockTypeChances.Ore))
+            if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
                 Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+            if (Main.rand.NextBool(ExpStar.ChanceFromOres))
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
-            //Infinitum.instance.ChatMessage("Vanilla");
             return base.Drop(i, j, type);
 
         }
@@ -279,7 +288,7 @@ namespace Infinitum.WorldBuilding
         public override void PlaceInWorld(int i, int j, int type, Item item)
         {
             base.PlaceInWorld(i, j, type, item);
-
+            //TODO Check for multitile blocks
             if (isOre(item.createTile))
             {
                 string pos = $"{i}-{j}";
@@ -290,7 +299,6 @@ namespace Infinitum.WorldBuilding
         public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
             base.KillTile(i, j, type, ref fail, ref effectOnly, ref noItem);
-
         }
 
         public override void Unload()

@@ -1,3 +1,5 @@
+using Infinitum.Buffs;
+using Infinitum.Items;
 using Infinitum.Skills;
 using Infinitum.UI;
 using Microsoft.Xna.Framework;
@@ -10,9 +12,11 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
+using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 
 namespace Infinitum
@@ -91,7 +95,11 @@ namespace Infinitum
             Skill.player = currentPLayer;
 
             if (messageReset)
+            {
                 showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 180, true);
+                ChatMessage($"New Skills Version Detected. Check Your skills has beed reset.[Infinitum v{version}]",Color.Red);
+            }
+                
 
         }
         public void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
@@ -214,6 +222,8 @@ namespace Infinitum
 
             TagCompound skillData = new();
 
+            if(!skillsSets.ContainsKey(setSelected)) InitializeSkillsOfCurrentSet();//for new players
+
             foreach (KeyValuePair<string, Skill[]> entry in skillsSets)
             {
                 TagCompound set = new TagCompound();
@@ -237,6 +247,12 @@ namespace Infinitum
         private void loadSkills(TagCompound tag)
         {
             //get names
+            if(tag.GetCompound("SkillData").Count == 0)
+            {
+                InitializeSkillsOfCurrentSet();
+                return;
+            }
+
             for (int i = 0; i < tag.GetCompound("SkillData").Count; i++)
             {
                 setSelected = i.ToString();
@@ -331,9 +347,9 @@ namespace Infinitum
             base.Unload();
         }
 
-        public bool ApplyStats(int skill, int apply)
+        public bool ApplyStats(int skill, SkillEnums.Actions action)
         {
-            if (Skills[skill].ApplyStat(apply, ref level))
+            if (Skills[skill].ApplyStat(action, ref level))
             {
                 recentChanged = true;
                 return true;
@@ -387,6 +403,10 @@ namespace Infinitum
                     default:
                         break;
                 }
+
+            if(player.HasBuff<XPBuff>()) moreExpMultiplier += .5f;
+
+            recentChanged = true;
         }
         public override void PreUpdate()
         {
@@ -432,7 +452,6 @@ namespace Infinitum
 
         public void ResetCurrentSkills()
         {
-
             level = totalLevel;
             CalcXPPerLevel();
 
@@ -543,6 +562,10 @@ namespace Infinitum
         public override void ModifyCaughtFish(Item fish)
         {
             // TODO: Add stars to pool fishing
+            if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing)){
+                
+            }
+
             int rarity = fish.rare >= ItemRarityID.White ? fish.rare : 1;
             float xp = (((rarity * 5) + 1) * 3.5f + (fish.value / 250)) * fish.stack;
 
@@ -559,6 +582,15 @@ namespace Infinitum
                 });
             }
             base.ModifyCaughtFish(fish);
+        }
+        public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
+        {
+            if(Main.rand.NextBool(ExpStar.ChanceFromFishing))
+                itemDrop = ModContent.ItemType<ExpStar>();
+            else if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing))
+                itemDrop = ModContent.ItemType<MultiplierStar>();
+
+            base.CatchFish(attempt, ref itemDrop, ref npcSpawn, ref sonar, ref sonarPosition);
         }
     }
 
