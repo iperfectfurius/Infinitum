@@ -12,8 +12,10 @@ namespace Infinitum.UI
     internal class UITextInfinitum : UIText
     {
         public string hoverText;
-        public UITextInfinitum(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
+        public UITextInfinitum(string? text, float textScale = 1, bool large = false) : base(text, textScale, large)
         {
+            if (string.IsNullOrEmpty(text))
+                text = "Test";
         }
 
         public UITextInfinitum(LocalizedText text, float textScale = 1, bool large = false) : base(text, textScale, large)

@@ -46,7 +46,7 @@ namespace Infinitum
             Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
         }
 
-        public void ChatMessage(string text)
+        public void ChatMessage(string text, Color red)
         {
             if (Main.netMode == NetmodeID.Server)
             {

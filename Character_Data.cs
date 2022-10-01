@@ -447,7 +447,6 @@ namespace Infinitum
 
         public void ResetCurrentSkills()
         {
-
             level = totalLevel;
             CalcXPPerLevel();
 
