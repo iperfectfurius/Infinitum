@@ -47,7 +47,7 @@ namespace Infinitum
         private float moreExpMultiplier = 1.0f;
         private const int BASE_EXP = 30000;
         private ulong expToLevel = BASE_EXP;
-        private const float EXPPERLEVEL = 0.0004f;
+        private const float EXPPERLEVEL = 0.0005f;
         private long totalNpcsKilled = 0;
         private bool activate = true;
         private bool displayNumbers = true;
