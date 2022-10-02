@@ -31,8 +31,7 @@ namespace Infinitum.Items
             Item.height = 25;
             Item.rare = ItemRarityID.Orange;
             Item.consumable = false;
-            Item.stack = 1;
-            
+            Item.stack = 1;         
         }
 
         public override bool CanUseItem(Player player)

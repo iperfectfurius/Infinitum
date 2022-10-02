@@ -12,7 +12,7 @@ namespace Infinitum.Items
         public const int ExpertChanceFromNPCs = 1250;
         public const int ChanceFromOres = 750;
 		public const int ChanceFromBlocks = 10000;
-		public const int ChanceFromTrees = 500;
+		public const int ChanceFromTrees = 1250;
 		public const int ChanceFromFishing = 125;
         public const int ChanceFromHearts = 100;
         public const int ChanceFromPots = 250;

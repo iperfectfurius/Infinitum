@@ -1,4 +1,5 @@
 ﻿
+using Infinitum.Items;
 using Infinitum.Items.Ores;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -11,7 +12,8 @@ namespace Infinitum.WorldBuilding.Tiles
 {
     internal class SanjacobosMineralTile : ModTile
     {
-        private const int baseChance = 100;
+        private const int multiplierStarChance = 100;
+        private const int expStarChance = 450;
         public override void SetStaticDefaults()
         {
             this.MinPick = 35;
@@ -43,8 +45,10 @@ namespace Infinitum.WorldBuilding.Tiles
         {       
             Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<SanjacobosOre>());
 
-            if(Main.rand.NextBool(baseChance))
-                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<Items.MultiplierStarNoItem>());
+            if(Main.rand.NextBool(multiplierStarChance))
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+            if (Main.rand.NextBool(expStarChance))
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
             return base.Drop(i, j);
         }

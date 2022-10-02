@@ -44,6 +44,8 @@ namespace Infinitum.WorldBuilding
                 {
                     if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromBlocks))
                         Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+                    if (Main.rand.NextBool(ExpStar.ChanceFromBlocks))
+                        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
                     return base.Drop(i, j, type);
                 }
@@ -70,6 +72,8 @@ namespace Infinitum.WorldBuilding
                 }
                 if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+                if (Main.rand.NextBool(ExpStar.ChanceFromOres))
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
                 return base.Drop(i, j, type);
 
             }
