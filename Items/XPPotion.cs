@@ -46,6 +46,7 @@ namespace Infinitum.Items
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ModContent.ItemType<ExpStar>(), 1);
+            recipe.AddTile(TileID.AlchemyTable);
             recipe.Register();
 
             base.AddRecipes();
