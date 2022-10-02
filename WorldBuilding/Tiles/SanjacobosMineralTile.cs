@@ -13,7 +13,7 @@ namespace Infinitum.WorldBuilding.Tiles
     internal class SanjacobosMineralTile : ModTile
     {
         private const int multiplierStarChance = 100;
-        private const int expStarChance = 450;
+        private const int expStarChance = 550;
         public override void SetStaticDefaults()
         {
             this.MinPick = 35;
