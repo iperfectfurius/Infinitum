@@ -15,6 +15,7 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = Infinitum.myMod;
+		public static InfinitumNPCs instance;
         //TODO Rework xp scalate
         private float GetDefense(int defense) => defense > 120 ? 120 : defense;
         private float GetXpFromNPC(NPC target) => ((GetDefense(target.defense) * 0.025f) + 0.5f) * (float)(target.lifeMax / 5.5);
@@ -91,6 +92,8 @@ namespace Infinitum
 			npc.lifeMax += (int)(npc.lifeMax * 0.25f);
 			npc.damage += (int)(npc.damage * 0.10f);
 			npc.defense += (int)(npc.defense * 0.10f);
+
+
 			
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)

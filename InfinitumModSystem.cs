@@ -1,6 +1,8 @@
-﻿using Infinitum.Items.Ores;
+﻿using Infinitum.Items;
+using Infinitum.Items.Ores;
 using Infinitum.UI;
 using Infinitum.WorldBuilding.Tiles;
+using Infinitum.WorldChanges;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -12,6 +14,7 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.IO;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 using static Terraria.ModLoader.ModContent;
@@ -28,6 +31,7 @@ namespace Infinitum
         public static ModKeybind UIKey;
         public static ModKeybind NumbersDisplay;
         public static ModKeybind ChangeSet;
+        public static AdaptativeDifficulty Difficulty;
         public override void Load()
         {
             // base.Load();
@@ -100,6 +104,18 @@ namespace Infinitum
                 tasks.Insert(ShiniesIndex + 1, new SanjacobosOrePass("Sanjacobo's ore", 237.4298f));
             }
 
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            
+            base.LoadWorldData(tag);
+        }
+
+        public override void SaveWorldData(TagCompound tag)
+        {
+            //InfinitumNPCs testing = (InfinitumNPCs)GetContent<InfinitumNPCs>();
+            base.SaveWorldData(tag);
         }
         internal class SanjacobosOrePass : GenPass
         {
