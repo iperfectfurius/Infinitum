@@ -88,12 +88,12 @@ namespace Infinitum
         public override void SetDefaults(NPC npc)
         {
 			base.SetDefaults(npc);
-			npc.life += (int)(npc.life * 0.25f);
-			npc.lifeMax += (int)(npc.lifeMax * 0.25f);
-			npc.damage += (int)(npc.damage * 0.10f);
-			npc.defense += (int)(npc.defense * 0.10f);
+			npc.life += (int)(npc.life * Infinitum.instance.Difficulty.Hp);
+			npc.lifeMax += (int)(npc.lifeMax * Infinitum.instance.Difficulty.Hp);
+			npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);
+			npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);
 
-
+			
 			
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)

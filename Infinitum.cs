@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Chat;
 using Microsoft.Xna.Framework;
+using Infinitum.WorldChanges;
 
 namespace Infinitum
 {
@@ -13,6 +14,9 @@ namespace Infinitum
     {
         public static Infinitum instance;
         public static Mod myMod = ModLoader.GetMod("Infinitum");
+        private AdaptativeDifficulty difficulty;
+
+        internal AdaptativeDifficulty Difficulty{ get => difficulty; set => difficulty = value; }
 
         public Infinitum() { }
 
@@ -23,10 +27,12 @@ namespace Infinitum
         }
         public override void Load()
         {
-            base.Load();
-            instance = this;          
+            instance = this;
+            difficulty = new AdaptativeDifficulty();
+            base.Load();                    
         }
 
+        
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {//TODO: Rework with ids and stuff
             if (Main.netMode == NetmodeID.Server)

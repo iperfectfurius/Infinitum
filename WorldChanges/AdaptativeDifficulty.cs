@@ -29,13 +29,17 @@ namespace Infinitum.WorldChanges
             SetDefaults();
             SetDifficultyOnLoad(data);
         }
+        public AdaptativeDifficulty()
+        {
+            SetDefaults();
+        }
 
         private void SetDefaults()
         {
-            hp = 1f;
-            speed = 1f;
-            defense = 1f;
-            damage = 1f;
+            hp = 0.25f;
+            speed = 1.0f;
+            defense = 0.10f;
+            damage = 0.10f;
             difficulty = Difficulties.Normal;
         }
 
