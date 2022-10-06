@@ -28,7 +28,7 @@ namespace Infinitum
         public override void Load()
         {
             instance = this;
-            difficulty = new AdaptativeDifficulty();
+            difficulty = new AdaptativeDifficulty(Difficulties.Normal);
             base.Load();                    
         }
 

@@ -106,13 +106,14 @@ namespace Infinitum
 
         public override void LoadWorldData(TagCompound tag)
         {
-            Infinitum.instance.Difficulty = new AdaptativeDifficulty(tag);
+            Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
             base.LoadWorldData(tag);
         }
 
         public override void SaveWorldData(TagCompound tag)
         {
             //InfinitumNPCs testing = (InfinitumNPCs)GetContent<InfinitumNPCs>();
+            tag.Add("test", 0);
             base.SaveWorldData(tag);
         }
         internal class SanjacobosOrePass : GenPass

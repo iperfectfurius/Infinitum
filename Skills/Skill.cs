@@ -71,7 +71,7 @@ namespace Infinitum.Skills
             if (skillId > skills.Length) return false;
 
             //while here?
-            if (skills[skillId].ApplyStat((int)SkillEnums.Actions.LevelUp, ref levels))
+            if (skills[skillId].ApplyStat(SkillEnums.Actions.LevelUp, ref levels))
             {
                 player.GetModPlayer<Character_Data>().showDamageText(0, $"{skills[skillId].displayName} {skills[skillId].GetStatText()}", Color.Purple, 120, true, false);
 
@@ -127,7 +127,7 @@ namespace Infinitum.Skills
         }
         public virtual bool LevelUp(ref int Levels)
         {
-            if (Levels > cost)
+            if (Levels >= cost)
             {
                 Levels -= cost;
                 level++;

@@ -21,7 +21,8 @@ namespace Infinitum
         private float GetXpFromNPC(NPC target) => ((GetDefense(target.defense) * 0.025f) + 0.5f) * (float)(target.lifeMax / 5.5);
 		
 		public override void OnKill(NPC npc)
-		{			
+		{
+			
 			float xp = GetXpFromNPC(npc);
 
 			if (Main.netMode == NetmodeID.Server)
@@ -39,9 +40,9 @@ namespace Infinitum
 			{
 				
 				addXpToPlayer(xp);
-
+				
 			}
-			base.OnKill(npc);
+            base.OnKill(npc);
 		}
         public static void ChatMessage(string text)
 		{
@@ -94,7 +95,7 @@ namespace Infinitum
 			npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);
 
 			
-			
+
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {
