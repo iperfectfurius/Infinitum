@@ -15,7 +15,6 @@ namespace Infinitum
 	public class InfinitumNPCs : GlobalNPC
 	{
 		private static Mod myMod = Infinitum.myMod;
-		public static InfinitumNPCs instance;
         //TODO Rework xp scalate
         private float GetDefense(int defense) => defense > 120 ? 120 : defense;
         private float GetXpFromNPC(NPC target) => ((GetDefense(target.defense) * 0.025f) + 0.5f) * (float)(target.lifeMax / 5.5);

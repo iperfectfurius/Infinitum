@@ -26,13 +26,12 @@ namespace Infinitum.WorldChanges
             Speed,
             Defense,
             Damage
-        }     
+        }
         private float hp;
         private float speed;
         private float defense;
         private float damage;
         private Difficulties difficulty;
-        private Boss.BossType currentDifficulty = Boss.BossType.PreHardMode;
         private List<Boss> bosses = new();
         private float[,] Escalation = new float[Enum.GetNames(typeof(Difficulties)).Length, Enum.GetNames(typeof(EscalationOrder)).Length];
         private readonly float[] DifficultyXP = { 1.0f, 1.25f, 1.40f, 1.3f, 1.4f, 1.5f, 1.6f, 1.0f };
@@ -65,7 +64,7 @@ namespace Infinitum.WorldChanges
 
         private void LoadBreakPointsBosses()
         {
-            Boss WallOfFlesh = new(113,false);
+            Boss WallOfFlesh = new(113, false);
             Boss Plantera = new(262, false);
 
             WallOfFlesh.Type = Boss.BossType.HardMode;
@@ -129,13 +128,15 @@ namespace Infinitum.WorldChanges
         }
         public void ChangeDifficulty(Difficulties difficulty)
         {
+            Difficulty = difficulty;
+
             switch (difficulty)
             {
                 case Difficulties.Normal:
                     ChangeMonsterStats(0.05f, 0, 0.0f, 0.02f);
                     break;
                 case Difficulties.Hard:
-                    ChangeMonsterStats(0.50f, 0, 0.15f, 0.15f);
+                    ChangeMonsterStats(0.1f, 0, 0.05f, 0.04f);
                     break;
                 case Difficulties.T1:
                     ChangeMonsterStats(0.75f, 0, 0.20f, 0.20f);
@@ -155,8 +156,6 @@ namespace Infinitum.WorldChanges
                     break;
 
             }
-
-            Difficulty = difficulty;
         }
         private void ChangeMonsterStats(float hp = 0f, float speed = 0f, float defense = 0f, float damage = 0f)
         {
@@ -171,12 +170,16 @@ namespace Infinitum.WorldChanges
 
             switch (npc.type)
             {
-                case 113:
+                case (int)Boss.BossesIds.WallOfFlesh:
                     AddNewBossDefeated(npc, Boss.BossType.PreHardMode);
-                    ChangeMonsterStats(0.125f,0,0.035f,0.035f);
+                    ChangeMonsterStats(
+                        Escalation[(int)difficulty, (int)EscalationOrder.HP] * 9,
+                        0,
+                        Escalation[(int)difficulty, (int)EscalationOrder.Defense] * 9,
+                        Escalation[(int)difficulty, (int)EscalationOrder.Damage] * 9);
                     //AdjustDifficulty();
                     break;
-                    
+
                 default:
                     AddNewBossDefeated(npc);
                     break;
@@ -184,16 +187,16 @@ namespace Infinitum.WorldChanges
             //AddNewBossDefeated(npc);
             return true;
         }
-        
-        private void AddNewBossDefeated(NPC boss,Boss.BossType type = Boss.BossType.PreHardMode)
+
+        private void AddNewBossDefeated(NPC boss, Boss.BossType type = Boss.BossType.PreHardMode)
         {
-            Boss newBoss = new(boss.type,type);
+            Boss newBoss = new(boss.type, type);
             bosses.Add(newBoss);
             Main.NewText("Added a new Boss");
         }
         private void AdjustDifficulty()
         {
-            
+
         }
         public string GetCurrentStatsFromMonsters()
         {
