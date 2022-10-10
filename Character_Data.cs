@@ -121,7 +121,8 @@ namespace Infinitum
         {
             if (Main.gameMenu) return;//This can be triggered by calamity first time in the world?
 
-            double experienceObtained = (double)xp * ((double)expMultiplier * moreExpMultiplier);
+            double experienceObtained = ((double)xp * ((double)expMultiplier * moreExpMultiplier)) * Infinitum.instance.Difficulty.GetXPFromDifficulty;
+
             exp += experienceObtained;
             UpdateLevel();
             showDamageText((int)CombatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);

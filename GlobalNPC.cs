@@ -22,6 +22,7 @@ namespace Infinitum
 		
 		public override void OnKill(NPC npc)
 		{
+			Infinitum.instance.Difficulty.CheckBossPlaythrough(npc);
 			
 			float xp = GetXpFromNPC(npc);
 
@@ -82,10 +83,6 @@ namespace Infinitum
 		{
 			Infinitum.instance.AddXPToPlayer(xp);
 		}
-        public override void OnSpawn(NPC npc, IEntitySource source)
-        {			
-			//base.OnSpawn(npc, source);
-        }
         public override void SetDefaults(NPC npc)
         {
 			base.SetDefaults(npc);
@@ -107,8 +104,6 @@ namespace Infinitum
                 shop.item[nextSlot].shopCustomPrice = Item.sellPrice(platinum: 2);
 
                 nextSlot++;
-
-
             }
             //base.SetupShop(type, shop, ref nextSlot);
         }

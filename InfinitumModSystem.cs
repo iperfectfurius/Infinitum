@@ -109,7 +109,7 @@ namespace Infinitum
             Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
             base.LoadWorldData(tag);
         }
-
+        
         public override void SaveWorldData(TagCompound tag)
         {
             //InfinitumNPCs testing = (InfinitumNPCs)GetContent<InfinitumNPCs>();
