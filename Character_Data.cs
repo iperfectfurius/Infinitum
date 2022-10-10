@@ -478,7 +478,6 @@ namespace Infinitum
 
             Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(0);
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(0);
-
             recentChanged = true;
         }
         public void ResetAllSkills(int currentSets)

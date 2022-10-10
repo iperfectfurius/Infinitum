@@ -65,7 +65,7 @@ namespace Infinitum
         }
         public void GameMessage(string text, Color color)
         {
-            if (Main.netMode == NetmodeID.Server)
+            if (Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.Server)
             {
                 ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), color);
             }

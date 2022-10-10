@@ -84,14 +84,14 @@ namespace Infinitum
 		}
         public override void SetDefaults(NPC npc)
         {
-			base.SetDefaults(npc);
 			npc.life += (int)(npc.life * Infinitum.instance.Difficulty.Hp);
 			npc.lifeMax += (int)(npc.lifeMax * Infinitum.instance.Difficulty.Hp);
 			npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);
 			npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);
-
+		
 			
-
+			if(!Main.gameMenu && Main.netMode == NetmodeID.Server)
+				Infinitum.instance.GameMessage($"{Infinitum.instance.Difficulty.Hp}", Color.Red);
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {

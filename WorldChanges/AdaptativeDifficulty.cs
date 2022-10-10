@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader.IO;
 
 namespace Infinitum.WorldChanges
@@ -192,7 +190,7 @@ namespace Infinitum.WorldChanges
         {
             Boss newBoss = new(boss.type, type);
             bosses.Add(newBoss);
-            Main.NewText("Added a new Boss");
+            Infinitum.instance.GameMessage("Added new Boss",Color.White);
         }
         private void AdjustDifficulty()
         {
