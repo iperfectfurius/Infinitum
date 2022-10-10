@@ -34,7 +34,7 @@ namespace Infinitum.WorldChanges
         private Difficulties difficulty;
         private List<Boss> bosses = new();
         private float[,] Escalation = new float[Enum.GetNames(typeof(Difficulties)).Length, Enum.GetNames(typeof(EscalationOrder)).Length];
-        private readonly float[] DifficultyXP = { 1.0f, 1.25f, 1.40f, 1.3f, 1.4f, 1.5f, 1.6f, 1.0f };
+        private readonly float[] DifficultyXP = { .0f, 0.25f, 0.40f, 1.3f, 1.4f, 1.5f, 1.6f, 1.0f };
         public float Hp { get => hp; set => hp = value; }
         public float Speed { get => speed; set => speed = value; }
         public float Defense { get => defense; set => defense = value; }
@@ -136,7 +136,7 @@ namespace Infinitum.WorldChanges
                     ChangeMonsterStats(0.05f, 0, 0.0f, 0.02f);
                     break;
                 case Difficulties.Hard:
-                    ChangeMonsterStats(0.1f, 0, 0.05f, 0.04f);
+                    ChangeMonsterStats(0.1f, 0, 0.025f, 0.04f);
                     break;
                 case Difficulties.T1:
                     ChangeMonsterStats(0.75f, 0, 0.20f, 0.20f);

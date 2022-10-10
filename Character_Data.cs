@@ -97,9 +97,9 @@ namespace Infinitum
             if (messageReset)
             {
                 showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 180, true);
-                ChatMessage($"New Skills Version Detected. Check Your skills has beed reset.[Infinitum v{version}]",Color.Red);
+                ChatMessage($"New Skills Version Detected. Check Your skills has beed reset.[Infinitum v{version}]", Color.Red);
             }
-                
+
 
         }
         public void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
@@ -121,7 +121,7 @@ namespace Infinitum
         {
             if (Main.gameMenu) return;//This can be triggered by calamity first time in the world?
 
-            double experienceObtained = ((double)xp * ((double)expMultiplier * moreExpMultiplier)) * Infinitum.instance.Difficulty.GetXPFromDifficulty;
+            double experienceObtained = (double)xp * ((double)expMultiplier * (moreExpMultiplier + Infinitum.instance.Difficulty.GetXPFromDifficulty));
 
             exp += experienceObtained;
             UpdateLevel();
@@ -196,7 +196,7 @@ namespace Infinitum
                 CalcXPPerLevel();
                 loadSkills(tag);
 
-                
+
                 string? lastSet = tag.GetString("CurrentSet");
                 setSelected = string.IsNullOrEmpty(lastSet) ? "0" : lastSet;
                 recentChanged = true;
@@ -223,7 +223,7 @@ namespace Infinitum
 
             TagCompound skillData = new();
 
-            if(!skillsSets.ContainsKey(setSelected)) InitializeSkillsOfCurrentSet();//for new players
+            if (!skillsSets.ContainsKey(setSelected)) InitializeSkillsOfCurrentSet();//for new players
 
             foreach (KeyValuePair<string, Skill[]> entry in skillsSets)
             {
@@ -248,7 +248,7 @@ namespace Infinitum
         private void loadSkills(TagCompound tag)
         {
             //get names
-            if(tag.GetCompound("SkillData").Count == 0)
+            if (tag.GetCompound("SkillData").Count == 0)
             {
                 InitializeSkillsOfCurrentSet();
                 return;
@@ -405,7 +405,7 @@ namespace Infinitum
                         break;
                 }
 
-            if(player.HasBuff<XPBuff>()) moreExpMultiplier += .5f;
+            if (player.HasBuff<XPBuff>()) moreExpMultiplier += .5f;
 
             recentChanged = true;
         }
@@ -432,7 +432,7 @@ namespace Infinitum
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
             base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
         }
-        
+
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].ApplyStatToPlayer(out bool canConsumeAmmo);
@@ -563,8 +563,9 @@ namespace Infinitum
         public override void ModifyCaughtFish(Item fish)
         {
             // TODO: Add stars to pool fishing
-            if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing)){
-                
+            if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing))
+            {
+
             }
 
             int rarity = fish.rare >= ItemRarityID.White ? fish.rare : 1;
@@ -586,7 +587,7 @@ namespace Infinitum
         }
         public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {
-            if(Main.rand.NextBool(ExpStar.ChanceFromFishing))
+            if (Main.rand.NextBool(ExpStar.ChanceFromFishing))
                 itemDrop = ModContent.ItemType<ExpStar>();
             else if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing))
                 itemDrop = ModContent.ItemType<MultiplierStar>();
