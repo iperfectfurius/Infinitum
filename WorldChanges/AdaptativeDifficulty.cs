@@ -80,10 +80,10 @@ namespace Infinitum.WorldChanges
             Escalation[(int)Difficulties.Normal, (int)EscalationOrder.Defense] = 0.0056f;
             Escalation[(int)Difficulties.Normal, (int)EscalationOrder.Damage] = 0.0056f;
 
-            Escalation[(int)Difficulties.Hard, (int)EscalationOrder.HP] = 0.0139f;
+            Escalation[(int)Difficulties.Hard, (int)EscalationOrder.HP] = 0.0159f;
             Escalation[(int)Difficulties.Hard, (int)EscalationOrder.Speed] = 0.0f;
-            Escalation[(int)Difficulties.Hard, (int)EscalationOrder.Defense] = 0.0056f;
-            Escalation[(int)Difficulties.Hard, (int)EscalationOrder.Damage] = 0.0056f;
+            Escalation[(int)Difficulties.Hard, (int)EscalationOrder.Defense] = 0.0065f;
+            Escalation[(int)Difficulties.Hard, (int)EscalationOrder.Damage] = 0.0066f;
 
             Escalation[(int)Difficulties.T1, (int)EscalationOrder.HP] = 0.0139f;
             Escalation[(int)Difficulties.T1, (int)EscalationOrder.Speed] = 0.0f;
