@@ -57,14 +57,13 @@ namespace Infinitum
                     }
                     else
                     {
-
                         AddXPToPlayer(reader.ReadSingle());
                     }
                     break;
                 case MessageType.ChangeDifficulty:
                     if (Main.netMode == NetmodeID.Server) return;
 
-                    difficulty.Difficulty = (Difficulties)Enum.ToObject(typeof(Difficulties), reader.ReadByte());
+                    Difficulty.Difficulty = (Difficulties)reader.ReadByte();
                     Difficulty.Hp = reader.ReadSingle();
                     Difficulty.Speed = reader.ReadSingle();
                     Difficulty.Defense = reader.ReadSingle();
