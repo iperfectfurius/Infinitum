@@ -7,6 +7,7 @@ using Terraria.Localization;
 using Terraria.Chat;
 using Microsoft.Xna.Framework;
 using Infinitum.WorldChanges;
+using log4net.Util;
 
 namespace Infinitum
 {
@@ -31,13 +32,13 @@ namespace Infinitum
         {
             base.Load();
             instance = this;
-            
-            difficulty = new AdaptativeDifficulty(Difficulties.Normal);           
+
+            difficulty = new AdaptativeDifficulty(Difficulties.Normal);
         }
         public override void PostSetupContent()
         {
             base.PostSetupContent();
-            
+
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -52,14 +53,13 @@ namespace Infinitum
             //    AddXPToPlayer(reader.ReadSingle());
 
             MessageType messageType = (MessageType)reader.ReadByte();
-
+            myPacket = myMod.GetPacket();
             switch (messageType)
             {
                 case MessageType.XP:
                 case MessageType.XPMultiplier:
                     if (Main.netMode == NetmodeID.Server)
                     {
-                        myPacket = myMod.GetPacket();
                         myPacket.Write((byte)messageType);
                         myPacket.Write(reader.ReadSingle());
                         myPacket.Send();
@@ -68,6 +68,16 @@ namespace Infinitum
                     {
                         AddXPToPlayer(reader.ReadSingle());
                     }
+                    break;
+                case MessageType.ChangeDifficulty:
+                    if (Main.netMode == NetmodeID.Server) return;
+
+                    difficulty.Difficulty = (Difficulties)Enum.ToObject(typeof(Difficulties), reader.ReadByte());
+                    Difficulty.Hp = reader.ReadSingle();
+                    Difficulty.Speed = reader.ReadSingle();
+                    Difficulty.Defense = reader.ReadSingle();
+                    Difficulty.Damage = reader.ReadSingle();
+
                     break;
             }
 

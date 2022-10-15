@@ -118,11 +118,12 @@ namespace Infinitum
             base.Load();
 
         }
-        public void AddXp(float xp)
+        public void AddXp(float xp,bool IsXpMultiplierapplicable = true)
         {
             if (Main.gameMenu) return;//This can be triggered by calamity first time in the world?
 
             double experienceObtained = (double)xp * ((double)expMultiplier * (moreExpMultiplier + Infinitum.instance.Difficulty.GetXPFromDifficulty));
+            experienceObtained *= IsXpMultiplierapplicable ? Infinitum.instance.Difficulty.GetXPFromDifficulty : 1;
 
             exp += experienceObtained;
             UpdateLevel();

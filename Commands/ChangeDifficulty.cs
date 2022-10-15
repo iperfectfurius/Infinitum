@@ -1,5 +1,6 @@
 ﻿using Infinitum.WorldChanges;
 using Microsoft.Xna.Framework;
+using Terraria.ID;
 
 namespace Infinitum.Commands
 {
@@ -18,11 +19,24 @@ namespace Infinitum.Commands
 
             try
             {
-                Difficulties difficulty = (Difficulties)Enum.Parse(typeof(Difficulties),args[0], true);
-
+                Difficulties difficulty = (Difficulties)Enum.Parse(typeof(Difficulties), args[0], true);
                 Infinitum.instance.Difficulty.ChangeDifficulty(difficulty);
-
                 Infinitum.instance.GameMessage($"Difficulty {Infinitum.instance.Difficulty.Difficulty} setted.", Color.Blue);
+
+                if (Main.netMode != NetmodeID.Server) return;
+
+                ModPacket myPacket = ModLoader.GetMod("Infinitum").GetPacket();
+
+                myPacket.Write((byte)MessageType.ChangeDifficulty);
+                myPacket.Write((byte)difficulty);
+                myPacket.Write(Infinitum.instance.Difficulty.Hp);
+                myPacket.Write(Infinitum.instance.Difficulty.Speed);
+                myPacket.Write(Infinitum.instance.Difficulty.Defense);
+                myPacket.Write(Infinitum.instance.Difficulty.Damage);
+                myPacket.Send();
+
+
+
             }
             catch (ArgumentException)
             {
