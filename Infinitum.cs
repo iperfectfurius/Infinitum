@@ -10,39 +10,66 @@ using Infinitum.WorldChanges;
 
 namespace Infinitum
 {
+    public enum MessageType : byte
+    {
+        XP,
+        XPMultiplier,
+        ChangeDifficulty
+    }
     public class Infinitum : Mod
     {
         public static Infinitum instance;
         public static Mod myMod = ModLoader.GetMod("Infinitum");
         private AdaptativeDifficulty difficulty;
+        private ModPacket myPacket;
 
-        internal AdaptativeDifficulty Difficulty{ get => difficulty; set => difficulty = value; }
+        internal AdaptativeDifficulty Difficulty { get => difficulty; set => difficulty = value; }
 
         public Infinitum() { }
 
-        public enum MessageType : byte
-        {
-            XP,
-            XPMultiplier
-        }
         public override void Load()
         {
+            base.Load();
             instance = this;
-            difficulty = new AdaptativeDifficulty(Difficulties.Normal);
-            base.Load();                    
+            
+            difficulty = new AdaptativeDifficulty(Difficulties.Normal);           
+        }
+        public override void PostSetupContent()
+        {
+            base.PostSetupContent();
+            
         }
 
-        
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {//TODO: Rework with ids and stuff
-            if (Main.netMode == NetmodeID.Server)
+            //if (Main.netMode == NetmodeID.Server)
+            //{
+            //    ModPacket myPacket = myMod.GetPacket();
+            //    myPacket.Write(reader.ReadSingle());
+            //    myPacket.Send();
+            //}
+            //else//singlePlayer or client, doesn't matter
+            //    AddXPToPlayer(reader.ReadSingle());
+
+            MessageType messageType = (MessageType)reader.ReadByte();
+
+            switch (messageType)
             {
-                ModPacket myPacket = myMod.GetPacket();
-                myPacket.Write(reader.ReadSingle());
-                myPacket.Send();
-            }             
-            else//singlePlayer or client, doesn't matter
-                AddXPToPlayer(reader.ReadSingle());
+                case MessageType.XP:
+                case MessageType.XPMultiplier:
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        myPacket = myMod.GetPacket();
+                        myPacket.Write((byte)messageType);
+                        myPacket.Write(reader.ReadSingle());
+                        myPacket.Send();
+                    }
+                    else
+                    {
+                        AddXPToPlayer(reader.ReadSingle());
+                    }
+                    break;
+            }
 
             base.HandlePacket(reader, whoAmI);
         }
@@ -71,7 +98,7 @@ namespace Infinitum
             }
             else if (Main.netMode == NetmodeID.SinglePlayer)
             {
-                Main.NewText(text,color);
+                Main.NewText(text, color);
             }
         }
 

@@ -6,6 +6,7 @@ using Infinitum.WorldBuilding.Tiles;
 using Infinitum.WorldChanges;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using NVorbis.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -103,13 +105,15 @@ namespace Infinitum
             }
 
         }
-
+        public override void OnWorldLoad()
+        {   
+            base.OnWorldLoad();
+        }
         public override void LoadWorldData(TagCompound tag)
         {
             Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
             base.LoadWorldData(tag);
         }
-        
         public override void SaveWorldData(TagCompound tag)
         {
             //InfinitumNPCs testing = (InfinitumNPCs)GetContent<InfinitumNPCs>();

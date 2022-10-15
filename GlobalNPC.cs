@@ -12,86 +12,80 @@ using System.Threading.Tasks;
 
 namespace Infinitum
 {
-	public class InfinitumNPCs : GlobalNPC
-	{
-		private static Mod myMod = Infinitum.myMod;
+    public class InfinitumNPCs : GlobalNPC
+    {
+        private static Mod myMod = Infinitum.myMod;
         //TODO Rework xp scalate
         private float GetDefense(int defense) => defense > 120 ? 120 : defense;
         private float GetXpFromNPC(NPC target) => ((GetDefense(target.defense) * 0.025f) + 0.5f) * (float)(target.lifeMax / 5.5);
-		
-		public override void OnKill(NPC npc)
-		{
-			Infinitum.instance.Difficulty.CheckBossPlaythrough(npc);
-			
-			float xp = GetXpFromNPC(npc);
 
-			if (Main.netMode == NetmodeID.Server)
-			{
-				//This helps in performance??
-				Task.Run(() =>
-                {
-					ModPacket myPacket = myMod.GetPacket();
-					myPacket.Write(xp);
-					myPacket.Send();
-				});
-				
-			}
-			else if (Main.netMode == NetmodeID.SinglePlayer)
-			{
-				
-				addXpToPlayer(xp);
-				
-			}
+        public override void OnKill(NPC npc)
+        {
+            Infinitum.instance.Difficulty.CheckBossPlaythrough(npc);
+
+            float xp = GetXpFromNPC(npc);
+
+            if (Main.netMode == NetmodeID.Server)
+            {
+                ModPacket myPacket = myMod.GetPacket();
+                myPacket.Write((byte)MessageType.XP);
+                myPacket.Write(xp);
+                myPacket.Send();
+            }
+            else if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                addXpToPlayer(xp);
+            }
             base.OnKill(npc);
-		}
+        }
         public static void ChatMessage(string text)
-		{
-			
-			if (Main.netMode == NetmodeID.Server)
-			{
-				ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
-			}
-			else if (Main.netMode == NetmodeID.SinglePlayer)
-			{
-				Main.NewText(text);
-			}
-		}
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-		{						
-			base.ModifyNPCLoot(npc, npcLoot);
-		}
-		public override void ModifyGlobalLoot(GlobalLoot globalLoot)
-		{
-			
-			System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
-			items.Add(new DropBasedOnExpertMode(
-				new CommonDrop(ModContent.ItemType<ExpStar>(), ExpStar.NormalChanceFromNPCs, 1), 
-				new CommonDrop(ModContent.ItemType<ExpStar>(), ExpStar.ExpertChanceFromNPCs, 1)));
-			items.Add(new DropBasedOnExpertMode(
-				new CommonDrop(ModContent.ItemType<MultiplierStar>(),MultiplierStar.NormalChanceFromNPCS, 1, 3),
-				new CommonDrop(ModContent.ItemType<MultiplierStar>(), MultiplierStar.ExpertChanceFromNPCS, 1, 3)));
-			items.Add(new ItemDropWithConditionRule(ModContent.ItemType<SuperiorMultiplierStar>(), SuperiorMultiplierStar.ChanceFromNPCS, 1, 1, new Conditions.IsHardmode()));
+        {
 
-			items.ForEach(e => globalLoot.Add(e));
-		}
+            if (Main.netMode == NetmodeID.Server)
+            {
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
+            }
+            else if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                Main.NewText(text);
+            }
+        }
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npc, npcLoot);
+        }
+        public override void ModifyGlobalLoot(GlobalLoot globalLoot)
+        {
+
+            System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
+            items.Add(new DropBasedOnExpertMode(
+                new CommonDrop(ModContent.ItemType<ExpStar>(), ExpStar.NormalChanceFromNPCs, 1),
+                new CommonDrop(ModContent.ItemType<ExpStar>(), ExpStar.ExpertChanceFromNPCs, 1)));
+            items.Add(new DropBasedOnExpertMode(
+                new CommonDrop(ModContent.ItemType<MultiplierStar>(), MultiplierStar.NormalChanceFromNPCS, 1, 3),
+                new CommonDrop(ModContent.ItemType<MultiplierStar>(), MultiplierStar.ExpertChanceFromNPCS, 1, 3)));
+            items.Add(new ItemDropWithConditionRule(ModContent.ItemType<SuperiorMultiplierStar>(), SuperiorMultiplierStar.ChanceFromNPCS, 1, 1, new Conditions.IsHardmode()));
+
+            items.ForEach(e => globalLoot.Add(e));
+        }
         public override void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             base.SetBestiary(npc, database, bestiaryEntry);
         }
         private void addXpToPlayer(float xp)
-		{
-			Infinitum.instance.AddXPToPlayer(xp);
-		}
+        {
+            Infinitum.instance.AddXPToPlayer(xp);
+        }
         public override void SetDefaults(NPC npc)
         {
-			npc.life += (int)(npc.life * Infinitum.instance.Difficulty.Hp);
-			npc.lifeMax += (int)(npc.lifeMax * Infinitum.instance.Difficulty.Hp);
-			npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);
-			npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);
-		
-			
-			if(!Main.gameMenu && Main.netMode == NetmodeID.Server)
-				Infinitum.instance.GameMessage($"{Infinitum.instance.Difficulty.Hp}", Color.Red);
+            npc.life += (int)(npc.life * Infinitum.instance.Difficulty.Hp);
+            npc.lifeMax += (int)(npc.lifeMax * Infinitum.instance.Difficulty.Hp);
+            npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);
+            npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);
+
+
+            if (!Main.gameMenu && Main.netMode == NetmodeID.Server)
+                Infinitum.instance.GameMessage($"{Infinitum.instance.Difficulty.Hp}", Color.Red);
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {
@@ -106,7 +100,7 @@ namespace Infinitum
             }
             //base.SetupShop(type, shop, ref nextSlot);
         }
-		
+
 
     }
 }

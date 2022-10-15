@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Infinitum.Items;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Infinitum.WorldBuilding
 {
@@ -23,6 +24,7 @@ namespace Infinitum.WorldBuilding
         private bool notUnloadedTiles = true;
         private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, 408 };
         public HashSet<string> bannedTiles = new HashSet<string>();
+        private ModPacket myPacket;
 
         public override bool Drop(int i, int j, int type)
         {
@@ -76,8 +78,7 @@ namespace Infinitum.WorldBuilding
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
                 return base.Drop(i, j, type);
 
-            }
-
+            }         
 
             if (!isOre(type))
             {
@@ -313,12 +314,10 @@ namespace Infinitum.WorldBuilding
         }
         private void sendXPToPlayers(float xp)
         {
-            Task.Run(() =>
-            {
-                ModPacket myPacket = myMod.GetPacket();
-                myPacket.Write(xp);
-                myPacket.Send();
-            });
+            myPacket = myMod.GetPacket();
+            myPacket.Write((byte)MessageType.XP);
+            myPacket.Write(xp);
+            myPacket.Send();
         }
         private void sendAccumulatedXPFromTile(float xp)
         {
@@ -338,9 +337,7 @@ namespace Infinitum.WorldBuilding
 
                     else if (Main.netMode == NetmodeID.Server)
                     {
-                        ModPacket myPacket = myMod.GetPacket();
-                        myPacket.Write(accumulatedXP);
-                        myPacket.Send();
+                        sendXPToPlayers(accumulatedXP);
                     }
                     haveXPAccumulated = false;
                     accumulatedXP = 0;
@@ -348,7 +345,7 @@ namespace Infinitum.WorldBuilding
             }
         }
 
-        
+
     }
 
 }

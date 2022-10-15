@@ -21,6 +21,7 @@ namespace Infinitum.Commands
                 Difficulties difficulty = (Difficulties)Enum.Parse(typeof(Difficulties),args[0], true);
 
                 Infinitum.instance.Difficulty.ChangeDifficulty(difficulty);
+
                 Infinitum.instance.GameMessage($"Difficulty {Infinitum.instance.Difficulty.Difficulty} setted.", Color.Blue);
             }
             catch (ArgumentException)

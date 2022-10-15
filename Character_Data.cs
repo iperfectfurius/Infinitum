@@ -27,6 +27,7 @@ namespace Infinitum
     {
         private Player player = Main.CurrentPlayer;
         private static Mod myMod = ModLoader.GetMod("Infinitum");
+        private ModPacket myPacket;
         private UISettings playerSettings = new();
         private bool recentChanged = false;
         private string lastHeldItem;
@@ -577,7 +578,8 @@ namespace Infinitum
                 //mirar
                 Task.Run(() =>
                 {
-                    ModPacket myPacket = Infinitum.instance.GetPacket();
+                    myPacket = myMod.GetPacket();
+                    myPacket.Write((byte)MessageType.XP);
                     myPacket.Write(xp);
                     myPacket.Send();
                 });
