@@ -42,16 +42,7 @@ namespace Infinitum
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
-        {//TODO: Rework with ids and stuff
-            //if (Main.netMode == NetmodeID.Server)
-            //{
-            //    ModPacket myPacket = myMod.GetPacket();
-            //    myPacket.Write(reader.ReadSingle());
-            //    myPacket.Send();
-            //}
-            //else//singlePlayer or client, doesn't matter
-            //    AddXPToPlayer(reader.ReadSingle());
-
+        {
             MessageType messageType = (MessageType)reader.ReadByte();
             myPacket = myMod.GetPacket();
             switch (messageType)
@@ -66,6 +57,7 @@ namespace Infinitum
                     }
                     else
                     {
+
                         AddXPToPlayer(reader.ReadSingle());
                     }
                     break;
