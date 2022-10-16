@@ -28,7 +28,7 @@ namespace Infinitum
             if (Main.netMode == NetmodeID.Server)
             {
                 ModPacket myPacket = myMod.GetPacket();
-                myPacket.Write((byte)MessageType.XP);
+                myPacket.Write((byte)MessageType.XPFromNPCs);
                 myPacket.Write(xp);
                 myPacket.Send();
             }
@@ -82,10 +82,6 @@ namespace Infinitum
             npc.lifeMax += (int)(npc.lifeMax * Infinitum.instance.Difficulty.Hp);
             npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);
             npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);
-
-
-            if (!Main.gameMenu && Main.netMode == NetmodeID.Server)
-                Infinitum.instance.GameMessage($"{Infinitum.instance.Difficulty.Hp}", Color.Red);
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {

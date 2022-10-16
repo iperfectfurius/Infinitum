@@ -315,7 +315,7 @@ namespace Infinitum.WorldBuilding
         private void sendXPToPlayers(float xp)
         {
             myPacket = myMod.GetPacket();
-            myPacket.Write((byte)MessageType.XP);
+            myPacket.Write((byte)MessageType.XPFromNPCs);
             myPacket.Write(xp);
             myPacket.Send();
         }

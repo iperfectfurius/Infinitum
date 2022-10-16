@@ -13,9 +13,11 @@ namespace Infinitum
 {
     public enum MessageType : byte
     {
-        XP,
+        XPFromNPCs,
+        XPFromOtherSources,
         XPMultiplier,
-        ChangeDifficulty
+        ChangeDifficulty,
+        GetDifficultySettings
     }
     public class Infinitum : Mod
     {
@@ -38,7 +40,6 @@ namespace Infinitum
         public override void PostSetupContent()
         {
             base.PostSetupContent();
-
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -47,7 +48,7 @@ namespace Infinitum
             myPacket = myMod.GetPacket();
             switch (messageType)
             {
-                case MessageType.XP:
+                case MessageType.XPFromNPCs:
                 case MessageType.XPMultiplier:
                     if (Main.netMode == NetmodeID.Server)
                     {
@@ -63,12 +64,11 @@ namespace Infinitum
                 case MessageType.ChangeDifficulty:
                     if (Main.netMode == NetmodeID.Server) return;
 
-                    Difficulty.Difficulty = (Difficulties)reader.ReadByte();
+                    Difficulty.DifficultySetted = (Difficulties)reader.ReadByte();
                     Difficulty.Hp = reader.ReadSingle();
                     Difficulty.Speed = reader.ReadSingle();
                     Difficulty.Defense = reader.ReadSingle();
                     Difficulty.Damage = reader.ReadSingle();
-
                     break;
             }
 

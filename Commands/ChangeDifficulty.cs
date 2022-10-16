@@ -13,7 +13,7 @@ namespace Infinitum.Commands
         {
             if (args.Length != 1)
             {
-                Infinitum.instance.GameMessage($"Please, select any difficultys, /difficulty [Normal,Hard,T1 or Disabled].(Currently selected {Infinitum.instance.Difficulty.Difficulty})", Color.Red);
+                Infinitum.instance.GameMessage($"Please, select any difficultys, /difficulty [Normal,Hard,T1 or Disabled].(Currently selected {Infinitum.instance.Difficulty.DifficultySetted})", Color.Red);
                 return;
             }
 
@@ -21,7 +21,7 @@ namespace Infinitum.Commands
             {
                 Difficulties difficulty = (Difficulties)Enum.Parse(typeof(Difficulties), args[0], true);
                 Infinitum.instance.Difficulty.ChangeDifficulty(difficulty);
-                Infinitum.instance.GameMessage($"Difficulty {Infinitum.instance.Difficulty.Difficulty} setted.", Color.Blue);
+                Infinitum.instance.GameMessage($"Difficulty {Infinitum.instance.Difficulty.DifficultySetted} setted.", Color.Blue);
 
                 if (Main.netMode != NetmodeID.Server) return;
 

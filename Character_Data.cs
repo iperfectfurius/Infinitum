@@ -580,7 +580,7 @@ namespace Infinitum
                 Task.Run(() =>
                 {
                     myPacket = myMod.GetPacket();
-                    myPacket.Write((byte)MessageType.XP);
+                    myPacket.Write((byte)MessageType.XPFromNPCs);
                     myPacket.Write(xp);
                     myPacket.Send();
                 });

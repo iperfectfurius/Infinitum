@@ -29,7 +29,7 @@ namespace Infinitum.WorldChanges
         private float speed;
         private float defense;
         private float damage;
-        private Difficulties difficulty;
+        private Difficulties difficultySetted;
         private List<Boss> bosses = new();
         private float[,] Escalation = new float[Enum.GetNames(typeof(Difficulties)).Length, Enum.GetNames(typeof(EscalationOrder)).Length];
         private readonly float[] DifficultyXP = { 1.0f, 1.25f, 1.40f, 1.3f, 1.4f, 1.5f, 1.6f, 1.0f };
@@ -37,9 +37,9 @@ namespace Infinitum.WorldChanges
         public float Speed { get => speed; set => speed = value; }
         public float Defense { get => defense; set => defense = value; }
         public float Damage { get => damage; set => damage = value; }
-        public Difficulties Difficulty { get => difficulty; set => difficulty = value; }
+        public Difficulties DifficultySetted { get => difficultySetted; set => difficultySetted = value; }
         internal List<Boss> Bosses { get => bosses; set => bosses = value; }
-        public float GetXPFromDifficulty => DifficultyXP[(int)difficulty];
+        public float GetXPFromDifficulty => DifficultyXP[(int)difficultySetted];
 
         public bool IsBossDefeated(int id) => bosses.Exists(e => e.Id == id && e.Defeated);
 
@@ -126,7 +126,7 @@ namespace Infinitum.WorldChanges
         }
         public void ChangeDifficulty(Difficulties difficulty)
         {
-            Difficulty = difficulty;
+            DifficultySetted = difficulty;
 
             switch (difficulty)
             {
@@ -171,10 +171,10 @@ namespace Infinitum.WorldChanges
                 case (int)Boss.BossesIds.WallOfFlesh:
                     AddNewBossDefeated(npc, Boss.BossType.PreHardMode);
                     ChangeMonsterStats(
-                        Escalation[(int)difficulty, (int)EscalationOrder.HP] * 9,
+                        Escalation[(int)difficultySetted, (int)EscalationOrder.HP] * 9,
                         0,
-                        Escalation[(int)difficulty, (int)EscalationOrder.Defense] * 9,
-                        Escalation[(int)difficulty, (int)EscalationOrder.Damage] * 9);
+                        Escalation[(int)difficultySetted, (int)EscalationOrder.Defense] * 9,
+                        Escalation[(int)difficultySetted, (int)EscalationOrder.Damage] * 9);
                     //AdjustDifficulty();
                     break;
 
