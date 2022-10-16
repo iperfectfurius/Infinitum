@@ -45,23 +45,25 @@ namespace Infinitum
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
             MessageType messageType = (MessageType)reader.ReadByte();
-            myPacket = myMod.GetPacket();
+            
             switch (messageType)
             {
                 case MessageType.XPFromNPCs:
+                case MessageType.XPFromOtherSources:
                 case MessageType.XPMultiplier:
                     if (Main.netMode == NetmodeID.Server)
                     {
+                        myPacket = myMod.GetPacket();
                         myPacket.Write((byte)messageType);
                         myPacket.Write(reader.ReadSingle());
                         myPacket.Send();
                     }
                     else
                     {
-                        AddXPToPlayer(reader.ReadSingle());
+                        AddXPToPlayer(reader.ReadSingle(),messageType == MessageType.XPFromNPCs);
                     }
                     break;
-                case MessageType.ChangeDifficulty:
+                case MessageType.ChangeDifficulty://only Client
                     if (Main.netMode == NetmodeID.Server) return;
 
                     Difficulty.DifficultySetted = (Difficulties)reader.ReadByte();
@@ -70,14 +72,27 @@ namespace Infinitum
                     Difficulty.Defense = reader.ReadSingle();
                     Difficulty.Damage = reader.ReadSingle();
                     break;
+                case MessageType.GetDifficultySettings:
+                    if(Main.netMode == NetmodeID.Server)
+                    {
+                        myPacket = myMod.GetPacket();
+                        myPacket.Write((byte)MessageType.ChangeDifficulty);
+                        myPacket.Write((byte)Difficulty.DifficultySetted);
+                        myPacket.Write(Difficulty.Hp);
+                        myPacket.Write(Difficulty.Speed);
+                        myPacket.Write(Difficulty.Defense);
+                        myPacket.Write(Difficulty.Damage);
+                        myPacket.Send(whoAmI);
+                    }
+                    break;
             }
 
             base.HandlePacket(reader, whoAmI);
         }
 
-        public void AddXPToPlayer(float xp)
+        public void AddXPToPlayer(float xp,bool XPMultiplierApplicable = true)
         {//test myplayer
-            Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp);
+            Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp, XPMultiplierApplicable);
         }
 
         public void ChatMessage(string text, Color red)

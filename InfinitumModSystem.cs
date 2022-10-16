@@ -34,6 +34,7 @@ namespace Infinitum
         public static ModKeybind UIKey;
         public static ModKeybind NumbersDisplay;
         public static ModKeybind ChangeSet;
+        private ModPacket myPacket;
         public override void Load()
         {
 
@@ -108,6 +109,12 @@ namespace Infinitum
         public override void OnWorldLoad()
         {   
             base.OnWorldLoad();
+            if(Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                myPacket = ModLoader.GetMod("Infinitum").GetPacket();
+                myPacket.Write((byte)MessageType.GetDifficultySettings);
+                myPacket.Send();
+            }
         }
         public override void LoadWorldData(TagCompound tag)
         {
