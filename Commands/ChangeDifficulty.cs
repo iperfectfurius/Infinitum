@@ -13,7 +13,7 @@ namespace Infinitum.Commands
         {
             if (args.Length != 1)
             {
-                Infinitum.instance.GameMessage($"Please, select any difficultys, /difficulty [Normal,Hard,T1 or Disabled].(Currently selected {Infinitum.instance.Difficulty.DifficultySetted})", Color.Red);
+                Infinitum.instance.GameMessage($"Please, select any difficulties, /difficulty [Normal,Hard,T1 or Disabled].(Currently selected {Infinitum.instance.Difficulty.DifficultySetted})", Color.Red);
                 return;
             }
 

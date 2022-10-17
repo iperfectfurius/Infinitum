@@ -33,6 +33,7 @@ namespace Infinitum.WorldChanges
         private List<Boss> bosses = new();
         private float[,] Escalation = new float[Enum.GetNames(typeof(Difficulties)).Length, Enum.GetNames(typeof(EscalationOrder)).Length];
         private readonly float[] DifficultyXP = { 1.0f, 1.25f, 1.40f, 1.3f, 1.4f, 1.5f, 1.6f, 1.0f };
+        public const string version = "0.82.4";
         public float Hp { get => hp; set => hp = value; }
         public float Speed { get => speed; set => speed = value; }
         public float Defense { get => defense; set => defense = value; }

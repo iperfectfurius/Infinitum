@@ -332,7 +332,7 @@ namespace Infinitum.WorldBuilding
 
                     if (Main.netMode != NetmodeID.Server)
                     {
-                        Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(accumulatedXP);
+                        Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(accumulatedXP,false);
                     }
 
                     else if (Main.netMode == NetmodeID.Server)

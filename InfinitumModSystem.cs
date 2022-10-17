@@ -107,9 +107,9 @@ namespace Infinitum
 
         }
         public override void OnWorldLoad()
-        {   
+        {
             base.OnWorldLoad();
-            if(Main.netMode == NetmodeID.MultiplayerClient)
+            if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 myPacket = ModLoader.GetMod("Infinitum").GetPacket();
                 myPacket.Write((byte)MessageType.GetDifficultySettings);
@@ -118,13 +118,41 @@ namespace Infinitum
         }
         public override void LoadWorldData(TagCompound tag)
         {
-            Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
+            if (tag.GetCompound("AdapatativeDifficulty").Count != 0)
+                LoadAdaptativeDifficulty(tag.GetCompound("AdapatativeDifficulty"));
+            else Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
+
             base.LoadWorldData(tag);
         }
+
+        private void LoadAdaptativeDifficulty(TagCompound tag)
+        {
+            try
+            {
+                Infinitum.instance.Difficulty.ChangeDifficulty((Difficulties)tag.GetByte("Difficulty"));
+                Infinitum.instance.Difficulty.Hp = tag.GetFloat("Hp");
+                Infinitum.instance.Difficulty.Speed = tag.GetFloat("Speed");
+                Infinitum.instance.Difficulty.Defense = tag.GetFloat("Defense");
+                Infinitum.instance.Difficulty.Damage = tag.GetFloat("Damage");
+            }
+            catch
+            {
+
+            }
+        }
+
         public override void SaveWorldData(TagCompound tag)
         {
-            //InfinitumNPCs testing = (InfinitumNPCs)GetContent<InfinitumNPCs>();
-            tag.Add("test", 0);
+            TagCompound bossData = new();
+            TagCompound adaptativeDifficulty = new();
+
+            adaptativeDifficulty.Add("Difficulty", (byte)Infinitum.instance.Difficulty.DifficultySetted);
+            adaptativeDifficulty.Add("Hp", Infinitum.instance.Difficulty.Hp);
+            adaptativeDifficulty.Add("Speed", Infinitum.instance.Difficulty.Speed);
+            adaptativeDifficulty.Add("Defense", Infinitum.instance.Difficulty.Defense);
+            adaptativeDifficulty.Add("Damage", Infinitum.instance.Difficulty.Damage);
+            adaptativeDifficulty.Add("Version", AdaptativeDifficulty.version);
+            tag.Add("AdapatativeDifficulty", adaptativeDifficulty);
             base.SaveWorldData(tag);
         }
         internal class SanjacobosOrePass : GenPass
