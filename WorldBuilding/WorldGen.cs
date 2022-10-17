@@ -65,7 +65,7 @@ namespace Infinitum.WorldBuilding
                 //if tile is more big than 1 tile better to sendAccumulated XP for less traffic
                 if (Main.netMode != NetmodeID.Server)
                 {
-                    Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
+                    Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp,false);
                 }
                 else if (Main.netMode == NetmodeID.Server)
                 {
@@ -262,7 +262,7 @@ namespace Infinitum.WorldBuilding
 
             if (Main.netMode != NetmodeID.Server)
             {
-                Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
+                Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp,false);
             }
 
             else if (Main.netMode == NetmodeID.Server)//too much traffic?
