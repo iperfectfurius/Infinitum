@@ -119,7 +119,7 @@ namespace Infinitum
 
         }
         public void AddXp(float xp,bool IsXpMultiplierApplicable = true)
-        {
+          {
             if (Main.gameMenu) return;//This can be triggered by calamity first time in the world?
 
             double experienceObtained = (double)xp * ((double)expMultiplier * moreExpMultiplier);

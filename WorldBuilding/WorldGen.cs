@@ -330,7 +330,7 @@ namespace Infinitum.WorldBuilding
                 timer = Task.Delay(100).ContinueWith((e) =>
                 {
 
-                    if (Main.netMode != NetmodeID.Server)
+                    if (Main.netMode == NetmodeID.SinglePlayer)
                     {
                         Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(accumulatedXP,false);
                     }

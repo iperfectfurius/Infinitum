@@ -137,7 +137,7 @@ namespace Infinitum
             }
             catch
             {
-
+                Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
             }
         }
 
