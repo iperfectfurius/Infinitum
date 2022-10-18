@@ -45,7 +45,7 @@ namespace Infinitum.WorldChanges
         private uint timesDefeated;
         private ulong totalTimeBattle;
         private BossType type;
-        public static readonly ushort[] ValidBossesIds = {50,4,33,266,222,35,668,113,};
+        public static readonly ushort[] ValidBossesIds = {50,4,33,266,222,35,668,113};
 
         public string Name { get => name; set => name = value; }
         public int Id { get => id; set => id = value; }

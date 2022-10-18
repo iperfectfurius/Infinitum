@@ -13,7 +13,9 @@ namespace Infinitum.Commands
         {
             if (args.Length != 1)
             {
-                Infinitum.instance.GameMessage($"Please, select any difficulties, /difficulty [Normal,Hard,T1 or Disabled].(Currently selected {Infinitum.instance.Difficulty.DifficultySetted})", Color.Red);
+                Infinitum.instance.GameMessage($"Please, select any difficulties, /difficulty [Normal,Hard,T1 or Disabled].(Currently selected {Infinitum.instance.Difficulty.DifficultySetted})" +
+                    $"\nCurrents Monsters Stats: +{(int)(Infinitum.instance.Difficulty.Hp * 100)}% HP, +{(int)(Infinitum.instance.Difficulty.Speed)}% Speed," +
+                    $" +{(int)(Infinitum.instance.Difficulty.Defense * 100)}% Defense, +{(int)(Infinitum.instance.Difficulty.Damage * 100)}% Damage", Color.Red);
                 return;
             }
 
@@ -21,22 +23,9 @@ namespace Infinitum.Commands
             {
                 Difficulties difficulty = (Difficulties)Enum.Parse(typeof(Difficulties), args[0], true);
                 Infinitum.instance.Difficulty.ChangeDifficulty(difficulty);
-                Infinitum.instance.GameMessage($"Difficulty {Infinitum.instance.Difficulty.DifficultySetted} setted.", Color.Blue);
-
-                if (Main.netMode != NetmodeID.Server) return;
-
-                ModPacket myPacket = ModLoader.GetMod("Infinitum").GetPacket();
-
-                myPacket.Write((byte)MessageType.ChangeDifficulty);
-                myPacket.Write((byte)difficulty);
-                myPacket.Write(Infinitum.instance.Difficulty.Hp);
-                myPacket.Write(Infinitum.instance.Difficulty.Speed);
-                myPacket.Write(Infinitum.instance.Difficulty.Defense);
-                myPacket.Write(Infinitum.instance.Difficulty.Damage);
-                myPacket.Send();
-
-
-
+                Infinitum.instance.GameMessage($"Difficulty {Infinitum.instance.Difficulty.DifficultySetted} setted." +
+                    $"\nCurrents Monsters Stats: +{(int)(Infinitum.instance.Difficulty.Hp * 100)}% HP, +{(int)(Infinitum.instance.Difficulty.Speed)}% Speed," +
+                    $" +{(int)(Infinitum.instance.Difficulty.Defense * 100)}% Defense, +{(int)(Infinitum.instance.Difficulty.Damage * 100)}% Damage", Color.Blue);
             }
             catch (ArgumentException)
             {

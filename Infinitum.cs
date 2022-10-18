@@ -16,7 +16,7 @@ namespace Infinitum
         XPFromNPCs,
         XPFromOtherSources,
         XPMultiplier,
-        ChangeDifficulty,
+        UpdateStats,
         GetDifficultySettings
     }
     public class Infinitum : Mod
@@ -63,7 +63,7 @@ namespace Infinitum
                         AddXPToPlayer(reader.ReadSingle(),messageType == MessageType.XPFromNPCs);
                     }
                     break;
-                case MessageType.ChangeDifficulty://only Client
+                case MessageType.UpdateStats://only Client
                     if (Main.netMode == NetmodeID.Server) return;
 
                     Difficulty.DifficultySetted = (Difficulties)reader.ReadByte();
@@ -76,7 +76,7 @@ namespace Infinitum
                     if(Main.netMode == NetmodeID.Server)
                     {
                         myPacket = myMod.GetPacket();
-                        myPacket.Write((byte)MessageType.ChangeDifficulty);
+                        myPacket.Write((byte)MessageType.UpdateStats);
                         myPacket.Write((byte)Difficulty.DifficultySetted);
                         myPacket.Write(Difficulty.Hp);
                         myPacket.Write(Difficulty.Speed);

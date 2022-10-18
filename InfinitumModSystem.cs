@@ -128,8 +128,10 @@ namespace Infinitum
         private void LoadAdaptativeDifficulty(TagCompound tag)
         {
             try
-            {
-                Infinitum.instance.Difficulty.ChangeDifficulty((Difficulties)tag.GetByte("Difficulty"));
+            {               
+                Infinitum.instance.Difficulty.BestBossTypeBeated = (Boss.BossType)tag.GetByte("LastStepBossBeated");
+                Infinitum.instance.Difficulty.DifficultySetted = (Difficulties)tag.GetByte("Difficulty");
+                //temp
                 Infinitum.instance.Difficulty.Hp = tag.GetFloat("Hp");
                 Infinitum.instance.Difficulty.Speed = tag.GetFloat("Speed");
                 Infinitum.instance.Difficulty.Defense = tag.GetFloat("Defense");
@@ -147,10 +149,13 @@ namespace Infinitum
             TagCompound adaptativeDifficulty = new();
 
             adaptativeDifficulty.Add("Difficulty", (byte)Infinitum.instance.Difficulty.DifficultySetted);
+            adaptativeDifficulty.Add("LastStepBossBeated", (byte)Infinitum.instance.Difficulty.BestBossTypeBeated);
+            //temp
             adaptativeDifficulty.Add("Hp", Infinitum.instance.Difficulty.Hp);
             adaptativeDifficulty.Add("Speed", Infinitum.instance.Difficulty.Speed);
             adaptativeDifficulty.Add("Defense", Infinitum.instance.Difficulty.Defense);
             adaptativeDifficulty.Add("Damage", Infinitum.instance.Difficulty.Damage);
+
             adaptativeDifficulty.Add("Version", AdaptativeDifficulty.version);
             tag.Add("AdapatativeDifficulty", adaptativeDifficulty);
             base.SaveWorldData(tag);

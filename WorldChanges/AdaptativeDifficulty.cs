@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace Infinitum.WorldChanges
@@ -25,14 +27,22 @@ namespace Infinitum.WorldChanges
             Defense,
             Damage
         }
+        enum EscalationStep : ushort
+        {
+            PreHardMode = 4,
+            HardMode = 9,
+            PostPlantera = 15,
+            PostGolem = 22
+        }
         private float hp;
         private float speed;
         private float defense;
         private float damage;
         private Difficulties difficultySetted;
         private List<Boss> bosses = new();
+        public Boss.BossType BestBossTypeBeated = Boss.BossType.PreHardMode;
         private float[,] Escalation = new float[Enum.GetNames(typeof(Difficulties)).Length, Enum.GetNames(typeof(EscalationOrder)).Length];
-        private readonly float[] DifficultyXP = { 1.0f, 1.05f, 1.10f, 1.15f, 1.4f, 1.5f, 1.6f, 1.0f };
+        private readonly float[] DifficultyXP = { 1.0f, 1.05f, 1.10f, 1.15f, 0f, 0f, 0f, 0.85f };
         public const string version = "0.82.4";
         public float Hp { get => hp; set => hp = value; }
         public float Speed { get => speed; set => speed = value; }
@@ -76,10 +86,10 @@ namespace Infinitum.WorldChanges
         {
             Escalation[(int)Difficulties.Normal, (int)EscalationOrder.HP] = 0.0139f;
             Escalation[(int)Difficulties.Normal, (int)EscalationOrder.Speed] = 0.0f;
-            Escalation[(int)Difficulties.Normal, (int)EscalationOrder.Defense] = 0.0056f;
+            Escalation[(int)Difficulties.Normal, (int)EscalationOrder.Defense] = 0.0055f;
             Escalation[(int)Difficulties.Normal, (int)EscalationOrder.Damage] = 0.0056f;
 
-            Escalation[(int)Difficulties.Hard, (int)EscalationOrder.HP] = 0.0159f;
+            Escalation[(int)Difficulties.Hard, (int)EscalationOrder.HP] = 0.0169f;
             Escalation[(int)Difficulties.Hard, (int)EscalationOrder.Speed] = 0.0f;
             Escalation[(int)Difficulties.Hard, (int)EscalationOrder.Defense] = 0.0065f;
             Escalation[(int)Difficulties.Hard, (int)EscalationOrder.Damage] = 0.0066f;
@@ -127,58 +137,72 @@ namespace Infinitum.WorldChanges
         }
         public void ChangeDifficulty(Difficulties difficulty)
         {
+            //TODO: Get scalation step saved.
             DifficultySetted = difficulty;
 
-            switch (difficulty)
+            switch (BestBossTypeBeated)
             {
-                case Difficulties.Normal:
-                    ChangeMonsterStats(0.05f, 0, 0.0f, 0.02f);
+                case Boss.BossType.PreHardMode:
+                    ChangeMonsterStats(EscalationStep.PreHardMode);
                     break;
-                case Difficulties.Hard:
-                    ChangeMonsterStats(0.1f, 0, 0.025f, 0.04f);
+                case Boss.BossType.HardMode:
+                    ChangeMonsterStats(EscalationStep.HardMode);
                     break;
-                case Difficulties.T1:
-                    ChangeMonsterStats(0.75f, 0, 0.20f, 0.20f);
+                case Boss.BossType.PostPlantera:
+                    ChangeMonsterStats(EscalationStep.PostPlantera);
                     break;
-                case Difficulties.T2:
+                case Boss.BossType.PostGolem:
+                    ChangeMonsterStats(EscalationStep.PostGolem);
+                
                     break;
-                case Difficulties.T3:
-                    break;
-                case Difficulties.T4:
-                    break;
-                case Difficulties.T5:
-                    break;
-                case Difficulties.Disabled:
-                    ChangeMonsterStats();
-                    break;
-                default:
-                    break;
-
             }
+            SendNewStatsToAllPlayers();
         }
-        private void ChangeMonsterStats(float hp = 0f, float speed = 0f, float defense = 0f, float damage = 0f)
+        private void ChangeMonsterStats(EscalationStep step)
         {
-            Hp = hp;
-            Speed = speed;
-            Defense = defense;
-            Damage = damage;
+            hp = Escalation[(int)difficultySetted, (int)EscalationOrder.HP] * (int)step;
+            speed = 0f;
+            defense = Escalation[(int)difficultySetted, (int)EscalationOrder.Defense] * (int)step;
+            damage = Escalation[(int)difficultySetted, (int)EscalationOrder.Damage] * (int)step;
         }
         public bool CheckBossPlaythrough(NPC npc)
         {
+            //TODO: Save stats from bosses.
             if (!npc.boss || IsBossDefeated(npc.type)) return false;
+
 
             switch (npc.type)
             {
                 case (int)Boss.BossesIds.WallOfFlesh:
-                    AddNewBossDefeated(npc, Boss.BossType.PreHardMode);
-                    ChangeMonsterStats(
-                        Escalation[(int)difficultySetted, (int)EscalationOrder.HP] * 9,
-                        0,
-                        Escalation[(int)difficultySetted, (int)EscalationOrder.Defense] * 9,
-                        Escalation[(int)difficultySetted, (int)EscalationOrder.Damage] * 9);
-                    //AdjustDifficulty();
-                    break;
+                    AddNewBossDefeated(npc, Boss.BossType.HardMode);
 
+                    if (BestBossTypeBeated >= Boss.BossType.HardMode) break;
+
+                    ChangeMonsterStats(EscalationStep.HardMode);
+
+                    BestBossTypeBeated = Boss.BossType.HardMode;
+                    SendNewStatsToAllPlayers();
+                    break;
+                case (int)Boss.BossesIds.Plantera:
+                    AddNewBossDefeated(npc, Boss.BossType.PostPlantera);
+
+                    if (BestBossTypeBeated >= Boss.BossType.PostPlantera) break;
+
+                    ChangeMonsterStats(EscalationStep.PostPlantera);
+
+                    BestBossTypeBeated = Boss.BossType.PostPlantera;
+                    SendNewStatsToAllPlayers();
+                    break;
+                case (int)Boss.BossesIds.Golem:
+                    AddNewBossDefeated(npc, Boss.BossType.PostGolem);
+
+                    if (BestBossTypeBeated >= Boss.BossType.PostGolem) break;
+
+                    ChangeMonsterStats(EscalationStep.PostGolem);
+
+                    BestBossTypeBeated = Boss.BossType.PostGolem;
+                    SendNewStatsToAllPlayers();
+                    break;
                 default:
                     AddNewBossDefeated(npc);
                     break;
@@ -187,11 +211,26 @@ namespace Infinitum.WorldChanges
             return true;
         }
 
+        private void SendNewStatsToAllPlayers()
+        {
+            if (Main.netMode != NetmodeID.Server) return;
+
+            ModPacket myPacket = ModLoader.GetMod("Infinitum").GetPacket();
+
+            myPacket.Write((byte)MessageType.UpdateStats);
+            myPacket.Write((byte)DifficultySetted);
+            myPacket.Write(Hp);
+            myPacket.Write(Speed);
+            myPacket.Write(Defense);
+            myPacket.Write(Damage);
+            myPacket.Send();
+        }
+
         private void AddNewBossDefeated(NPC boss, Boss.BossType type = Boss.BossType.PreHardMode)
         {
             Boss newBoss = new(boss.type, type);
             bosses.Add(newBoss);
-            Infinitum.instance.GameMessage("Added new Boss",Color.White);
+            Infinitum.instance.GameMessage("Added new Boss", Color.White);
         }
         private void AdjustDifficulty()
         {

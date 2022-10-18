@@ -177,8 +177,7 @@ namespace Infinitum
             try
             {
                 //probably save all character_data is more efficient?
-                string tempVer;
-                tag.TryGet("Version", out tempVer);
+                tag.TryGet("Version", out string tempVer);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
                 tag.TryGet("Level", out level);
                 tag.TryGet("ExpMultiplier", out expMultiplier);
@@ -477,7 +476,7 @@ namespace Infinitum
             Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = new PickaxeSpeed(0);
             Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(0);
             Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(0);
-
+            //TODO: Armor penetration
             Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(0);
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(0);
             recentChanged = true;
