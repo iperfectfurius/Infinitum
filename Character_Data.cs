@@ -459,6 +459,19 @@ namespace Infinitum
 
             InitializeSkillsOfCurrentSet();
         }
+        public void ResetAllCharacterData()
+        {
+            ResetAllSkills(skillsSets.Count);
+            exp = 0;
+            level = 0;
+            totalLevel = 0;
+            expMultiplier = 1.0f;
+            expToLevel = BASE_EXP;
+            totalNpcsKilled = 0;
+
+            showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 250, true);
+            showDamageText((int)CombatTextPos.CurrentLevels + 50, "Character Data Reset", Color.Red, 250, true);
+        }
         private void InitializeSkillsOfCurrentSet()
         {
             if (!skillsSets.ContainsKey(setSelected))

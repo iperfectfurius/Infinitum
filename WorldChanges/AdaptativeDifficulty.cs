@@ -152,8 +152,7 @@ namespace Infinitum.WorldChanges
                     ChangeMonsterStats(EscalationStep.PostPlantera);
                     break;
                 case Boss.BossType.PostGolem:
-                    ChangeMonsterStats(EscalationStep.PostGolem);
-                
+                    ChangeMonsterStats(EscalationStep.PostGolem);              
                     break;
             }
             SendNewStatsToAllPlayers();
@@ -178,9 +177,9 @@ namespace Infinitum.WorldChanges
 
                     if (BestBossTypeBeated >= Boss.BossType.HardMode) break;
 
-                    ChangeMonsterStats(EscalationStep.HardMode);
-
                     BestBossTypeBeated = Boss.BossType.HardMode;
+                    ChangeMonsterStats(EscalationStep.HardMode);
+                    
                     SendNewStatsToAllPlayers();
                     break;
                 case (int)Boss.BossesIds.Plantera:
@@ -188,9 +187,9 @@ namespace Infinitum.WorldChanges
 
                     if (BestBossTypeBeated >= Boss.BossType.PostPlantera) break;
 
-                    ChangeMonsterStats(EscalationStep.PostPlantera);
-
                     BestBossTypeBeated = Boss.BossType.PostPlantera;
+                    ChangeMonsterStats(EscalationStep.PostPlantera);
+                  
                     SendNewStatsToAllPlayers();
                     break;
                 case (int)Boss.BossesIds.Golem:
@@ -198,9 +197,9 @@ namespace Infinitum.WorldChanges
 
                     if (BestBossTypeBeated >= Boss.BossType.PostGolem) break;
 
-                    ChangeMonsterStats(EscalationStep.PostGolem);
-
                     BestBossTypeBeated = Boss.BossType.PostGolem;
+                    ChangeMonsterStats(EscalationStep.PostGolem);
+                    
                     SendNewStatsToAllPlayers();
                     break;
                 default:
