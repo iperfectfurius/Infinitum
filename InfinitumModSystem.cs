@@ -120,7 +120,8 @@ namespace Infinitum
         {
             if (tag.GetCompound("AdapatativeDifficulty").Count != 0)
                 LoadAdaptativeDifficulty(tag.GetCompound("AdapatativeDifficulty"));
-            else Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
+            else
+                Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
 
             base.LoadWorldData(tag);
         }
@@ -128,7 +129,7 @@ namespace Infinitum
         private void LoadAdaptativeDifficulty(TagCompound tag)
         {
             try
-            {               
+            {
                 Infinitum.instance.Difficulty.BestBossTypeBeated = (Boss.BossType)tag.GetByte("LastStepBossBeated");
                 Infinitum.instance.Difficulty.DifficultySetted = (Difficulties)tag.GetByte("Difficulty");
                 //temp
@@ -158,6 +159,8 @@ namespace Infinitum
 
             adaptativeDifficulty.Add("Version", AdaptativeDifficulty.version);
             tag.Add("AdapatativeDifficulty", adaptativeDifficulty);
+
+            Infinitum.instance.Difficulty.SetDefaults();
             base.SaveWorldData(tag);
         }
         internal class SanjacobosOrePass : GenPass

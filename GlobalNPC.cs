@@ -78,7 +78,7 @@ namespace Infinitum
         }
         public override void SetDefaults(NPC npc)
         {
-            base.SetDefaults(npc);
+            //base.SetDefaults(npc);
             npc.life += (int)(npc.life * Infinitum.instance.Difficulty.Hp);
             npc.lifeMax += (int)(npc.lifeMax * Infinitum.instance.Difficulty.Hp);
             npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);

@@ -66,9 +66,12 @@ namespace Infinitum.WorldChanges
             //LoadBreakPointsBosses();
             ChangeDifficulty(difficulty);
         }
-        private void SetDefaults()
+        public void SetDefaults()
         {
+            BestBossTypeBeated = Boss.BossType.PreHardMode;
             ChangeDifficulty(Difficulties.Normal);
+            bosses = new List<Boss>();
+
         }
 
         private void LoadBreakPointsBosses()
