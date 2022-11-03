@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Infinitum
 {
@@ -56,8 +57,7 @@ namespace Infinitum
         }
         public override void ModifyGlobalLoot(GlobalLoot globalLoot)
         {
-
-            System.Collections.Generic.List<IItemDropRule> items = new System.Collections.Generic.List<IItemDropRule>();
+            List<IItemDropRule> items = new List<IItemDropRule>();
             items.Add(new DropBasedOnExpertMode(
                 new CommonDrop(ModContent.ItemType<ExpStar>(), ExpStar.NormalChanceFromNPCs, 1),
                 new CommonDrop(ModContent.ItemType<ExpStar>(), ExpStar.ExpertChanceFromNPCs, 1)));
@@ -78,10 +78,12 @@ namespace Infinitum
         }
         public override void SetDefaults(NPC npc)
         {
+            base.SetDefaults(npc);
             npc.life += (int)(npc.life * Infinitum.instance.Difficulty.Hp);
             npc.lifeMax += (int)(npc.lifeMax * Infinitum.instance.Difficulty.Hp);
             npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);
             npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);
+            
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {

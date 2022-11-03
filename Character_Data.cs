@@ -392,7 +392,6 @@ namespace Infinitum
 
         private void getAdditionalsExp()
         {
-
             ModPrefix prefix = PrefixLoader.GetPrefix(player.HeldItem.prefix);
             if (prefix != null)
                 switch (prefix.Name)
@@ -470,7 +469,7 @@ namespace Infinitum
             totalNpcsKilled = 0;
 
             showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 250, true);
-            showDamageText((int)CombatTextPos.CurrentLevels + 50, "Character Data Reset", Color.Red, 250, true);
+            showDamageText((int)CombatTextPos.CurrentLevels + 150, "Character Data Reset", Color.Red, 250, true);
         }
         private void InitializeSkillsOfCurrentSet()
         {
