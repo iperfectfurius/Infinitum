@@ -213,7 +213,7 @@ namespace Infinitum.WorldChanges
 
         private void SendNewStatsToAllPlayers()
         {
-            if (Main.netMode != NetmodeID.Server) return;
+            if (Main.netMode != NetmodeID.Server || Main.gameMenu) return;
 
             ModPacket myPacket = ModLoader.GetMod("Infinitum").GetPacket();
 
