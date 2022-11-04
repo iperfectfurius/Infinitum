@@ -67,7 +67,6 @@ namespace Infinitum
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
 
-
         internal Skill[]? Skills { get => skillsSets[setSelected]; set => skillsSets[setSelected] = value; }
         public string SetSelected { get => setSelected; set => setSelected = value; }
         public int SetCount { get => skillsSets.Count; }
@@ -76,7 +75,6 @@ namespace Infinitum
         {
             base.Initialize();
             CalcXPPerLevel();
-
         }
 
         private void CalcXPPerLevel()
@@ -101,7 +99,6 @@ namespace Infinitum
                 ChatMessage($"New Skills Version Detected. Check Your skills has beed reset.[Infinitum v{version}]", Color.Red);
             }
 
-
         }
         public void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
         {
@@ -116,7 +113,6 @@ namespace Infinitum
         public override void Load()
         {
             base.Load();
-
         }
         public void AddXp(float xp,bool IsXpMultiplierApplicable = true)
           {
@@ -163,7 +159,6 @@ namespace Infinitum
 
             CalcXPPerLevel();
             return true;
-
         }
         public void AddXpMultiplier(float multiplier)
         {
@@ -196,7 +191,6 @@ namespace Infinitum
                 }
                 CalcXPPerLevel();
                 loadSkills(tag);
-
 
                 string? lastSet = tag.GetString("CurrentSet");
                 setSelected = string.IsNullOrEmpty(lastSet) ? "0" : lastSet;
@@ -243,8 +237,6 @@ namespace Infinitum
             tag.Add("SkillData", skillData);
 
             tag.Add("UI", playerSettings.SaveMyData());
-
-
         }
         private void loadSkills(TagCompound tag)
         {
@@ -342,7 +334,6 @@ namespace Infinitum
             }
 
             base.ProcessTriggers(triggersSet);
-
         }
         public override void Unload()
         {
@@ -421,7 +412,7 @@ namespace Infinitum
             if (activate && target.netID != 488)
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
 
-            base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+            //base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -430,7 +421,7 @@ namespace Infinitum
 
             if (activate && target.netID != 488)
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
-            base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
+            //base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
         }
 
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
@@ -526,7 +517,6 @@ namespace Infinitum
                     SoundEngine.PlaySound(SoundID.AchievementComplete);
                     ChatMessage($"Infinitum: Set {setSelected}({Skill.GetBuffs(Skills)})", Color.Green);
                     break;
-
 
                 case UIElementsEnum.SetsActions.AddSet:
                     int setsCount = skillsSets.Count;

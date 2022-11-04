@@ -57,13 +57,11 @@ namespace Infinitum.WorldChanges
         public AdaptativeDifficulty(TagCompound data)
         {
             LoadEscalations();
-            //LoadBreakPointsBosses();
             SetDifficultyOnLoad(data);
         }
         public AdaptativeDifficulty(Difficulties difficulty)
         {
             LoadEscalations();
-            //LoadBreakPointsBosses();
             ChangeDifficulty(difficulty);
         }
         public void SetDefaults()
@@ -71,9 +69,9 @@ namespace Infinitum.WorldChanges
             BestBossTypeBeated = Boss.BossType.PreHardMode;
             ChangeDifficulty(Difficulties.Normal);
             bosses = new List<Boss>();
-
         }
 
+        [Obsolete]
         private void LoadBreakPointsBosses()
         {
             Boss WallOfFlesh = new(113, false);

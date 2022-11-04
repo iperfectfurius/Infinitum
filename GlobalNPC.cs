@@ -22,6 +22,7 @@ namespace Infinitum
 
         public override void OnKill(NPC npc)
         {
+            if(npc.friendly) return;
             Infinitum.instance.Difficulty.CheckBossPlaythrough(npc);
 
             float xp = GetXpFromNPC(npc);
@@ -36,19 +37,6 @@ namespace Infinitum
             else if (Main.netMode == NetmodeID.SinglePlayer)
             {
                 addXpToPlayer(xp);
-            }
-            base.OnKill(npc);
-        }
-        public static void ChatMessage(string text)
-        {
-
-            if (Main.netMode == NetmodeID.Server)
-            {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
-            }
-            else if (Main.netMode == NetmodeID.SinglePlayer)
-            {
-                Main.NewText(text);
             }
         }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
@@ -68,26 +56,21 @@ namespace Infinitum
 
             items.ForEach(e => globalLoot.Add(e));
         }
-        public override void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-        {
-            base.SetBestiary(npc, database, bestiaryEntry);
-        }
+
         private void addXpToPlayer(float xp)
         {
             Infinitum.instance.AddXPToPlayer(xp);
         }
         public override void SetDefaults(NPC npc)
         {
-            //base.SetDefaults(npc);
+            if (npc.friendly || npc.CountsAsACritter) return;
             npc.life += (int)(npc.life * Infinitum.instance.Difficulty.Hp);
             npc.lifeMax += (int)(npc.lifeMax * Infinitum.instance.Difficulty.Hp);
             npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);
-            npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);
-            
+            npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);            
         }
         public override void SetupShop(int type, Chest shop, ref int nextSlot)
         {
-
             if (type == NPCID.Merchant)
             {
                 shop.item[nextSlot].SetDefaults(ModContent.ItemType<MultiplierStar>());
@@ -98,7 +81,5 @@ namespace Infinitum
             }
             //base.SetupShop(type, shop, ref nextSlot);
         }
-
-
     }
 }
