@@ -41,6 +41,10 @@ namespace Infinitum
         {
             base.PostSetupContent();
         }
+        private void CreateAndSendPacket(int to = -1)
+        {
+            //TODO create a method for send any packet
+        }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -70,7 +74,7 @@ namespace Infinitum
                     Difficulty.Hp = reader.ReadSingle();
                     Difficulty.Speed = reader.ReadSingle();
                     Difficulty.Defense = reader.ReadSingle();
-                    Difficulty.Damage = reader.ReadSingle();
+                    Difficulty.Damage = reader.ReadSingle();                   
                     break;
                 case MessageType.GetDifficultySettings:
                     if(Main.netMode == NetmodeID.Server)
