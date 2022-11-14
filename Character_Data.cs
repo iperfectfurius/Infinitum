@@ -70,6 +70,7 @@ namespace Infinitum
         internal Skill[]? Skills { get => skillsSets[setSelected]; set => skillsSets[setSelected] = value; }
         public string SetSelected { get => setSelected; set => setSelected = value; }
         public int SetCount { get => skillsSets.Count; }
+        public float? GetXpFromDifficulty => Infinitum.instance.Difficulty.GetXPFromDifficulty;
 
         public override void Initialize()
         {
