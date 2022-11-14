@@ -49,7 +49,7 @@ namespace Infinitum.WorldChanges
         public EscalationStep GetStep { get => GetDiffSettings.Step; }
         internal List<Boss> Bosses { get => bosses; set => bosses = value; }
         public float GetXPFromDifficulty => DifficultyXP[(int)difficultySetted];
-        
+
 
         public bool IsBossDefeated(int id) => bosses.Exists(e => e.Id == id && e.Defeated);
 
@@ -131,11 +131,11 @@ namespace Infinitum.WorldChanges
             diffsSettings[(int)Difficulties.T1] = new DiffSettings(.0139f, 0f, .0055f, .0056f, 1.0f);
             diffsSettings[(int)Difficulties.Disabled] = new DiffSettings(.0139f, 0f, .0055f, .0056f, 1.0f);
         }
-        private void SetDifficultyOnLoad(TagCompound data)
+        private void SetDifficultyOnLoad(TagCompound tag)
         {
             try
             {
-
+                ChangeStepAndDifficulty((Difficulties)tag.GetByte("Difficulty"), (Boss.BossType)tag.GetByte("LastStepBossBeated"));
             }
             catch
             {
@@ -164,7 +164,7 @@ namespace Infinitum.WorldChanges
             }
             SendNewStatsToAllPlayers();
         }
-        public void ChangeStepAndDifficulty(Difficulties difficulty,Boss.BossType progress)
+        public void ChangeStepAndDifficulty(Difficulties difficulty, Boss.BossType progress)
         {
             BestBossTypeBeated = progress;
             ChangeDifficulty(difficulty);
@@ -179,7 +179,7 @@ namespace Infinitum.WorldChanges
             speed = 0f;
             defense = Escalation[(int)difficultySetted, (int)EscalationOrder.Defense] * (int)step;
             damage = Escalation[(int)difficultySetted, (int)EscalationOrder.Damage] * (int)step;
-            GetDiffSettings.Step = step;
+            //GetDiffSettings.Step = step;
         }
         public bool CheckBossPlaythrough(NPC npc)
         {

@@ -119,31 +119,12 @@ namespace Infinitum
         public override void LoadWorldData(TagCompound tag)
         {
             if (tag.GetCompound("AdapatativeDifficulty").Count != 0)
-                LoadAdaptativeDifficulty(tag.GetCompound("AdapatativeDifficulty"));
+                Infinitum.instance.Difficulty = new(tag.GetCompound("AdapatativeDifficulty"));
             else
                 Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
 
             base.LoadWorldData(tag);
         }
-
-        private void LoadAdaptativeDifficulty(TagCompound tag)
-        {
-            try
-            {
-                Infinitum.instance.Difficulty.BestBossTypeBeated = (Boss.BossType)tag.GetByte("LastStepBossBeated");
-                Infinitum.instance.Difficulty.DifficultySetted = (Difficulties)tag.GetByte("Difficulty");
-                //temp
-                Infinitum.instance.Difficulty.Hp = tag.GetFloat("Hp");
-                Infinitum.instance.Difficulty.Speed = tag.GetFloat("Speed");
-                Infinitum.instance.Difficulty.Defense = tag.GetFloat("Defense");
-                Infinitum.instance.Difficulty.Damage = tag.GetFloat("Damage");
-            }
-            catch
-            {
-                Infinitum.instance.Difficulty.ChangeDifficulty(Difficulties.Normal);
-            }
-        }
-
         public override void SaveWorldData(TagCompound tag)
         {
             TagCompound bossData = new();
@@ -151,11 +132,6 @@ namespace Infinitum
 
             adaptativeDifficulty.Add("Difficulty", (byte)Infinitum.instance.Difficulty.DifficultySetted);
             adaptativeDifficulty.Add("LastStepBossBeated", (byte)Infinitum.instance.Difficulty.BestBossTypeBeated);
-            //temp
-            adaptativeDifficulty.Add("Hp", Infinitum.instance.Difficulty.Hp);
-            adaptativeDifficulty.Add("Speed", Infinitum.instance.Difficulty.Speed);
-            adaptativeDifficulty.Add("Defense", Infinitum.instance.Difficulty.Defense);
-            adaptativeDifficulty.Add("Damage", Infinitum.instance.Difficulty.Damage);
 
             adaptativeDifficulty.Add("Version", AdaptativeDifficulty.version);
             tag.Add("AdapatativeDifficulty", adaptativeDifficulty);

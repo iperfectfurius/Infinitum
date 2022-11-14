@@ -25,9 +25,13 @@ namespace Infinitum.Commands
                 Difficulties difficulty = (Difficulties)Enum.Parse(typeof(Difficulties), args[0], true);
                 Boss.BossType progress;
 
+                if ((int)difficulty > Enum.GetNames(typeof(Difficulties)).Length) throw new Exception("Error: Invalid difficulty ID");
+
                 if (args.Length > 1)
                 {
                     progress = (Boss.BossType)Enum.Parse(typeof(Boss.BossType), args[1], true);
+                    if ((int)progress > Enum.GetNames(typeof(Boss.BossType)).Length) throw new Exception("Error: Invalid progress/step ID");
+
                     Infinitum.instance.Difficulty.ChangeStepAndDifficulty(difficulty, progress);
                 }
                 else
@@ -37,7 +41,7 @@ namespace Infinitum.Commands
                     $"\nCurrents Monsters Stats: +{(int)(Infinitum.instance.Difficulty.Hp * 100)}% HP, +{(int)(Infinitum.instance.Difficulty.Speed)}% Speed," +
                     $" +{(int)(Infinitum.instance.Difficulty.Defense * 100)}% Defense, +{(int)(Infinitum.instance.Difficulty.Damage * 100)}% Damage", Color.Blue);
             }
-            catch (ArgumentException)
+            catch (Exception e)
             {
                 Infinitum.instance.GameMessage($"Please, select any difficulty, /difficulty [Normal,Hard,T1 or Disabled]", Color.Red);
             }
