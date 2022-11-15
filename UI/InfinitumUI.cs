@@ -208,7 +208,7 @@ namespace Infinitum.UI
                 cost.MaxHeight.Set(20f, 0);
                 cost.MaxWidth.Set(35f, 0);
                 cost.OverflowHidden = false;
-            
+
                 automatic.Left.Set(marginLeft + 82, 0f);
                 automatic.Height.Set(18f, 0);
                 automatic.Width.Set(18f, 0);
@@ -228,7 +228,7 @@ namespace Infinitum.UI
                 skillsElementsPanel.Add(skill);
 
                 marginTop += 20f;
-            }           
+            }
         }
 
         private void addUIElementsToPanel()
@@ -296,7 +296,7 @@ namespace Infinitum.UI
                 catch
                 {
                     Infinitum.instance.ChatMessage("[Infinitum] Error on UI", Color.Red);
-                    
+
                 }
                 stats.RecentChanged = false;
             }
@@ -363,10 +363,11 @@ namespace Infinitum.UI
         private void UpdateAllStats()
         {
             List<UIElement> skills = skillsElementsPanel._items;
+            (float xpMultiplier, float multiplierFromDiff) = stats.GetTotalXpMultiplier;
 
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
             statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/{stats.ExpToLevel} ({((float)stats.Exp / stats.ExpToLevel) * 100:n1}%)");
-            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {((stats.ExpMultiplier * stats.MoreExpMultiplier) * 100)* stats.GetXpFromDifficulty:n1}%");
+            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {(xpMultiplier*100):n1}% +({multiplierFromDiff*100:n1}%)");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             statsTexts[(int)statsOrder.TotalKills].SetText("Total Kills: " + stats.TotalNpcsKilled);
             statsTexts[(int)statsOrder.AverageXP].SetText($"Average XP: {stats.getAvgXP():n2}");
@@ -391,7 +392,7 @@ namespace Infinitum.UI
                 costText.SetText($"{stats.Skills[skillNumber].Cost}");
 
                 automaticButton.ChangeBackgroundFromValue(stats.Skills[skillNumber].AutomaticMode);
-            }          
+            }
         }
     }
 }

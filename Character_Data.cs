@@ -69,8 +69,9 @@ namespace Infinitum
 
         internal Skill[]? Skills { get => skillsSets[setSelected]; set => skillsSets[setSelected] = value; }
         public string SetSelected { get => setSelected; set => setSelected = value; }
-        public int SetCount { get => skillsSets.Count; }
+        public int SetCount { get => skillsSets.Count; }      
         public float? GetXpFromDifficulty => Infinitum.instance.Difficulty.GetXPFromDifficulty;
+        public Tuple<float, float> GetTotalXpMultiplier => Tuple.Create(expMultiplier * moreExpMultiplier, (float)((expMultiplier * moreExpMultiplier) * GetXpFromDifficulty) - (expMultiplier * moreExpMultiplier));
 
         public override void Initialize()
         {

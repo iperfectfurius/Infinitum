@@ -20,13 +20,12 @@ namespace Infinitum.Commands
                     $"\nXP Multiplier +{(Infinitum.instance.Difficulty.GetXPFromDifficulty - 1.0f) * 100:n2}%", Color.Red);
                 return;
             }
-
             try
             {
                 Difficulties difficulty = (Difficulties)Enum.Parse(typeof(Difficulties), args[0], true);
                 Boss.BossType progress;
-
-                if ((int)difficulty > 2) throw new Exception("Error: Invalid difficulty ID");
+                //temp
+                if ((int)difficulty > 2 && difficulty != Difficulties.Disabled) throw new Exception("Error: Invalid difficulty ID");
 
                 if (args.Length > 1)
                 {

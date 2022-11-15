@@ -37,7 +37,7 @@ namespace Infinitum.WorldChanges
         private List<Boss> bosses = new();
         public Boss.BossType BestBossTypeBeated = Boss.BossType.PreHardMode;
         private float[,] Escalation = new float[Enum.GetNames(typeof(Difficulties)).Length, Enum.GetNames(typeof(EscalationOrder)).Length];
-        private readonly float[] DifficultyXP = { 1.0f, 1.05f, 1.10f, 1.15f, 0f, 0f, 0f, 0.85f };
+        private readonly float[] DifficultyXP = { 1.0f, 1.05f, 1.10f, 0, 0f, 0f, 0f, 0.85f };
         private DiffSettings[] diffsSettings = new DiffSettings[Enum.GetNames(typeof(Difficulties)).Length];
         public const string version = "0.82.4";
         public float Hp { get => hp; set => hp = value; }
