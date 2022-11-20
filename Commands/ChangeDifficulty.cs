@@ -11,13 +11,14 @@ namespace Infinitum.Commands
         public override string Description => "Selects Infinitum [Normal,Hard,T1 or disabled] difficulties";
         public override void Action(CommandCaller caller, string input, string[] args)
         {
+            Infinitum myMod = Infinitum.instance;
             if (args.Length == 0 || args.Length > 2)
             {
-                Infinitum.instance.GameMessage($"Please, select any difficulties, /difficulty [Normal,Hard,T1 or Disabled] " +
-                    $"[(optionally) PreHardMode,HardMode,PostPlantera,PostGolem].(Currently selected {Infinitum.instance.Difficulty.DifficultySetted}, {Infinitum.instance.Difficulty.BestBossTypeBeated})" +
-                    $"\nCurrent Monsters Stats: +{(int)(Infinitum.instance.Difficulty.Hp * 100)}% HP, +{(int)(Infinitum.instance.Difficulty.Speed)}% Speed," +
-                    $" +{(int)(Infinitum.instance.Difficulty.Defense * 100)}% Defense, +{(int)(Infinitum.instance.Difficulty.Damage * 100)}% Damage" +
-                    $"\nXP Multiplier +{(Infinitum.instance.Difficulty.GetXPFromDifficulty - 1.0f) * 100:n2}%", Color.Red);
+                myMod.GameMessage($"Please, select any difficulties, /difficulty [Normal,Hard,T1 or Disabled] " +
+                    $"[(optionally) PreHardMode,HardMode,PostPlantera,PostGolem].(Currently selected {myMod.Difficulty.DifficultySetted}, {myMod.Difficulty.BestBossTypeBeated})]" +
+                    $"\nCurrent Monsters Stats: +{(int)(myMod.Difficulty.Hp * 100)}% HP, +{(int)(myMod.Difficulty.Speed)}% Speed," +
+                    $" {(int)(myMod.Difficulty.Defense * 100)}% Defense, +{(int)(myMod.Difficulty.Damage * 100)}% Damage" +
+                    $"\nXP Multiplier from difficulty: {(myMod.Difficulty.GetXPFromDifficulty - 1f) * 100:n1}%" , Color.Red);
                 return;
             }
             try
@@ -40,7 +41,7 @@ namespace Infinitum.Commands
                 Infinitum.instance.GameMessage($"Difficulty {Infinitum.instance.Difficulty.DifficultySetted} setted, Progress: {Infinitum.instance.Difficulty.BestBossTypeBeated}." +
                     $"\nCurrents Monsters Stats: +{(int)(Infinitum.instance.Difficulty.Hp * 100)}% HP, +{(int)(Infinitum.instance.Difficulty.Speed)}% Speed," +
                     $" +{(int)(Infinitum.instance.Difficulty.Defense * 100)}% Defense, +{(int)(Infinitum.instance.Difficulty.Damage * 100)}% Damage" +
-                    $"\nXP Multiplier +{(Infinitum.instance.Difficulty.GetXPFromDifficulty - 1.0f) * 100:n2}%", Color.Blue);
+                    $"\nXP Multiplier from difficulty: {(myMod.Difficulty.GetXPFromDifficulty - 1f) * 100:n1}%", Color.Blue);
             }
             catch (Exception)
             {

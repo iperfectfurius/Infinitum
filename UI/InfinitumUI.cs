@@ -73,7 +73,7 @@ namespace Infinitum.UI
             float marginLeft = 8;
             for (int i = 0; i < statsTexts.Length; i++)
             {
-                UIText text = new UIText("Test", .9f);
+                UIText text = new UIText("Test", .8f);
 
                 text.Top.Set(marginTop, 0f);
                 text.Left.Set(marginLeft, 0f);

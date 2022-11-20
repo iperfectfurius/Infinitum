@@ -48,7 +48,9 @@ namespace Infinitum.WorldChanges
         private DiffSettings GetDiffSettings { get => diffsSettings[(int)difficultySetted]; }
         public EscalationStep GetStep { get => GetDiffSettings.Step; }
         internal List<Boss> Bosses { get => bosses; set => bosses = value; }
+        public string GetCurrentStatsFromMonsters => $"HP: {(int)(hp * 100)}%, Damage: {(int)(damage * 100):n1}%, Defense: {(int)(defense * 100)}%. {GetStep}";
         public float GetXPFromDifficulty => DifficultyXP[(int)difficultySetted];
+        public void SendMessageToPlayers(string message,Color color) => Infinitum.instance.GameMessage(message,color);
 
 
         public bool IsBossDefeated(int id) => bosses.Exists(e => e.Id == id && e.Defeated);
@@ -99,6 +101,7 @@ namespace Infinitum.WorldChanges
             Escalation[(int)Difficulties.T1, (int)EscalationOrder.Defense] = 0.0114f;
             Escalation[(int)Difficulties.T1, (int)EscalationOrder.Damage] = 0.0085f;
 
+            //disabled for now
             Escalation[(int)Difficulties.T2, (int)EscalationOrder.HP] = 0.0139f;
             Escalation[(int)Difficulties.T2, (int)EscalationOrder.Speed] = 0.0f;
             Escalation[(int)Difficulties.T2, (int)EscalationOrder.Defense] = 0.0056f;
@@ -179,7 +182,7 @@ namespace Infinitum.WorldChanges
             speed = 0f;
             defense = Escalation[(int)difficultySetted, (int)EscalationOrder.Defense] * (int)step;
             damage = Escalation[(int)difficultySetted, (int)EscalationOrder.Damage] * (int)step;
-            //GetDiffSettings.Step = step;
+            GetDiffSettings.Step = step;
         }
         public bool CheckBossPlaythrough(NPC npc)
         {
@@ -198,6 +201,8 @@ namespace Infinitum.WorldChanges
                     ChangeMonsterStats(EscalationStep.HardMode);
 
                     SendNewStatsToAllPlayers();
+                    SendMessageToPlayers("Difficulty has increased!\n" + GetCurrentStatsFromMonsters,Color.Red);
+
                     break;
                 case (int)Boss.BossesIds.Plantera:
                     AddNewBossDefeated(npc, Boss.BossType.PostPlantera);
@@ -208,6 +213,7 @@ namespace Infinitum.WorldChanges
                     ChangeMonsterStats(EscalationStep.PostPlantera);
 
                     SendNewStatsToAllPlayers();
+                    SendMessageToPlayers("Difficulty has increased!\n" + GetCurrentStatsFromMonsters, Color.Red);
                     break;
                 case (int)Boss.BossesIds.Golem:
                     AddNewBossDefeated(npc, Boss.BossType.PostGolem);
@@ -218,6 +224,7 @@ namespace Infinitum.WorldChanges
                     ChangeMonsterStats(EscalationStep.PostGolem);
 
                     SendNewStatsToAllPlayers();
+                    SendMessageToPlayers("Difficulty has increased!\n" + GetCurrentStatsFromMonsters, Color.Red);
                     break;
                 default:
                     AddNewBossDefeated(npc);
@@ -246,15 +253,12 @@ namespace Infinitum.WorldChanges
         {
             Boss newBoss = new(boss.type, type);
             bosses.Add(newBoss);
-            Infinitum.instance.GameMessage("Added new Boss", Color.White);
+            //Infinitum.instance.GameMessage("Added new Boss", Color.White);
         }
         private void AdjustDifficulty()
         {
 
         }
-        public string GetCurrentStatsFromMonsters()
-        {
-            return $"HP:{hp:n1}%, Damage:{damage:n1}%, Defense:{defense:n1}%. {GetStep}";
-        }
+        
     }
 }
