@@ -18,12 +18,26 @@ namespace Infinitum.Commands
                     $"[(optionally) PreHardMode,HardMode,PostPlantera,PostGolem].(Currently selected {myMod.Difficulty.DifficultySetted}, {myMod.Difficulty.BestBossTypeBeated})]" +
                     $"\nCurrent Monsters Stats: +{(int)(myMod.Difficulty.Hp * 100)}% HP, +{(int)(myMod.Difficulty.Speed)}% Speed," +
                     $" {(int)(myMod.Difficulty.Defense * 100)}% Defense, +{(int)(myMod.Difficulty.Damage * 100)}% Damage" +
-                    $"\nXP Multiplier from difficulty: {(myMod.Difficulty.GetXPFromDifficulty - 1f) * 100:n1}%" , Color.Red);
+                    $"\nXP Multiplier from difficulty: {(myMod.Difficulty.GetXPFromDifficulty - 1f) * 100:n1}%", Color.Red);
                 return;
             }
             try
             {
-                Difficulties difficulty = (Difficulties)Enum.Parse(typeof(Difficulties), args[0], true);
+                Difficulties difficulty;
+
+                if (args[0] == "increase")
+                {
+                    if ((int)myMod.Difficulty.DifficultySetted <= 1 /*Enum.GetNames(typeof(Difficulties)).Length*/)
+                        difficulty = (Difficulties)((int)myMod.Difficulty.DifficultySetted + 1);
+                    else if (myMod.Difficulty.DifficultySetted != Difficulties.Disabled)
+                        difficulty = Difficulties.Disabled;
+                    else
+                        difficulty = Difficulties.Normal;
+
+                }
+                else difficulty = (Difficulties)Enum.Parse(typeof(Difficulties), args[0], true);
+
+
                 Boss.BossType progress;
                 //temp
                 if ((int)difficulty > 2 && difficulty != Difficulties.Disabled) throw new Exception("Error: Invalid difficulty ID");

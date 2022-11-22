@@ -41,8 +41,10 @@ namespace Infinitum.Items
         }
         public override bool? UseItem(Player player)
         {
-            //ChatManager.Commands.ProcessIncomingMessage(new ChatMessage(": difficulty"),Main.myPlayer);
-            Main.ExecuteCommand("/difficulty",new InifnitumCommandCaller());
+            if(Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.SinglePlayer)
+                Main.ExecuteCommand("/difficulty increase",new InifnitumCommandCaller());
+
+            Infinitum.instance.ChatMessage("", Color.Red);
             return true;
         }
 
@@ -51,14 +53,14 @@ namespace Infinitum.Items
             Recipe recipe = CreateRecipe();
             recipe.Register();
 
-            base.AddRecipes();
+            base.AddRecipes();         
         }
-
+        
         public class InifnitumCommandCaller : CommandCaller
         {
             public CommandType CommandType => CommandType.World;
 
-            public Player Player => Main.clientPlayer;
+            public Player Player => Main.player[Main.myPlayer];
 
             public void Reply(string text, Color color = default)
             {
