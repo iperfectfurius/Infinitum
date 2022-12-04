@@ -25,7 +25,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 625f;
+        private const float maxWidth = 660f;
         private const float maxHeigth = 222f;
         private UIButton reset;
         private UIButton activateStatsButton;
@@ -82,6 +82,8 @@ namespace Infinitum.UI
                 marginTop += 20f;
             }
 
+            marginLeft = 38;
+
             UIButton buttonChangeSet = new UIButton("Change Set (0)", ApplySet);
             buttonChangeSet.Top.Set(marginTop, 0f);
             buttonChangeSet.Left.Set(marginLeft, 0f);
@@ -94,7 +96,7 @@ namespace Infinitum.UI
             UIButton buttonAddSet = new UIButton("+", ApplySet);
 
             buttonAddSet.Top.Set(marginTop, 0f);
-            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 12f, 0);
+            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + marginLeft + 4f, 0);
             buttonAddSet.Height.Set(18f, 0);
             buttonAddSet.Width.Set(18f, 0);
             buttonAddSet.ChangeColor(Color.Green);
@@ -104,7 +106,7 @@ namespace Infinitum.UI
             UIButton buttonDelSet = new UIButton("-", ApplySet);
 
             buttonDelSet.Top.Set(marginTop, 0f);
-            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + 34f, 0);
+            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + marginLeft + 26f, 0);
             buttonDelSet.Height.Set(18f, 0);
             buttonDelSet.Width.Set(18f, 0);
             buttonDelSet.ChangeColor(Color.Red);
@@ -251,10 +253,11 @@ namespace Infinitum.UI
             InfinitumPanel.Append(numbers);
 
             UIPanel skillsPanel = new();
+            const int SKILL_WIDTH_PANEL = 410;
             skillsPanel.Top.Set(0f, 0f);
-            skillsPanel.Left.Set(210f, 0f);
+            skillsPanel.Left.Set(maxWidth - SKILL_WIDTH_PANEL, 0f);
             skillsPanel.Height.Set(maxHeigth, 0f);
-            skillsPanel.Width.Set(maxWidth - 209, 0f);
+            skillsPanel.Width.Set(SKILL_WIDTH_PANEL, 0f);
             skillsPanel.PaddingRight = 0f;
             skillsPanel.OverflowHidden = true;
 
