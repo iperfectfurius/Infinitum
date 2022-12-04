@@ -70,6 +70,7 @@ namespace Infinitum
                 case MessageType.UpdateStats://only Client
                     if (Main.netMode == NetmodeID.Server) return;
 
+                    //TODO implement in class
                     Difficulty.DifficultySetted = (Difficulties)reader.ReadByte();
                     Difficulty.Hp = reader.ReadSingle();
                     Difficulty.Speed = reader.ReadSingle();
