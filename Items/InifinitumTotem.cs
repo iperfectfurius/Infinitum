@@ -43,8 +43,6 @@ namespace Infinitum.Items
         {
             if(Main.netMode == NetmodeID.Server || Main.netMode == NetmodeID.SinglePlayer)
                 Main.ExecuteCommand("/difficulty increase",new InifnitumCommandCaller());
-
-            Infinitum.instance.ChatMessage("", Color.Red);
             return true;
         }
 
