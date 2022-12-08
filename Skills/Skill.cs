@@ -15,6 +15,7 @@ namespace Infinitum.Skills
         private string statName;
         private string displayName;
         private char preText = '+';
+        private char postText = '%';
         private int level;
         private dynamic effectBuff;
         private float multiplierEffect;
@@ -41,6 +42,7 @@ namespace Infinitum.Skills
         public int BaseCost { get => baseCost; set => baseCost = value; }
         public int TotalSpend { get => totalSpend; set => totalSpend = value; }
         public SkillEnums.Type Type { get => type; set => type = value; }
+        public char PostText { get => postText; set => postText = value; }
 
         public Skill(int level)
         {
@@ -161,7 +163,7 @@ namespace Infinitum.Skills
         }
         public virtual string GetStatText()
         {
-            return $"{preText} {(effectBuff * 100):n2}%";
+            return $"{preText} {(effectBuff * 100):n2}{postText}";
         }
         public virtual void CalcCost()
         {
