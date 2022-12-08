@@ -39,7 +39,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.80";// TODO: search for assembly version?
+        private string version = "0.82";// TODO: search for assembly version?
         private bool messageReset = false;
         private double exp = 0;
         private int level = 0;
@@ -314,6 +314,10 @@ namespace Infinitum
                 skill = skillSet.GetCompound(typeof(AmmoConsumption).ToString());
                 Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(skill.GetInt("level"));
                 Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].AutomaticMode = skill.GetBool("automaticMode");
+
+                skill = skillSet.GetCompound(typeof(ArmorPenetration).ToString());
+                Skills[(int)SkillEnums.SkillOrder.ArmorPenetration] = new ArmorPenetration(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.ArmorPenetration].AutomaticMode = skill.GetBool("automaticMode");
             }
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
@@ -481,6 +485,7 @@ namespace Infinitum
             Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = new PickaxeSpeed(0);
             Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(0);
             Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(0);
+            Skills[(int)SkillEnums.SkillOrder.ArmorPenetration] = new ArmorPenetration(0);
             //TODO: Armor penetration
             Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(0);
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(0);
