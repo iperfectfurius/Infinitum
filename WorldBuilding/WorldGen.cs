@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Infinitum.Items;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Infinitum.WorldBuilding
 {
@@ -23,6 +24,7 @@ namespace Infinitum.WorldBuilding
         private bool notUnloadedTiles = true;
         private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, 408 };
         public HashSet<string> bannedTiles = new HashSet<string>();
+        private ModPacket myPacket;
 
         public override bool Drop(int i, int j, int type)
         {
@@ -44,6 +46,8 @@ namespace Infinitum.WorldBuilding
                 {
                     if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromBlocks))
                         Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+                    if (Main.rand.NextBool(ExpStar.ChanceFromBlocks))
+                        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
                     return base.Drop(i, j, type);
                 }
@@ -61,7 +65,7 @@ namespace Infinitum.WorldBuilding
                 //if tile is more big than 1 tile better to sendAccumulated XP for less traffic
                 if (Main.netMode != NetmodeID.Server)
                 {
-                    Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
+                    Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp,false);
                 }
                 else if (Main.netMode == NetmodeID.Server)
                 {
@@ -70,10 +74,11 @@ namespace Infinitum.WorldBuilding
                 }
                 if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+                if (Main.rand.NextBool(ExpStar.ChanceFromOres))
+                    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
                 return base.Drop(i, j, type);
 
-            }
-
+            }         
 
             if (!isOre(type))
             {
@@ -257,7 +262,7 @@ namespace Infinitum.WorldBuilding
 
             if (Main.netMode != NetmodeID.Server)
             {
-                Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp);
+                Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(xp,false);
             }
 
             else if (Main.netMode == NetmodeID.Server)//too much traffic?
@@ -309,12 +314,10 @@ namespace Infinitum.WorldBuilding
         }
         private void sendXPToPlayers(float xp)
         {
-            Task.Run(() =>
-            {
-                ModPacket myPacket = myMod.GetPacket();
-                myPacket.Write(xp);
-                myPacket.Send();
-            });
+            myPacket = myMod.GetPacket();
+            myPacket.Write((byte)MessageType.XPFromOtherSources);
+            myPacket.Write(xp);
+            myPacket.Send();
         }
         private void sendAccumulatedXPFromTile(float xp)
         {
@@ -327,22 +330,22 @@ namespace Infinitum.WorldBuilding
                 timer = Task.Delay(100).ContinueWith((e) =>
                 {
 
-                    if (Main.netMode != NetmodeID.Server)
+                    if (Main.netMode == NetmodeID.SinglePlayer)
                     {
-                        Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(accumulatedXP);
+                        Main.CurrentPlayer.GetModPlayer<Character_Data>().AddXp(accumulatedXP,false);
                     }
 
                     else if (Main.netMode == NetmodeID.Server)
                     {
-                        ModPacket myPacket = myMod.GetPacket();
-                        myPacket.Write(accumulatedXP);
-                        myPacket.Send();
+                        sendXPToPlayers(accumulatedXP);
                     }
                     haveXPAccumulated = false;
                     accumulatedXP = 0;
                 });
             }
         }
+
+
     }
 
 }

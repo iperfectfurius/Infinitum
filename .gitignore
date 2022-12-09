@@ -9,3 +9,4 @@ bin
 logs
 *.md
 wiki
+.code-workspace

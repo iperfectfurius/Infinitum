@@ -23,6 +23,7 @@ https://github.com/iperfectfurius/Infinitum/wiki
 New Difficulties.
 New Potions.
 Life Skills.
+Balance XP during playthrough.
 Balance of Mobs/NPCs in multiplayer exclusively.
 More Tiers of Stars.
 New endless Endgame.

@@ -18,20 +18,21 @@ namespace Infinitum.Skills
         }
         public enum SkillOrder : ushort
         {
-            Defense = 0,
-            MovementSpeed = 1,
-            LifeRegen = 2,
-            LifeSteal = 3,
-            GlobalCriticalChance = 4,
-            MeleeDamage = 5,
-            MeleeAttackSpeed = 6,
-            MagicDamage = 7,
-            ManaConsumption = 8,
-            RangedDamage = 9,
-            AmmoConsumption = 10,
-            SummonDamage = 11,
-            MinionCapacity = 12,
-            PickaxeSpeed = 13
+            Defense,
+            MovementSpeed,
+            LifeRegen,
+            LifeSteal,
+            GlobalCriticalChance,
+            ArmorPenetration,
+            MeleeDamage,
+            MeleeAttackSpeed,
+            MagicDamage,
+            ManaConsumption,
+            RangedDamage,
+            AmmoConsumption,
+            SummonDamage,
+            MinionCapacity,
+            PickaxeSpeed 
         }     
         public enum Type
         {

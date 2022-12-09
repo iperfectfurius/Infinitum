@@ -27,6 +27,7 @@ namespace Infinitum
     {
         private Player player = Main.CurrentPlayer;
         private static Mod myMod = ModLoader.GetMod("Infinitum");
+        private ModPacket myPacket;
         private UISettings playerSettings = new();
         private bool recentChanged = false;
         private string lastHeldItem;
@@ -38,7 +39,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.80";// TODO: search for assembly version?
+        private string version = "0.82";// TODO: search for assembly version?
         private bool messageReset = false;
         private double exp = 0;
         private int level = 0;
@@ -47,7 +48,7 @@ namespace Infinitum
         private float moreExpMultiplier = 1.0f;
         private const int BASE_EXP = 30000;
         private ulong expToLevel = BASE_EXP;
-        private const float EXPPERLEVEL = 0.0004f;
+        private const float EXPPERLEVEL = 0.0005f;
         private long totalNpcsKilled = 0;
         private bool activate = true;
         private bool displayNumbers = true;
@@ -66,16 +67,16 @@ namespace Infinitum
         public bool DisplayNumbers { get => displayNumbers; set => displayNumbers = value; }
         public float MoreExpMultiplier { get => moreExpMultiplier; set => moreExpMultiplier = value; }
 
-
         internal Skill[]? Skills { get => skillsSets[setSelected]; set => skillsSets[setSelected] = value; }
         public string SetSelected { get => setSelected; set => setSelected = value; }
-        public int SetCount { get => skillsSets.Count; }
+        public int SetCount { get => skillsSets.Count; }      
+        public float? GetXpFromDifficulty => Infinitum.instance.Difficulty.GetXPFromDifficulty;
+        public Tuple<float, float> GetTotalXpMultiplier => Tuple.Create(expMultiplier * moreExpMultiplier, (float)((expMultiplier * moreExpMultiplier) * GetXpFromDifficulty) - (expMultiplier * moreExpMultiplier));
 
         public override void Initialize()
         {
             base.Initialize();
             CalcXPPerLevel();
-
         }
 
         private void CalcXPPerLevel()
@@ -97,9 +98,8 @@ namespace Infinitum
             if (messageReset)
             {
                 showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 180, true);
-                ChatMessage($"New Skills Version Detected. Check Your skills has beed reset.[Infinitum v{version}]",Color.Red);
+                ChatMessage($"New Skills Version Detected. Check Your skills has beed reset.[Infinitum v{version}]", Color.Red);
             }
-                
 
         }
         public void showDamageText(int yPos, string text, Color c, int duration = 60, bool dramatic = false, bool dot = false)
@@ -115,13 +115,14 @@ namespace Infinitum
         public override void Load()
         {
             base.Load();
-
         }
-        public void AddXp(float xp)
-        {
+        public void AddXp(float xp,bool IsXpMultiplierApplicable = true)
+          {
             if (Main.gameMenu) return;//This can be triggered by calamity first time in the world?
 
             double experienceObtained = (double)xp * ((double)expMultiplier * moreExpMultiplier);
+            experienceObtained *= IsXpMultiplierApplicable ? Infinitum.instance.Difficulty.GetXPFromDifficulty : 1;
+
             exp += experienceObtained;
             UpdateLevel();
             showDamageText((int)CombatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);
@@ -160,7 +161,6 @@ namespace Infinitum
 
             CalcXPPerLevel();
             return true;
-
         }
         public void AddXpMultiplier(float multiplier)
         {
@@ -174,8 +174,7 @@ namespace Infinitum
             try
             {
                 //probably save all character_data is more efficient?
-                string tempVer;
-                tag.TryGet("Version", out tempVer);
+                tag.TryGet("Version", out string tempVer);
                 tag.TryGet("DisplayNumbers", out displayNumbers);
                 tag.TryGet("Level", out level);
                 tag.TryGet("ExpMultiplier", out expMultiplier);
@@ -195,7 +194,6 @@ namespace Infinitum
                 CalcXPPerLevel();
                 loadSkills(tag);
 
-                
                 string? lastSet = tag.GetString("CurrentSet");
                 setSelected = string.IsNullOrEmpty(lastSet) ? "0" : lastSet;
                 recentChanged = true;
@@ -222,7 +220,7 @@ namespace Infinitum
 
             TagCompound skillData = new();
 
-            if(!skillsSets.ContainsKey(setSelected)) InitializeSkillsOfCurrentSet();//for new players
+            if (!skillsSets.ContainsKey(setSelected)) InitializeSkillsOfCurrentSet();//for new players
 
             foreach (KeyValuePair<string, Skill[]> entry in skillsSets)
             {
@@ -241,13 +239,11 @@ namespace Infinitum
             tag.Add("SkillData", skillData);
 
             tag.Add("UI", playerSettings.SaveMyData());
-
-
         }
         private void loadSkills(TagCompound tag)
         {
             //get names
-            if(tag.GetCompound("SkillData").Count == 0)
+            if (tag.GetCompound("SkillData").Count == 0)
             {
                 InitializeSkillsOfCurrentSet();
                 return;
@@ -318,6 +314,10 @@ namespace Infinitum
                 skill = skillSet.GetCompound(typeof(AmmoConsumption).ToString());
                 Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(skill.GetInt("level"));
                 Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].AutomaticMode = skill.GetBool("automaticMode");
+
+                skill = skillSet.GetCompound(typeof(ArmorPenetration).ToString());
+                Skills[(int)SkillEnums.SkillOrder.ArmorPenetration] = new ArmorPenetration(skill.GetInt("level"));
+                Skills[(int)SkillEnums.SkillOrder.ArmorPenetration].AutomaticMode = skill.GetBool("automaticMode");
             }
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
@@ -340,7 +340,6 @@ namespace Infinitum
             }
 
             base.ProcessTriggers(triggersSet);
-
         }
         public override void Unload()
         {
@@ -390,7 +389,6 @@ namespace Infinitum
 
         private void getAdditionalsExp()
         {
-
             ModPrefix prefix = PrefixLoader.GetPrefix(player.HeldItem.prefix);
             if (prefix != null)
                 switch (prefix.Name)
@@ -404,7 +402,7 @@ namespace Infinitum
                         break;
                 }
 
-            if(player.HasBuff<XPBuff>()) moreExpMultiplier += .5f;
+            if (player.HasBuff<XPBuff>()) moreExpMultiplier += .5f;
 
             recentChanged = true;
         }
@@ -420,7 +418,7 @@ namespace Infinitum
             if (activate && target.netID != 488)
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
 
-            base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+            //base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -429,9 +427,9 @@ namespace Infinitum
 
             if (activate && target.netID != 488)
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
-            base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
+            //base.ModifyHitNPCWithProj(proj, target, ref damage, ref knockback, ref crit, ref hitDirection);
         }
-        
+
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
         {
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption].ApplyStatToPlayer(out bool canConsumeAmmo);
@@ -457,6 +455,19 @@ namespace Infinitum
 
             InitializeSkillsOfCurrentSet();
         }
+        public void ResetAllCharacterData()
+        {
+            ResetAllSkills(skillsSets.Count);
+            exp = 0;
+            level = 0;
+            totalLevel = 0;
+            expMultiplier = 1.0f;
+            expToLevel = BASE_EXP;
+            totalNpcsKilled = 0;
+
+            showDamageText((int)CombatTextPos.CurrentLevels + 50, "Skills Reset!", Color.Red, 250, true);
+            showDamageText((int)CombatTextPos.CurrentLevels + 150, "Character Data Reset", Color.Red, 250, true);
+        }
         private void InitializeSkillsOfCurrentSet()
         {
             if (!skillsSets.ContainsKey(setSelected))
@@ -474,10 +485,10 @@ namespace Infinitum
             Skills[(int)SkillEnums.SkillOrder.PickaxeSpeed] = new PickaxeSpeed(0);
             Skills[(int)SkillEnums.SkillOrder.MovementSpeed] = new MovementSpeed(0);
             Skills[(int)SkillEnums.SkillOrder.GlobalCriticalChance] = new GlobalCriticalChance(0);
-
+            Skills[(int)SkillEnums.SkillOrder.ArmorPenetration] = new ArmorPenetration(0);
+            //TODO: Armor penetration
             Skills[(int)SkillEnums.SkillOrder.LifeSteal] = new LifeSteal(0);
             Skills[(int)SkillEnums.SkillOrder.AmmoConsumption] = new AmmoConsumption(0);
-
             recentChanged = true;
         }
         public void ResetAllSkills(int currentSets)
@@ -513,7 +524,6 @@ namespace Infinitum
                     SoundEngine.PlaySound(SoundID.AchievementComplete);
                     ChatMessage($"Infinitum: Set {setSelected}({Skill.GetBuffs(Skills)})", Color.Green);
                     break;
-
 
                 case UIElementsEnum.SetsActions.AddSet:
                     int setsCount = skillsSets.Count;
@@ -562,8 +572,9 @@ namespace Infinitum
         public override void ModifyCaughtFish(Item fish)
         {
             // TODO: Add stars to pool fishing
-            if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing)){
-                
+            if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing))
+            {
+
             }
 
             int rarity = fish.rare >= ItemRarityID.White ? fish.rare : 1;
@@ -576,7 +587,8 @@ namespace Infinitum
                 //mirar
                 Task.Run(() =>
                 {
-                    ModPacket myPacket = Infinitum.instance.GetPacket();
+                    myPacket = myMod.GetPacket();
+                    myPacket.Write((byte)MessageType.XPFromNPCs);
                     myPacket.Write(xp);
                     myPacket.Send();
                 });
@@ -585,7 +597,7 @@ namespace Infinitum
         }
         public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {
-            if(Main.rand.NextBool(ExpStar.ChanceFromFishing))
+            if (Main.rand.NextBool(ExpStar.ChanceFromFishing))
                 itemDrop = ModContent.ItemType<ExpStar>();
             else if (Main.rand.NextBool(MultiplierStar.ChanceFromFishing))
                 itemDrop = ModContent.ItemType<MultiplierStar>();

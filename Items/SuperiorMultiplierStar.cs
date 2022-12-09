@@ -27,8 +27,6 @@ namespace Infinitum.Items
 			Item.useAnimation = 10;
 			Item.reuseDelay = 0;
 			Item.stack = 1;
-
-
 		}
 
 		public override bool CanUseItem(Player player)

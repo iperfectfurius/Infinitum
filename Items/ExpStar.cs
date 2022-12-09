@@ -10,14 +10,14 @@ namespace Infinitum.Items
 	{
 		public const int NormalChanceFromNPCs = 1500;
         public const int ExpertChanceFromNPCs = 1250;
-        public const int ChanceFromOres = 750;
-		public const int ChanceFromBlocks = 10000;
-		public const int ChanceFromTrees = 500;
-		public const int ChanceFromFishing = 125;
+        public const int ChanceFromOres = 2500;
+		public const int ChanceFromBlocks = 25000;
+		public const int ChanceFromTrees = 3500;
+		public const int ChanceFromFishing = 175;
         public const int ChanceFromHearts = 100;
-        public const int ChanceFromPots = 250;
-        public const int ChanceFromAltars = 200;
-        public const int ChanceFromOrbs = 150;
+        public const int ChanceFromPots = 500;
+        public const int ChanceFromAltars = 400;
+        public const int ChanceFromOrbs = 250;
         public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Star XP");
@@ -48,7 +48,7 @@ namespace Infinitum.Items
 		public override bool? UseItem(Player player)
 		{
 			if (Main.netMode != NetmodeID.Server && player.whoAmI == Main.myPlayer)
-				player.GetModPlayer<Character_Data>().AddXp(Main.rand.Next(30000));
+				player.GetModPlayer<Character_Data>().AddXp(Main.rand.Next(30000),false);
 			return true;
 		}
 		public override void GrabRange(Player player, ref int grabRange)

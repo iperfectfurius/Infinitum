@@ -8,7 +8,7 @@
         public LifeSteal(int level) : base(level)
         {
         }
-        // TODO: LifeSteal based on damage done not raw.
+
         public override void ApplyStatToPlayer(dynamic obj)
         {          
             if(Level==0) return;

@@ -25,7 +25,7 @@ namespace Infinitum.UI
         public DragableUIPanel InfinitumPanel;
         public bool Visible;
         public Character_Data stats = null;
-        private const float maxWidth = 625f;
+        private const float maxWidth = 660f;
         private const float maxHeigth = 222f;
         private UIButton reset;
         private UIButton activateStatsButton;
@@ -73,7 +73,7 @@ namespace Infinitum.UI
             float marginLeft = 8;
             for (int i = 0; i < statsTexts.Length; i++)
             {
-                UIText text = new UIText("Test", .9f);
+                UIText text = new UIText("Test", .8f);
 
                 text.Top.Set(marginTop, 0f);
                 text.Left.Set(marginLeft, 0f);
@@ -81,6 +81,8 @@ namespace Infinitum.UI
 
                 marginTop += 20f;
             }
+
+            marginLeft = 38;
 
             UIButton buttonChangeSet = new UIButton("Change Set (0)", ApplySet);
             buttonChangeSet.Top.Set(marginTop, 0f);
@@ -94,7 +96,7 @@ namespace Infinitum.UI
             UIButton buttonAddSet = new UIButton("+", ApplySet);
 
             buttonAddSet.Top.Set(marginTop, 0f);
-            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + 12f, 0);
+            buttonAddSet.Left.Set(buttonChangeSet.Width.Pixels + marginLeft + 4f, 0);
             buttonAddSet.Height.Set(18f, 0);
             buttonAddSet.Width.Set(18f, 0);
             buttonAddSet.ChangeColor(Color.Green);
@@ -104,7 +106,7 @@ namespace Infinitum.UI
             UIButton buttonDelSet = new UIButton("-", ApplySet);
 
             buttonDelSet.Top.Set(marginTop, 0f);
-            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + 34f, 0);
+            buttonDelSet.Left.Set(buttonChangeSet.Width.Pixels + marginLeft + 26f, 0);
             buttonDelSet.Height.Set(18f, 0);
             buttonDelSet.Width.Set(18f, 0);
             buttonDelSet.ChangeColor(Color.Red);
@@ -208,7 +210,7 @@ namespace Infinitum.UI
                 cost.MaxHeight.Set(20f, 0);
                 cost.MaxWidth.Set(35f, 0);
                 cost.OverflowHidden = false;
-            
+
                 automatic.Left.Set(marginLeft + 82, 0f);
                 automatic.Height.Set(18f, 0);
                 automatic.Width.Set(18f, 0);
@@ -228,7 +230,7 @@ namespace Infinitum.UI
                 skillsElementsPanel.Add(skill);
 
                 marginTop += 20f;
-            }           
+            }
         }
 
         private void addUIElementsToPanel()
@@ -251,10 +253,11 @@ namespace Infinitum.UI
             InfinitumPanel.Append(numbers);
 
             UIPanel skillsPanel = new();
+            const int SKILL_WIDTH_PANEL = 410;
             skillsPanel.Top.Set(0f, 0f);
-            skillsPanel.Left.Set(210f, 0f);
+            skillsPanel.Left.Set(maxWidth - SKILL_WIDTH_PANEL, 0f);
             skillsPanel.Height.Set(maxHeigth, 0f);
-            skillsPanel.Width.Set(maxWidth - 209, 0f);
+            skillsPanel.Width.Set(SKILL_WIDTH_PANEL, 0f);
             skillsPanel.PaddingRight = 0f;
             skillsPanel.OverflowHidden = true;
 
@@ -296,7 +299,7 @@ namespace Infinitum.UI
                 catch
                 {
                     Infinitum.instance.ChatMessage("[Infinitum] Error on UI", Color.Red);
-                    
+
                 }
                 stats.RecentChanged = false;
             }
@@ -363,10 +366,11 @@ namespace Infinitum.UI
         private void UpdateAllStats()
         {
             List<UIElement> skills = skillsElementsPanel._items;
+            (float xpMultiplier, float multiplierFromDiff) = stats.GetTotalXpMultiplier;
 
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
             statsTexts[(int)statsOrder.Exp].SetText($"Exp: {stats.Exp.ToString("n0")}/{stats.ExpToLevel} ({((float)stats.Exp / stats.ExpToLevel) * 100:n1}%)");
-            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {(stats.ExpMultiplier * stats.MoreExpMultiplier) * 100:n1}%");
+            statsTexts[(int)statsOrder.ExpMultiplier].SetText($"XP Multiplier: {(xpMultiplier*100):n1}% +({multiplierFromDiff*100:n1}%)");
             statsTexts[(int)statsOrder.TotalLevel].SetText($"Total Level: {stats.TotalLevel}");
             statsTexts[(int)statsOrder.TotalKills].SetText("Total Kills: " + stats.TotalNpcsKilled);
             statsTexts[(int)statsOrder.AverageXP].SetText($"Average XP: {stats.getAvgXP():n2}");
@@ -391,7 +395,7 @@ namespace Infinitum.UI
                 costText.SetText($"{stats.Skills[skillNumber].Cost}");
 
                 automaticButton.ChangeBackgroundFromValue(stats.Skills[skillNumber].AutomaticMode);
-            }          
+            }
         }
     }
 }
