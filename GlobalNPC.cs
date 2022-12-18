@@ -59,7 +59,7 @@ namespace Infinitum
 
         private void addXpToPlayer(float xp)
         {
-            Infinitum.instance.AddXPToPlayer(xp);
+            Infinitum.instance.AddXPToPlayer(xp,MessageType.XPFromNPCs);
         }
         public override void SetDefaults(NPC npc)
         {
