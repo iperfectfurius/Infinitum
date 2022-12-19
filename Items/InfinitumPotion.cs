@@ -28,7 +28,7 @@ namespace Infinitum.Items
             Item.useTime = 60;
             Item.useAnimation = 8;
             Item.useTurn = true;
-            Item.buffTime = 1800;
+            Item.buffTime = 3600;
             Item.buffType = ModContent.BuffType<InfinitumBuff>();
 
         }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
+using Terraria.ID;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Infinitum.Buffs
 {
@@ -19,7 +17,7 @@ namespace Infinitum.Buffs
         }
         public override void ModifyBuffTip(ref string tip, ref int rare)
         {
-            tip = "More XP Really?";
+            tip = $"You collected {(xpMultiplier * 100):n1}% more Exp Multiplier!";
         }
         public override bool RightClick(int buffIndex)
         {
@@ -27,8 +25,17 @@ namespace Infinitum.Buffs
         }
         public void UpdateFromKill(Player player)
         {
-            player.buffTime[player.FindBuffIndex(this.Type)] += 15;
-            xpMultiplier += 0.1f;
+            if (Main.netMode == NetmodeID.Server) return;
+
+            if(Main.netMode == NetmodeID.MultiplayerClient)
+                player.buffTime[player.FindBuffIndex(this.Type)] += 12;
+            else
+                player.buffTime[player.FindBuffIndex(this.Type)] += 15;
+            xpMultiplier += 0.0005f;
+
+            int i = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25),Color.Green,"+0.25s");
+
+            
         }
     }
 }

@@ -616,7 +616,7 @@ namespace Infinitum
         {
             if (!player.HasBuff<InfinitumBuff>()) return;
 
-            //player.FindBuffIndex(ModContent.BuffType<InfinitumBuff>());
+
             ((InfinitumBuff)BuffLoader.GetBuff(ModContent.BuffType<InfinitumBuff>())).UpdateFromKill(player);          
             
         }
