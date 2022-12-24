@@ -26,13 +26,14 @@ namespace Infinitum.Buffs
         public void UpdateFromKill(Player player)
         {
             if (Main.netMode == NetmodeID.Server) return;
-
+            int addedTime = 15;
             if(Main.netMode == NetmodeID.MultiplayerClient)
-                player.buffTime[player.FindBuffIndex(this.Type)] += 12;
-            else
-                player.buffTime[player.FindBuffIndex(this.Type)] += 15;
+                addedTime -= 3;
+
+            player.buffTime[player.FindBuffIndex(this.Type)] += addedTime;
             xpMultiplier += 0.0005f;
 
+            //TODO: Show correct time
             int i = CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25),Color.Green,"+0.25s");
 
             

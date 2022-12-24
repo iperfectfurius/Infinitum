@@ -137,7 +137,6 @@ namespace Infinitum
                 avgXP.RemoveRange(0, 50);
             avgXP.Add((float)experienceObtained);
             recentChanged = true;
-
         }
         private void UpdateLevel()
         {

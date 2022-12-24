@@ -10,12 +10,14 @@ using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Infinitum.Buffs;
 
 namespace Infinitum
 {
     public class InfinitumNPCs : GlobalNPC
     {
         private static Mod myMod = Infinitum.myMod;
+        private static int LastSpawnRate = 0;
         //TODO Rework xp scalate
         private float GetDefense(int defense) => defense > 120 ? 120 : defense;
         private float GetXpFromNPC(NPC target) => ((GetDefense(target.defense) * 0.025f) + 0.5f) * (float)(target.lifeMax / 5.5);
@@ -80,6 +82,13 @@ namespace Infinitum
                 nextSlot++;
             }
             //base.SetupShop(type, shop, ref nextSlot);
+        }
+        public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+        {
+            if (!player.HasBuff<InfinitumBuff>()) return;
+
+                spawnRate = (int)(spawnRate * 0.65);
+                maxSpawns = (int)((float)maxSpawns * 10.0f);
         }
     }
 }
