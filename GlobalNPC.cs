@@ -11,6 +11,7 @@ using Terraria.GameContent.Bestiary;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Infinitum.Buffs;
+using Infinitum.Items.Ores;
 
 namespace Infinitum
 {
@@ -55,10 +56,9 @@ namespace Infinitum
                 new CommonDrop(ModContent.ItemType<MultiplierStar>(), MultiplierStar.NormalChanceFromNPCS, 1, 3),
                 new CommonDrop(ModContent.ItemType<MultiplierStar>(), MultiplierStar.ExpertChanceFromNPCS, 1, 3)));
             items.Add(new ItemDropWithConditionRule(ModContent.ItemType<SuperiorMultiplierStar>(), SuperiorMultiplierStar.ChanceFromNPCS, 1, 1, new Conditions.IsHardmode()));
-
+            items.Add(new ItemDropWithConditionRule(ModContent.ItemType<SanjacobosOre>(), SanjacobosOre.ChanceFromNPCs, 1, 5, new Conditions.DownedPlantera()));
             items.ForEach(e => globalLoot.Add(e));
         }
-
         private void addXpToPlayer(float xp)
         {
             Infinitum.instance.AddXPToPlayer(xp,MessageType.XPFromNPCs);

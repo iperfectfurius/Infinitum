@@ -13,6 +13,7 @@ namespace Infinitum.Items.Ores
 {
 	internal class SanjacobosOre : ModItem
 	{
+		public const int ChanceFromNPCs = 100;
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Sanjacobo's Ore");

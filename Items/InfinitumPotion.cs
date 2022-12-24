@@ -12,7 +12,7 @@ namespace Infinitum.Items
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Infinitum Potion");
-            Tooltip.SetDefault("MORE XP, PROBLEM?\n[c/ff1493:+50% More XP]");
+            Tooltip.SetDefault("MOoOoORE XP, PROBLEM?\nYou need to kill Fast!");
 
         }
         public override void SetDefaults()
@@ -49,7 +49,8 @@ namespace Infinitum.Items
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<MiniExpStar>(), 10);
+            recipe.AddIngredient(ModContent.ItemType<MiniExpStar>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<SanjacobosOre>(), 100);
             recipe.AddTile(TileID.AlchemyTable);
             recipe.Register();
 
