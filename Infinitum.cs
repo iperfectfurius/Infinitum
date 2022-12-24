@@ -64,7 +64,7 @@ namespace Infinitum
                     }
                     else
                     {
-                        AddXPToPlayer(reader.ReadSingle(),messageType == MessageType.XPFromNPCs);
+                        AddXPToPlayer(reader.ReadSingle(),messageType);
                     }
                     break;
                 case MessageType.UpdateStats://only Client
@@ -95,9 +95,9 @@ namespace Infinitum
             base.HandlePacket(reader, whoAmI);
         }
 
-        public void AddXPToPlayer(float xp,bool XPMultiplierApplicable = true)
+        public void AddXPToPlayer(float xp,MessageType type)
         {//test myplayer
-            Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp, XPMultiplierApplicable);
+            Main.player[Main.myPlayer].GetModPlayer<Character_Data>().AddXp(xp, type);
         }
 
         public void ChatMessage(string text, Color red)

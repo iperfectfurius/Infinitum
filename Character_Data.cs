@@ -116,12 +116,17 @@ namespace Infinitum
         {
             base.Load();
         }
-        public void AddXp(float xp,bool IsXpMultiplierApplicable = true)
+        public void AddXp(float xp, MessageType type)
           {
             if (Main.gameMenu) return;//This can be triggered by calamity first time in the world?
 
             double experienceObtained = (double)xp * ((double)expMultiplier * moreExpMultiplier);
-            experienceObtained *= IsXpMultiplierApplicable ? Infinitum.instance.Difficulty.GetXPFromDifficulty : 1;
+            if(type == MessageType.XPFromNPCs)
+            {
+                experienceObtained *= Infinitum.instance.Difficulty.GetXPFromDifficulty;
+                CheckForBuffs();
+            }
+                
 
             exp += experienceObtained;
             UpdateLevel();
@@ -132,7 +137,6 @@ namespace Infinitum
                 avgXP.RemoveRange(0, 50);
             avgXP.Add((float)experienceObtained);
             recentChanged = true;
-
         }
         private void UpdateLevel()
         {
@@ -403,7 +407,10 @@ namespace Infinitum
                 }
 
             if (player.HasBuff<XPBuff>()) moreExpMultiplier += .5f;
-
+            if (player.HasBuff<InfinitumBuff>())
+            {
+                moreExpMultiplier += ((InfinitumBuff)BuffLoader.GetBuff(ModContent.BuffType<InfinitumBuff>())).XPMultiplier;
+            }
             recentChanged = true;
         }
         public override void PreUpdate()
@@ -581,7 +588,7 @@ namespace Infinitum
             float xp = (((rarity * 5) + 1) * 3.5f + (fish.value / 250)) * fish.stack;
 
             if (Main.netMode == NetmodeID.SinglePlayer)
-                AddXp(xp);
+                AddXp(xp,MessageType.XPFromOtherSources);
             else if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 //mirar
@@ -603,6 +610,14 @@ namespace Infinitum
                 itemDrop = ModContent.ItemType<MultiplierStar>();
 
             base.CatchFish(attempt, ref itemDrop, ref npcSpawn, ref sonar, ref sonarPosition);
+        }
+        private void CheckForBuffs()
+        {
+            if (!player.HasBuff<InfinitumBuff>()) return;
+
+
+            ((InfinitumBuff)BuffLoader.GetBuff(ModContent.BuffType<InfinitumBuff>())).UpdateFromKill(player);          
+            
         }
     }
 
