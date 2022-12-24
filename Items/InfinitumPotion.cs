@@ -25,7 +25,7 @@ namespace Infinitum.Items
             Item.UseSound = SoundID.Item3;
             Item.useStyle = ItemUseStyleID.DrinkLiquid;
             Item.autoReuse = false;
-            Item.useTime = 60;
+            Item.useTime = 90;
             Item.useAnimation = 8;
             Item.useTurn = true;
             Item.buffTime = 3600;
