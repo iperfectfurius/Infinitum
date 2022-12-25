@@ -34,9 +34,7 @@ namespace Infinitum.Buffs
             player.buffTime[player.FindBuffIndex(this.Type)] += addedTime;
             xpMultiplier += 0.0005f;
 
-            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25),Color.Green,$"+{(float)(addedTime/60f):n2}s");
-
-            
+            CombatText.NewText(new Rectangle((int)player.position.X, ((int)player.position.Y + 50), 25, 25),Color.Green,$"+{(float)(addedTime/60f):n2}s");         
         }
     }
 }
