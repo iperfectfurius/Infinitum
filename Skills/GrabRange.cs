@@ -20,7 +20,7 @@ namespace Infinitum.Skills
             Cost = 10;
             MultiplierCost = 0.15f;
             EffectBuff = 0;
-            MultiplierEffect = 5f;
+            MultiplierEffect = 10f;
             Type = SkillEnums.Type.Other;
         }
 
