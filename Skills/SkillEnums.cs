@@ -24,6 +24,7 @@ namespace Infinitum.Skills
             LifeSteal,
             GlobalCriticalChance,
             ArmorPenetration,
+            GrabRange,
             MeleeDamage,
             MeleeAttackSpeed,
             MagicDamage,
@@ -38,7 +39,8 @@ namespace Infinitum.Skills
         {
             PostUpdateEquips,
             ModifyHitNPC,
-            CanConsumeAmmo
+            CanConsumeAmmo,
+            Other
         }
     }
 }

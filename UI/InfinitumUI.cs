@@ -33,6 +33,7 @@ namespace Infinitum.UI
         private UIButton[] SetsButtons = new UIButton[Enum.GetNames(typeof(UIElementsEnum.ButtonsSets)).Length];
         UIText[] statsTexts = new UIText[6];
         UIList skillsElementsPanel = new();
+        private bool firstTimeLoad = true;
 
         private enum statsOrder : ushort
         {
@@ -184,7 +185,6 @@ namespace Infinitum.UI
                 sumStat.Width.Set(18f, 0);
                 sumStat.MaxHeight.Set(18f, 0);
                 sumStat.MaxWidth.Set(18f, 0);
-                sumStat.OwnStat = i;
                 sumStat.OverflowHidden = false;
 
                 subStat.Left.Set(marginLeft + 25, 0f);
@@ -192,7 +192,6 @@ namespace Infinitum.UI
                 subStat.Width.Set(18f, 0);
                 subStat.MaxHeight.Set(18f, 0);
                 subStat.MaxWidth.Set(18f, 0);
-                subStat.OwnStat = i;
                 subStat.OverflowHidden = false;
 
                 allStat.Left.Set(marginLeft + 48, 0f);
@@ -200,7 +199,6 @@ namespace Infinitum.UI
                 allStat.Width.Set(30f, 0);
                 allStat.MaxHeight.Set(18f, 0);
                 allStat.MaxWidth.Set(30f, 0);
-                allStat.OwnStat = i;
                 allStat.OverflowHidden = false;
                 allStat.hoverText = "Spend All Levels.";
 
@@ -214,7 +212,6 @@ namespace Infinitum.UI
                 automatic.Left.Set(marginLeft + 82, 0f);
                 automatic.Height.Set(18f, 0);
                 automatic.Width.Set(18f, 0);
-                automatic.OwnStat = i;
                 automatic.OverflowHidden = false;
                 automatic.ChangeColor(new Color(229, 38, 0) * 0.7f);
                 automatic.changeOnMouse = false;
@@ -366,6 +363,8 @@ namespace Infinitum.UI
         private void UpdateAllStats()
         {
             List<UIElement> skills = skillsElementsPanel._items;
+            if (firstTimeLoad) setOwnStatsToButtons(skills);
+            
             (float xpMultiplier, float multiplierFromDiff) = stats.GetTotalXpMultiplier;
 
             statsTexts[(int)statsOrder.Level].SetText("Level: " + stats.Level);
@@ -396,6 +395,22 @@ namespace Infinitum.UI
 
                 automaticButton.ChangeBackgroundFromValue(stats.Skills[skillNumber].AutomaticMode);
             }
+        }
+
+        private void setOwnStatsToButtons(List<UIElement> skills)
+        {
+            for (int i = 1; i < SkillEnums.GetNumberOfSkills + 1; i++)
+            {
+                int skillNumber = i - 1;
+                UIList skill = (UIList)skills.ElementAt(i);
+                ((UIButton)skill.Children.ElementAt(2)).OwnStat = skillNumber;
+                ((UIButton)skill.Children.ElementAt(3)).OwnStat = skillNumber;
+                ((UIButton)skill.Children.ElementAt(3)).OwnStat = skillNumber;
+                ((UIButton)skill.Children.ElementAt(3)).OwnStat = skillNumber;
+                ((UIButton)skill.Children.ElementAt(6)).OwnStat = skillNumber;
+
+            }
+            firstTimeLoad = false;
         }
     }
 }
