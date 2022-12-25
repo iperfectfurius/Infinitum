@@ -26,7 +26,7 @@ namespace Infinitum.Skills
 
         public override string GetStatText()
         {
-            return $"+ {EffectBuff:n2}";
+            return $"+ {(EffectBuff/16):n0} Tiles";
         }
     }
 }
