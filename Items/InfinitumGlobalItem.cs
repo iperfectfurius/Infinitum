@@ -40,7 +40,6 @@ namespace Infinitum.Items
                         break;
                 }
             }
-
         }
         public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {

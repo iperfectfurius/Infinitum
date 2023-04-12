@@ -36,8 +36,7 @@ namespace Infinitum.Skills
         public int MaxLevel { get => maxLevel; set => maxLevel = value; }
         public string DisplayName { get => displayName; set => displayName = value; }
         public float MultiplierEffect { get => multiplierEffect; set => multiplierEffect = value; }
-        public char PreText { get => preText; set => preText = value; }
-        
+        public char PreText { get => preText; set => preText = value; }     
         public bool AutomaticMode { get => automaticMode; set => automaticMode = value; }
         public int BaseCost { get => baseCost; set => baseCost = value; }
         public int TotalSpend { get => totalSpend; set => totalSpend = value; }

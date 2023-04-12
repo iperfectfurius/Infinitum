@@ -46,7 +46,6 @@ namespace Infinitum.UI
         }
         public InfinitumUI()
         {
-
             inicializeUIElements();
         }
         public override void OnInitialize()
@@ -400,7 +399,7 @@ namespace Infinitum.UI
         private void setOwnStatsToButtons(List<UIElement> skills)
         {
             for (int i = 1; i < SkillEnums.GetNumberOfSkills + 1; i++)
-            {
+            {//All button for each skill
                 int skillNumber = i - 1;
                 UIList skill = (UIList)skills.ElementAt(i);
                 ((UIButton)skill.Children.ElementAt(2)).OwnStat = skillNumber;

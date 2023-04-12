@@ -22,7 +22,7 @@ namespace Infinitum.WorldBuilding
         private bool haveXPAccumulated = false;
         private Task timer;
         private bool notUnloadedTiles = true;
-        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, 408 };
+        private readonly int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, 408 };
         public HashSet<string> bannedTiles = new HashSet<string>();
         private ModPacket myPacket;
 
