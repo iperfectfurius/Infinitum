@@ -15,7 +15,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.UI;
 using Terraria.Chat;
-
+//using IL.Terraria.ID;
 
 namespace Infinitum.UI
 {
@@ -388,7 +388,9 @@ namespace Infinitum.UI
                 UIButton automaticButton = (UIButton)skill.Children.ElementAt(6);
 
                 skillText.SetText($"{stats.Skills[skillNumber].DisplayName}: {stats.Skills[skillNumber].GetStatText()}");
-                skillText.hoverText = $"Level: {stats.Skills[skillNumber].Level} Total Level Spend: {stats.Skills[skillNumber].TotalSpend}";
+                skillText.hoverText = $"Level: {ColorText.SetTextColor(stats.Skills[skillNumber].Level,ColorText.Blue)} Total Level Spend: {stats.Skills[skillNumber].TotalSpend}";
+             
+                //skillText.hoverText = $"{ColorText.}";
 
                 costText.SetText($"{stats.Skills[skillNumber].Cost}");
 

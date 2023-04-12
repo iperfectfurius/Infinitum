@@ -24,7 +24,7 @@ namespace Infinitum.UI
         public override void Draw(SpriteBatch spriteBatch)
         {
             if(base.IsMouseHovering && !string.IsNullOrEmpty(hoverText))
-                Main.hoverItemName = $"[c/ff1493:{hoverText}]";
+                Main.hoverItemName = $"{hoverText}";
             base.Draw(spriteBatch);
         }
     }
