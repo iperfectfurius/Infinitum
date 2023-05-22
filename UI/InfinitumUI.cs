@@ -388,7 +388,8 @@ namespace Infinitum.UI
                 UIButton automaticButton = (UIButton)skill.Children.ElementAt(6);
 
                 skillText.SetText($"{stats.Skills[skillNumber].DisplayName}: {stats.Skills[skillNumber].GetStatText()}");
-                skillText.hoverText = $"Level: {ColorText.SetTextColor(stats.Skills[skillNumber].Level,ColorText.Blue)} Total Level Spend: {stats.Skills[skillNumber].TotalSpend}";
+                skillText.hoverText = $"Level: {ColorText.SetTextColor(stats.Skills[skillNumber].Level,ColorText.Blue)}" +
+                    $" Total Level Spend: {stats.Skills[skillNumber].TotalSpend}";
              
                 //skillText.hoverText = $"{ColorText.}";
 

@@ -11,7 +11,7 @@ namespace Infinitum.Items
 		public const int ChanceFromNPCS = 500;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Superior Multiplier EXP");
+			DisplayName.SetDefault("Superior Multiplier Star EXP");
 			Tooltip.SetDefault("LOL²");
 		}			
 
