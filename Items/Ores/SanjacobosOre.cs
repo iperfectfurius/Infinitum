@@ -15,10 +15,7 @@ namespace Infinitum.Items.Ores
 	{
 		public const int ChanceFromNPCs = 100;
 		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Sanjacobo's Ore");
-			Tooltip.SetDefault("Good Shit");
-		}
+		{}
 
 		public override void SetDefaults()
 		{

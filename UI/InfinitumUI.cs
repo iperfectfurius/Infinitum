@@ -1,5 +1,4 @@
 ﻿
-using IL.Terraria.Chat;
 using Infinitum.Skills;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

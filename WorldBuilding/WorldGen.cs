@@ -26,7 +26,7 @@ namespace Infinitum.WorldBuilding
         public HashSet<string> bannedTiles = new HashSet<string>();
         private ModPacket myPacket;
 
-        public override bool Drop(int i, int j, int type)
+        public override void Drop(int i, int j, int type)
         {
 
             float xp = 0;
