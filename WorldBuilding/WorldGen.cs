@@ -35,7 +35,7 @@ namespace Infinitum.WorldBuilding
             if (bannedTiles.Contains(pos))
             {
                 Task.Run(() => bannedTiles.Remove(pos));
-                return base.Drop(i, j, type);
+                return; //base.Drop(i, j, type);
             }
 
             var tile = TileLoader.GetTile(type);
@@ -49,7 +49,7 @@ namespace Infinitum.WorldBuilding
                     if (Main.rand.NextBool(ExpStar.ChanceFromBlocks))
                         Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
-                    return base.Drop(i, j, type);
+                    return; //base.Drop(i, j, type);
                 }
 
 
@@ -76,7 +76,7 @@ namespace Infinitum.WorldBuilding
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
                 if (Main.rand.NextBool(ExpStar.ChanceFromOres))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
-                return base.Drop(i, j, type);
+                return; base.Drop(i, j, type);
 
             }         
 
@@ -166,7 +166,7 @@ namespace Infinitum.WorldBuilding
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
                 if (Main.rand.NextBool(expStarChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
-                return base.Drop(i, j, type);
+                return; base.Drop(i, j, type);
 
             }
 
@@ -275,7 +275,7 @@ namespace Infinitum.WorldBuilding
             if (Main.rand.NextBool(ExpStar.ChanceFromOres))
                 Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
-            return base.Drop(i, j, type);
+            return; base.Drop(i, j, type);
 
         }
         private bool isOre(int type)

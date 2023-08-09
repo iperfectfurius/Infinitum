@@ -15,11 +15,7 @@ namespace Infinitum.Items
     {
 
         public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Infinitum Totem");
-            Tooltip.SetDefault($"Change current difficulty for this map\nCurrently difficulty: {Infinitum.instance.Difficulty.DifficultySetted}");
-
-        }
+        {}
         public override void SetDefaults()
         {
             Item.maxStack = 1;

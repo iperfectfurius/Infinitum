@@ -13,11 +13,7 @@ namespace Infinitum.Items
     {
 
         public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Sanjacobo's Bar");
-
-            Tooltip.SetDefault("Really you need more XP?");
-        }
+        {}
 
         public override void SetDefaults()
         {

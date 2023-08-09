@@ -235,7 +235,7 @@ namespace Infinitum.UI
             close.Left.Set(maxWidth - 25, 0f);
             close.Height.Set(22, 0);
             close.Width.Set(22, 0);
-            close.OnClick += (e, i) => Visible = false;
+            close.OnLeftClick += (e, i) => Visible = false;
 
             foreach (UIButton button in SetsButtons)
                 InfinitumPanel.Append(button);

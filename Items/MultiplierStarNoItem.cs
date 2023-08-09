@@ -19,10 +19,7 @@ namespace Infinitum.Items
         public const int ChanceFromAltars = 12;
         public const int ChanceFromOrbs = 4;
         public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Star Multiplier EXP(No item)");
-            Tooltip.SetDefault("LOL +(2.5%) XP!");
-        }
+        {}
 
         public override void SetDefaults()
         {

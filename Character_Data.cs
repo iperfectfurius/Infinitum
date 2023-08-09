@@ -18,6 +18,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
+using Terraria.WorldBuilding;
 
 namespace Infinitum
 {
@@ -84,16 +85,16 @@ namespace Infinitum
             expToLevel = BASE_EXP + (ulong)((BASE_EXP * EXPPERLEVEL) * totalLevel);
         }
 
-        public override void OnEnterWorld(Player currentPLayer)
+        public override void OnEnterWorld()
         {
-            player = currentPLayer;
+            player = this.Player;
 
             playerSettings.SetSettings();
             showDamageText((int)CombatTextPos.CurrentLevels, $"Level {totalLevel}", CombatText.DamagedFriendlyCrit, 120, true);
 
             InfinitumUI.Instance.stats = this;
             ExpBarUI.Instance.stats = this;
-            Skill.player = currentPLayer;
+            Skill.player = this.Player;
             InfinitumGlobalItem.playerDataHook = this;
 
             if (messageReset)
@@ -423,9 +424,9 @@ namespace Infinitum
             MoreExpMultiplier = 1f;
             base.PreUpdate();
         }
-        public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            dynamic hit = new { damage = damage, defense = target.defense };
+            dynamic hit = new { damage = modifiers.FinalDamage, defense = target.defense };
 
             if (activate && target.netID != 488)
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
@@ -433,9 +434,9 @@ namespace Infinitum
             //base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
         }
 
-        public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
         {
-            dynamic hit = new { damage = damage, defense = target.defense };
+            dynamic hit = new { damage = modifiers.FinalDamage, defense = target.defense };
 
             if (activate && target.netID != 488)
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
