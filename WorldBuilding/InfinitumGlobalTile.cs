@@ -10,11 +10,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Infinitum.Items;
-using System.Security.Cryptography.X509Certificates;
+using Infinitum.Items.Ores;
+using Infinitum.WorldBuilding.Tiles;
 
 namespace Infinitum.WorldBuilding
 {
-    internal class WorldGen : GlobalTile
+    internal class InfinitumGlobalTile : GlobalTile
     {
         private static Mod myMod = ModLoader.GetMod("Infinitum");
         private float baseXP = 0.5f;
@@ -59,7 +60,7 @@ namespace Infinitum.WorldBuilding
                 if (xp == 0)
                     xp = 1;
 
-                if (tile.GetType().Name == "SanjacobosMineralTile")
+                if (tile.GetType().Name == SanjacobosMineralTile.TileName)
                     xp += 35f;
 
                 //if tile is more big than 1 tile better to sendAccumulated XP for less traffic
@@ -344,7 +345,6 @@ namespace Infinitum.WorldBuilding
                 });
             }
         }
-
 
     }
 

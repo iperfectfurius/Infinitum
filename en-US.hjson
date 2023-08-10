@@ -1,4 +1,3 @@
-
 Mods: {
 	Infinitum: {
 		Buffs: {
@@ -81,6 +80,12 @@ Mods: {
 			LegendaryPlus.DisplayName: Legendary Plus
 			MythicalPlus.DisplayName: Mythical Plus
 			UnrealPlus.DisplayName: Unreal Plus
+		}
+
+		Keybinds: {
+			"Show UI.DisplayName": Show  U I
+			"Hide Numbers.DisplayName": Hide  Numbers
+			"Change Set.DisplayName": Change  Set
 		}
 	}
 }
