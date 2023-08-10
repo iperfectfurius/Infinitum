@@ -10,12 +10,10 @@ namespace Infinitum.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("XP Buffed!");
-            Description.SetDefault("More Global XP!");
             Main.debuff[Type] = false;
         }
 
-        public override void ModifyBuffTip(ref string tip, ref int rare)
+        public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
         {
             tip = "More XP Really?";
         }

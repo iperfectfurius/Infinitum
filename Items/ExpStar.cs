@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 
@@ -19,12 +20,9 @@ namespace Infinitum.Items
         public const int ChanceFromAltars = 400;
         public const int ChanceFromOrbs = 250;
         public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Star XP");
-			Tooltip.SetDefault("What you expect?(XP)");
-		}
+		{}
 
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
 			Item.maxStack = 999;
 			Item.width = 25;

@@ -10,10 +10,7 @@ namespace Infinitum.Items
 
 
         public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Mini XP Star");
-            Tooltip.SetDefault("What you expect?(XP(mini))");
-        }
+        {}
 
         public override void SetDefaults()
         {

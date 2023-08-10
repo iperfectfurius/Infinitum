@@ -15,7 +15,7 @@ namespace Infinitum.UI
     internal class UIButton : UIElement
     {
         private object _text;
-        private UIElement.MouseEvent _clickAction;
+        private MouseEvent _clickAction;
         private UIPanel _uiPanel = new();
         private UIText _uiText;
 		private int ownStat;
@@ -56,7 +56,7 @@ namespace Infinitum.UI
 			_uiText.VAlign = _uiText.HAlign = 0.5f;
 			_uiPanel.Append(_uiText);
 
-			_uiPanel.OnClick += _clickAction;
+			_uiPanel.OnLeftClick += _clickAction;
 		}
 
         private void _uiPanel_OnMouseOut(UIMouseEvent evt, UIElement listeningElement)

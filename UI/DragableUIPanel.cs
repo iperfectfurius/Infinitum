@@ -15,19 +15,10 @@ namespace Infinitum.UI
         {
             base.OnInitialize();
 			SetPadding(0);
-			
+
+			OnLeftMouseDown += (e, i) => DragStart(e);
+            OnLeftMouseUp += (e, i) => DragEnd(e);
         }
-        public override void MouseDown(UIMouseEvent evt)
-        {
-            base.MouseDown(evt);
-			DragStart(evt);
-			
-		}
-		public override void MouseUp(UIMouseEvent evt)
-		{
-			base.MouseUp(evt);
-			DragEnd(evt);
-		}
 
         private void DragStart(UIMouseEvent evt)
 		{

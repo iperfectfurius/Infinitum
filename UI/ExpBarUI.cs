@@ -38,7 +38,7 @@ namespace Infinitum.UI
             bar.SetPadding(0);
             bar.OnMouseOver += Bar_OnMouseOver;
             bar.OnMiddleClick += openStatsTab;
-            bar.OnMouseUp += setPos;
+            //bar.OnMouseUp += setPos;
             bar.continueStuff = true;
 
             addUIElementsToPanel();

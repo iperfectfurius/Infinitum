@@ -1,5 +1,4 @@
 ﻿
-using IL.Terraria.Chat;
 using Infinitum.Skills;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,7 +14,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.UI;
 using Terraria.Chat;
-
+//using IL.Terraria.ID;
 
 namespace Infinitum.UI
 {
@@ -46,7 +45,6 @@ namespace Infinitum.UI
         }
         public InfinitumUI()
         {
-
             inicializeUIElements();
         }
         public override void OnInitialize()
@@ -237,7 +235,7 @@ namespace Infinitum.UI
             close.Left.Set(maxWidth - 25, 0f);
             close.Height.Set(22, 0);
             close.Width.Set(22, 0);
-            close.OnClick += (e, i) => Visible = false;
+            close.OnLeftClick += (e, i) => Visible = false;
 
             foreach (UIButton button in SetsButtons)
                 InfinitumPanel.Append(button);
@@ -389,7 +387,10 @@ namespace Infinitum.UI
                 UIButton automaticButton = (UIButton)skill.Children.ElementAt(6);
 
                 skillText.SetText($"{stats.Skills[skillNumber].DisplayName}: {stats.Skills[skillNumber].GetStatText()}");
-                skillText.hoverText = $"Level: {stats.Skills[skillNumber].Level} Total Level Spend: {stats.Skills[skillNumber].TotalSpend}";
+                skillText.hoverText = $"Level: {ColorText.SetTextColor(stats.Skills[skillNumber].Level,ColorText.Blue)}" +
+                    $" Total Level Spend: {stats.Skills[skillNumber].TotalSpend}";
+             
+                //skillText.hoverText = $"{ColorText.}";
 
                 costText.SetText($"{stats.Skills[skillNumber].Cost}");
 
@@ -400,7 +401,7 @@ namespace Infinitum.UI
         private void setOwnStatsToButtons(List<UIElement> skills)
         {
             for (int i = 1; i < SkillEnums.GetNumberOfSkills + 1; i++)
-            {
+            {//All button for each skill
                 int skillNumber = i - 1;
                 UIList skill = (UIList)skills.ElementAt(i);
                 ((UIButton)skill.Children.ElementAt(2)).OwnStat = skillNumber;

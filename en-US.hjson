@@ -1,0 +1,91 @@
+Mods: {
+	Infinitum: {
+		Buffs: {
+			InfinitumBuff: {
+				DisplayName: Infinitum Buffed!
+				Description: More Global XP!
+			}
+
+			XPBuff: {
+				DisplayName: XP Buffed!
+				Description: More Global XP!
+			}
+		}
+
+		Items: {
+			ExpStar: {
+				DisplayName: Star XP
+				Tooltip: What you expect?(XP)
+			}
+
+			InfinitumPotion: {
+				DisplayName: Infinitum Potion
+				Tooltip:
+					'''
+					MOoOoORE XP, PROBLEM?
+					You need to kill Fast!
+					'''
+			}
+
+			InfinitumTotem: {
+				DisplayName: Infinitum Totem
+				Tooltip:
+					'''
+					Change current difficulty for this map
+					Currently difficulty: Normal
+					'''
+			}
+
+			MiniExpStar: {
+				DisplayName: Mini XP Star
+				Tooltip: What you expect?(XP(mini))
+			}
+
+			MultiplierStar: {
+				DisplayName: Star Multiplier XP
+				Tooltip: LOL +(2.5%) XP!
+			}
+
+			MultiplierStarNoItem: {
+				DisplayName: Star Multiplier EXP(No item)
+				Tooltip: LOL +(2.5%) XP!
+			}
+
+			SanjacobosOre: {
+				DisplayName: Sanjacobo's Ore
+				Tooltip: Good Shit
+			}
+
+			SanjacobosBar: {
+				DisplayName: Sanjacobo's Bar
+				Tooltip: Really you need more XP?
+			}
+
+			SuperiorMultiplierStar: {
+				DisplayName: Superior Multiplier EXP
+				Tooltip: LOL²
+			}
+
+			XPPotion: {
+				DisplayName: XP Potion
+				Tooltip:
+					'''
+					MORE XP, PROBLEM?
+					[c/ff1493:+50% More XP]
+					'''
+			}
+		}
+
+		Prefixes: {
+			LegendaryPlus.DisplayName: Legendary Plus
+			MythicalPlus.DisplayName: Mythical Plus
+			UnrealPlus.DisplayName: Unreal Plus
+		}
+
+		Keybinds: {
+			"Show UI.DisplayName": Show  U I
+			"Hide Numbers.DisplayName": Hide  Numbers
+			"Change Set.DisplayName": Change  Set
+		}
+	}
+}

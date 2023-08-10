@@ -10,11 +10,7 @@ namespace Infinitum.Items
     internal class InfinitumPotion : ModItem
     {
         public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Infinitum Potion");
-            Tooltip.SetDefault("MOoOoORE XP, PROBLEM?\nYou need to kill Fast!");
-
-        }
+        {}
         public override void SetDefaults()
         {
             Item.maxStack = 999;

@@ -10,11 +10,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Infinitum.Items;
-using System.Security.Cryptography.X509Certificates;
+using Infinitum.Items.Ores;
+using Infinitum.WorldBuilding.Tiles;
 
 namespace Infinitum.WorldBuilding
 {
-    internal class WorldGen : GlobalTile
+    internal class InfinitumGlobalTile : GlobalTile
     {
         private static Mod myMod = ModLoader.GetMod("Infinitum");
         private float baseXP = 0.5f;
@@ -22,11 +23,11 @@ namespace Infinitum.WorldBuilding
         private bool haveXPAccumulated = false;
         private Task timer;
         private bool notUnloadedTiles = true;
-        private int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, 408 };
+        private readonly int[] blockCountedAsORe = new int[] { 63, 64, 65, 66, 67, 68, 262, 263, 264, 265, 266, 267, 408 };
         public HashSet<string> bannedTiles = new HashSet<string>();
         private ModPacket myPacket;
 
-        public override bool Drop(int i, int j, int type)
+        public override void Drop(int i, int j, int type)
         {
 
             float xp = 0;
@@ -35,7 +36,7 @@ namespace Infinitum.WorldBuilding
             if (bannedTiles.Contains(pos))
             {
                 Task.Run(() => bannedTiles.Remove(pos));
-                return base.Drop(i, j, type);
+                return; //base.Drop(i, j, type);
             }
 
             var tile = TileLoader.GetTile(type);
@@ -49,7 +50,7 @@ namespace Infinitum.WorldBuilding
                     if (Main.rand.NextBool(ExpStar.ChanceFromBlocks))
                         Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
-                    return base.Drop(i, j, type);
+                    return; //base.Drop(i, j, type);
                 }
 
 
@@ -59,7 +60,7 @@ namespace Infinitum.WorldBuilding
                 if (xp == 0)
                     xp = 1;
 
-                if (tile.GetType().Name == "SanjacobosMineralTile")
+                if (tile.GetType().Name == SanjacobosMineralTile.TileName)
                     xp += 35f;
 
                 //if tile is more big than 1 tile better to sendAccumulated XP for less traffic
@@ -76,7 +77,7 @@ namespace Infinitum.WorldBuilding
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
                 if (Main.rand.NextBool(ExpStar.ChanceFromOres))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
-                return base.Drop(i, j, type);
+                return; base.Drop(i, j, type);
 
             }         
 
@@ -166,7 +167,7 @@ namespace Infinitum.WorldBuilding
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
                 if (Main.rand.NextBool(expStarChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
-                return base.Drop(i, j, type);
+                return; base.Drop(i, j, type);
 
             }
 
@@ -275,7 +276,7 @@ namespace Infinitum.WorldBuilding
             if (Main.rand.NextBool(ExpStar.ChanceFromOres))
                 Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
-            return base.Drop(i, j, type);
+            return; base.Drop(i, j, type);
 
         }
         private bool isOre(int type)
@@ -344,7 +345,6 @@ namespace Infinitum.WorldBuilding
                 });
             }
         }
-
 
     }
 

@@ -11,11 +11,9 @@ namespace Infinitum.Buffs
         public float XPMultiplier { get => xpMultiplier; set => xpMultiplier = value; }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Infinitum Buffed!");
-            Description.SetDefault("More Global XP!");
             Main.debuff[Type] = false;
         }
-        public override void ModifyBuffTip(ref string tip, ref int rare)
+        public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
         {
             tip = $"You collected {(xpMultiplier * 100):n1}% more Exp Multiplier!";
         }

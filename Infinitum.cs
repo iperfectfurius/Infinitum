@@ -16,6 +16,8 @@ namespace Infinitum
         XPFromNPCs,
         XPFromOtherSources,
         XPMultiplier,
+        XPFromLifeSkill,
+        XPFromMining,
         UpdateStats,
         GetDifficultySettings
     }

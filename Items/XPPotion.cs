@@ -11,11 +11,7 @@ namespace Infinitum.Items
     {
         
         public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("XP Potion");
-            Tooltip.SetDefault("MORE XP, PROBLEM?\n[c/ff1493:+50% More XP]");
-            
-        }
+        {}
         public override void SetDefaults()
         {
             Item.maxStack = 999;

@@ -71,15 +71,17 @@ namespace Infinitum
             npc.damage += (int)(npc.damage * Infinitum.instance.Difficulty.Damage);
             npc.defense += (int)(npc.defense * Infinitum.instance.Difficulty.Defense);            
         }
-        public override void SetupShop(int type, Chest shop, ref int nextSlot)
+        public override void ModifyShop(NPCShop shop)
         {
-            if (type == NPCID.Merchant)
+            if (shop.NpcType == NPCID.Merchant)
             {
-                shop.item[nextSlot].SetDefaults(ModContent.ItemType<MultiplierStar>());
-                shop.item[nextSlot].value = 0;
-                shop.item[nextSlot].shopCustomPrice = Item.sellPrice(platinum: 2);
+                shop.Add(new Item(ModContent.ItemType<MultiplierStar>()));
+                
+                //shop.item[nextSlot].SetDefaults(ModContent.ItemType<MultiplierStar>());
+                //shop.item[nextSlot].value = 0;
+                //shop.item[nextSlot].shopCustomPrice = Item.sellPrice(platinum: 2);
 
-                nextSlot++;
+                //nextSlot++;
             }
             //base.SetupShop(type, shop, ref nextSlot);
         }

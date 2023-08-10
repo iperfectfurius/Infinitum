@@ -13,10 +13,7 @@ namespace Infinitum.Items
 		public const int NormalChanceFromNPCS = 250;
 		public const int ChanceFromFishing = 25;
 		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Star Multiplier XP");
-			Tooltip.SetDefault("LOL +(2.5%) XP!");
-		}
+		{}
 
 		public override void SetDefaults()
 		{

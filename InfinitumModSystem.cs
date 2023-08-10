@@ -1,5 +1,4 @@
-﻿using IL.Terraria.GameContent.Generation;
-using Infinitum.Items;
+﻿using Infinitum.Items;
 using Infinitum.Items.Ores;
 using Infinitum.UI;
 using Infinitum.WorldBuilding.Tiles;
@@ -94,7 +93,7 @@ namespace Infinitum
             }
         }
 
-        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
+        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Shinies"));
 
@@ -154,9 +153,9 @@ namespace Infinitum
 
                     int x = WorldGen.genRand.Next(0, Main.maxTilesX);
 
-
-                    int y = WorldGen.genRand.Next((int)WorldGen.worldSurfaceLow, Main.maxTilesY);
-
+                    
+                    int y = WorldGen.genRand.Next((int)GenVars.worldSurfaceLow, Main.maxTilesY);
+                    //WorldGen.world
                     WorldGen.TileRunner(x, y, WorldGen.genRand.Next(12, 20), WorldGen.genRand.Next(8, 14), ModContent.TileType<SanjacobosMineralTile>());
 
                 }
