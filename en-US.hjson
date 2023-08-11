@@ -76,6 +76,8 @@ Mods: {
 			}
 		}
 
+		Tiles.SanjacobosMineralTile.SanjacobosTile: Test
+
 		Prefixes: {
 			LegendaryPlus.DisplayName: Legendary Plus
 			MythicalPlus.DisplayName: Mythical Plus

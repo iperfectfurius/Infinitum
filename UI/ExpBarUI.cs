@@ -89,10 +89,15 @@ namespace Infinitum.UI
         }
         public override void Update(GameTime gameTime)
         {
+            if (stats == null) {
+                //base.Update(gameTime);
+                return;
+            }
             //this goes on show??
             if (stats.RecentChanged) UpdateAllStats();
 
-            base.Update(gameTime);
+            //base.Update(gameTime);
+
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {

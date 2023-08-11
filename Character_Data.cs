@@ -40,7 +40,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.83";// TODO: search for assembly version?
+        private string version = "0.83";//Use for resetting skills when new added.
         private bool messageReset = false;
         private double exp = 0;
         private int level = 0;
