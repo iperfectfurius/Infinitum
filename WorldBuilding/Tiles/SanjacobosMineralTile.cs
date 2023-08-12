@@ -49,15 +49,15 @@ namespace Infinitum.WorldBuilding.Tiles
         {
             return base.CanReplace(i, j, tileTypeBeingPlaced);
         }
-        
+        public static void GetDrops(int i, int j)
+        {
+            if (Main.rand.NextBool(multiplierStarChance))
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+            if (Main.rand.NextBool(expStarChance))
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
+        }
         //public override bool Drop(int i, int j)
         //{       
-        //    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<SanjacobosOre>());
-
-        //    if(Main.rand.NextBool(multiplierStarChance))
-        //        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
-        //    if (Main.rand.NextBool(expStarChance))
-        //        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
         //    return base.Drop(i, j);
         //}

@@ -36,9 +36,9 @@ namespace Infinitum.WorldBuilding
             if (bannedTiles.Contains(pos))
             {
                 Task.Run(() => bannedTiles.Remove(pos));
-                return; //base.Drop(i, j, type);
+                return;
             }
-
+            //Mod content
             var tile = TileLoader.GetTile(type);
             if (tile != null)
             {
@@ -50,18 +50,19 @@ namespace Infinitum.WorldBuilding
                     if (Main.rand.NextBool(ExpStar.ChanceFromBlocks))
                         Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
-                    return; //base.Drop(i, j, type);
+                    return;
                 }
-
 
                 xp = (tile.MinPick * baseXP);
 
-                //test
-                if (xp == 0)
-                    xp = 1;
+                xp = xp == 0 ? 1 : xp;
 
                 if (tile.GetType().Name == SanjacobosMineralTile.TileName)
+                {
+                    SanjacobosMineralTile.GetDrops(i,j);
                     xp += 35f;
+                }
+                    
 
                 //if tile is more big than 1 tile better to sendAccumulated XP for less traffic
                 if (Main.netMode != NetmodeID.Server)
@@ -71,13 +72,13 @@ namespace Infinitum.WorldBuilding
                 else if (Main.netMode == NetmodeID.Server)
                 {
                     sendXPToPlayers(xp);
-
                 }
+
                 if (Main.rand.NextBool(MultiplierStarNoItem.ChanceFromOres))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
                 if (Main.rand.NextBool(ExpStar.ChanceFromOres))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
-                return; base.Drop(i, j, type);
+                return; 
 
             }         
 
@@ -167,7 +168,7 @@ namespace Infinitum.WorldBuilding
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
                 if (Main.rand.NextBool(expStarChance))
                     Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
-                return; base.Drop(i, j, type);
+                return;
 
             }
 
@@ -322,7 +323,7 @@ namespace Infinitum.WorldBuilding
         }
         private void sendAccumulatedXPFromTile(float xp)
         {
-            //This method can prevent a lot of traffic
+            //This method is only for prevent a lot of traffic at the same time
             accumulatedXP += xp;
 
             if (!haveXPAccumulated)
