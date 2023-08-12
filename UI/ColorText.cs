@@ -8,8 +8,8 @@ namespace Infinitum.UI
 {
     internal class ColorText
     {
-        public static string Pink { get => "c/ff1493:"; }
-        public static string Blue { get => "c/0070FF:"; }
+        public const string Pink = "c/ff1493:"; 
+        public const string Blue = "c/0070FF:";
 
         public static string SetTextColor(string text, string color)
         {

@@ -76,6 +76,8 @@ Mods: {
 			}
 		}
 
+		Tiles.SanjacobosMineralTile.SanjacobosTile: Sanjacobo's Ore
+
 		Prefixes: {
 			LegendaryPlus.DisplayName: Legendary Plus
 			MythicalPlus.DisplayName: Mythical Plus

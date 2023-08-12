@@ -127,12 +127,13 @@ namespace Infinitum
         public override void SaveWorldData(TagCompound tag)
         {
             TagCompound bossData = new();
-            TagCompound adaptativeDifficulty = new();
+            TagCompound adaptativeDifficulty = new()
+            {
+                { "Difficulty", (byte)Infinitum.instance.Difficulty.DifficultySetted },
+                { "LastStepBossBeated", (byte)Infinitum.instance.Difficulty.BestBossTypeBeated },
 
-            adaptativeDifficulty.Add("Difficulty", (byte)Infinitum.instance.Difficulty.DifficultySetted);
-            adaptativeDifficulty.Add("LastStepBossBeated", (byte)Infinitum.instance.Difficulty.BestBossTypeBeated);
-
-            adaptativeDifficulty.Add("Version", AdaptativeDifficulty.version);
+                { "Version", AdaptativeDifficulty.version }
+            };
             tag.Add("AdapatativeDifficulty", adaptativeDifficulty);
 
             Infinitum.instance.Difficulty.SetDefaults();

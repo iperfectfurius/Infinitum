@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Infinitum.Items
@@ -49,7 +50,7 @@ namespace Infinitum.Items
 
         public override void GrabRange(Item item, Player player, ref int grabRange)
         {
-            if (playerDataHook.Skills[(int)SkillEnums.SkillOrder.GrabRange].Level == 0) return;
+            if (Main.netMode == NetmodeID.Server || playerDataHook.Skills[(int)SkillEnums.SkillOrder.GrabRange].Level == 0) return;
 
             grabRange += (int)playerDataHook.Skills[(int)SkillEnums.SkillOrder.GrabRange].EffectBuff;
 

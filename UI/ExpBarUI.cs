@@ -89,10 +89,16 @@ namespace Infinitum.UI
         }
         public override void Update(GameTime gameTime)
         {
+            if (stats == null) {
+                base.Update(gameTime);
+                return;
+            }
+
             //this goes on show??
             if (stats.RecentChanged) UpdateAllStats();
 
             base.Update(gameTime);
+
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
@@ -105,7 +111,7 @@ namespace Infinitum.UI
             float percentExp = (float)stats.Exp / stats.ExpToLevel;
 
             ExpBar.Width.Set(((percentExp * maxWidth) / 100) * 100, 0);
-            level.SetText($"{stats.Level}  ({(percentExp * 100):n1}%)");
+            level.SetText($"LV {stats.Level}  ({(percentExp * 100):n1}%)");
             RecalculateChildren();
         }
 

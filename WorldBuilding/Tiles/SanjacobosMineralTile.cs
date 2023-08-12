@@ -15,6 +15,8 @@ namespace Infinitum.WorldBuilding.Tiles
         private const int multiplierStarChance = 100;
         private const int expStarChance = 2000;
         public const string TileName = "SanjacobosMineralTile";
+
+        
         public override void SetStaticDefaults()
         {
             this.MinPick = 35;
@@ -27,10 +29,11 @@ namespace Infinitum.WorldBuilding.Tiles
             TileID.Sets.Ore[Type] = true;
             Main.tileSpelunker[Type] = true;
             Main.tileOreFinderPriority[Type] = 100;
-            AddMapEntry(new Color(200, 200, 200));
+            AddMapEntry(new Color(200, 200, 200),this.GetLocalization("SanjacobosTile"));
             TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
             TileObjectData.addTile(Type);
             HitSound = SoundID.Tink;
+            RegisterItemDrop(ModContent.ItemType<SanjacobosOre>(), -1);
         }       
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
@@ -46,15 +49,15 @@ namespace Infinitum.WorldBuilding.Tiles
         {
             return base.CanReplace(i, j, tileTypeBeingPlaced);
         }
-         
+        public static void GetDrops(int i, int j)
+        {
+            if (Main.rand.NextBool(multiplierStarChance))
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
+            if (Main.rand.NextBool(expStarChance))
+                Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
+        }
         //public override bool Drop(int i, int j)
         //{       
-        //    Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<SanjacobosOre>());
-
-        //    if(Main.rand.NextBool(multiplierStarChance))
-        //        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<MultiplierStarNoItem>());
-        //    if (Main.rand.NextBool(expStarChance))
-        //        Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 16, ModContent.ItemType<ExpStar>());
 
         //    return base.Drop(i, j);
         //}
