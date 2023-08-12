@@ -40,7 +40,7 @@ namespace Infinitum
             AddedLevels = 190,
             CurrentLevels = 50
         };
-        private string version = "0.83";//Use for resetting skills when new added.
+        private string version = "0.84";//Use for resetting skills when new added.
         private bool messageReset = false;
         private double exp = 0;
         private int level = 0;
@@ -424,19 +424,23 @@ namespace Infinitum
             MoreExpMultiplier = 1f;
             base.PreUpdate();
         }
-        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            dynamic hit = new { damage = modifiers.FinalDamage, defense = target.defense };
+            dynamic playerHit = new { damage = damageDone, defense = target.defense };
 
             if (activate && target.netID != 488)
-                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);
+                Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(playerHit);
 
-            //base.ModifyHitNPC(item, target, ref damage, ref knockback, ref crit);
+            base.OnHitNPC(target, hit, damageDone);
+        }
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPCWithProj(proj, target, hit, damageDone);
         }
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
         {
-            dynamic hit = new { damage = modifiers.FinalDamage, defense = target.defense };
+             dynamic hit = new { damage = proj.damage, defense = target.defense };
 
             if (activate && target.netID != 488)
                 Skills[(int)SkillEnums.SkillOrder.LifeSteal].ApplyStatToPlayer(hit);

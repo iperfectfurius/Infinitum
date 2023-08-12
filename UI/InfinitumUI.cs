@@ -398,17 +398,16 @@ namespace Infinitum.UI
             }
         }
 
-        private void setOwnStatsToButtons(List<UIElement> skills)
+        private void setOwnStatsToButtons(List<UIElement> skills)//buttons are added within a list so isnt ordered by default
         {
             for (int i = 1; i < SkillEnums.GetNumberOfSkills + 1; i++)
             {//All button for each skill
                 int skillNumber = i - 1;
                 UIList skill = (UIList)skills.ElementAt(i);
-                ((UIButton)skill.Children.ElementAt(2)).OwnStat = skillNumber;
-                ((UIButton)skill.Children.ElementAt(3)).OwnStat = skillNumber;
-                ((UIButton)skill.Children.ElementAt(3)).OwnStat = skillNumber;
-                ((UIButton)skill.Children.ElementAt(3)).OwnStat = skillNumber;
-                ((UIButton)skill.Children.ElementAt(6)).OwnStat = skillNumber;
+                ((UIButton)skill.Children.ElementAt(2)).OwnStat = skillNumber;//+
+                ((UIButton)skill.Children.ElementAt(3)).OwnStat = skillNumber;//-
+                ((UIButton)skill.Children.ElementAt(4)).OwnStat = skillNumber;//all
+                ((UIButton)skill.Children.ElementAt(6)).OwnStat = skillNumber;//automatic
 
             }
             firstTimeLoad = false;
