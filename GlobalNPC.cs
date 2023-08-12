@@ -75,7 +75,7 @@ namespace Infinitum
         {
             if (shop.NpcType == NPCID.Merchant)
             {
-                shop.Add(new Item(ModContent.ItemType<MultiplierStar>()));
+                shop.Add(new Item(ModContent.ItemType<MultiplierStar>()) { shopCustomPrice = Item.buyPrice(platinum:2)});
                 
                 //shop.item[nextSlot].SetDefaults(ModContent.ItemType<MultiplierStar>());
                 //shop.item[nextSlot].value = 0;
