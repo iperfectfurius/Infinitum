@@ -33,7 +33,7 @@ namespace Infinitum.WorldBuilding.Tiles
             TileObjectData.newTile.CopyFrom(TileObjectData.Style1x1);
             TileObjectData.addTile(Type);
             HitSound = SoundID.Tink;
-            RegisterItemDrop(ModContent.ItemType<SanjacobosOre>(), 1);
+            RegisterItemDrop(ModContent.ItemType<SanjacobosOre>(), -1);
         }       
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
