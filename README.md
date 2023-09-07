@@ -1,5 +1,5 @@
 # Infinitum (ALPHA)
-
+Infinitum is a RPG Mod for [Tmodloader](https://github.com/tModLoader/tModLoader).
 
 This mod was developed by [@iperfectfurius](https://github.com/iperfectfurius).
 
