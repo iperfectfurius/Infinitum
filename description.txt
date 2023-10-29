@@ -9,21 +9,22 @@ Note: UI can be opened via HotKey or middle mouse button on ExpBar.
 
 [i:-28] XP System and skills.
 [i:4096] 3 New Modifiers.
-[i:1195] 6 New Items
+[i:1195] 10 New Items
 [i:9] 2 Crafting Materials
 [i:13] 1 New Ore.
+[i:28] 2 New Potions
+[i:193] 3 New Difficulties
 
 For now Infinitum supports Sets of skills/buffs and automatic leveling if want.
+Infinitum will change difficulty on the playthrough.
 
 For more information go to official Wiki!
 https://github.com/iperfectfurius/Infinitum/wiki
 
 [c/47EB3C:Future content:]
 
-New Difficulties.
-New Potions.
 Life Skills.
-Balance XP during playthrough.
+
 Balance of Mobs/NPCs in multiplayer exclusively.
 More Tiers of Stars.
 New endless Endgame.
