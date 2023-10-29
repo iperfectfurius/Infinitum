@@ -130,7 +130,7 @@ namespace Infinitum
             }
                 
 
-            exp += experienceObtained;
+            exp += experienceObtained > 0.0 ? experienceObtained : 0;
             UpdateLevel();
             showDamageText((int)CombatTextPos.Xp, $"+ {experienceObtained:n1} XP", CombatText.HealMana);
             totalNpcsKilled++;

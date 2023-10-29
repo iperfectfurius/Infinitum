@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria.ID;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Infinitum.Buffs
 {
